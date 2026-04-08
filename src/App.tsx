@@ -1,7 +1,12 @@
 import { BrowserRouter } from 'react-router-dom';
 import { Route, Routes } from 'react-router';
-import { HomePage } from './pages';
+import { ThemeProvider } from '@emotion/react';
+
+import { Homepage } from './pages';
 import { Header } from './components/Header/Header.tsx';
+import { theme } from './styles/theme.ts';
+import './index.css';
+import { PageWrapper } from './components/PageWrapper';
 
 export const App = () => {
 	const isLoggedIn = true;
@@ -9,10 +14,14 @@ export const App = () => {
 
 	return (
 		<BrowserRouter>
-			<Header />
-			<Routes>
-				<Route path="/" element={<HomePage />} />
-			</Routes>
+			<ThemeProvider theme={theme}>
+				<Header />
+				<PageWrapper>
+					<Routes>
+						<Route path="/" element={<Homepage />} />
+					</Routes>
+				</PageWrapper>
+			</ThemeProvider>
 		</BrowserRouter>
 	);
 };

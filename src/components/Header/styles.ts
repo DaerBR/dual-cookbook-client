@@ -1,1 +1,5 @@
-export const headerStyles = { background: '#f3815a', height: '80px', width: '100%', '&:hover': { color: '#fff' } };
+export const buttonsContainerStyles = {
+	display: 'flex',
+	alignItems: 'center',
+	gap: '16px',
+};

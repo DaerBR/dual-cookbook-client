@@ -57,7 +57,7 @@ export const useThunk = <TThunkArgs>(
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	const { useGlobalLoader } = options ?? {};
+	// const { useGlobalLoader } = options ?? {};
 	// const { handleGlobalLoadingScreenState } = useContext(DrawerContext);
 
 	const dispatchThunk = useCallback(
@@ -104,7 +104,7 @@ export const useThunk = <TThunkArgs>(
 					return setError(e);
 				});
 		},
-		[useGlobalLoader, dispatch, thunk, navigate],
+		[dispatch, thunk, options, navigate],
 	);
 
 	return [dispatchThunk, error];

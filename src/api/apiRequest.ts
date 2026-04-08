@@ -4,6 +4,7 @@ import { API_URL } from './constants';
 
 export const apiRequest = axios.create({
 	baseURL: API_URL,
+	withCredentials: true,
 });
 
 export const useApiInterceptors = () => {

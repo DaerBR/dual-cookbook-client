@@ -80,6 +80,12 @@ export default [
 			...reactHooksPlugin.configs.recommended.rules,
 			...jsxA11yPlugin.configs.recommended.rules,
 			...tseslint.configs.recommended.rules,
+			'@typescript-eslint/no-empty-object-type': [
+				'error',
+				{
+					allowInterfaces: 'with-single-extends',
+				},
+			],
 
 			// TypeScript rules
 			'@typescript-eslint/adjacent-overload-signatures': 'error',
@@ -117,7 +123,10 @@ export default [
 			'@typescript-eslint/no-array-constructor': 'error',
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-empty-function': 'error',
-			'@typescript-eslint/no-empty-interface': 'error',
+			'@typescript-eslint/no-empty-interface': [
+				'error',
+				{ allowSingleExtends: true },
+			],
 			'@typescript-eslint/no-extra-non-null-assertion': 'error',
 			'@typescript-eslint/no-inferrable-types': 'error',
 			'@typescript-eslint/no-loop-func': 'error',
@@ -348,7 +357,12 @@ export default [
 			'react/no-string-refs': 'error',
 			'react/no-typos': 'error',
 			'react/no-unescaped-entities': 'error',
-			'react/no-unknown-property': 'error',
+			'react/no-unknown-property': [
+				'error',
+				{
+					ignore: ['css'],
+				},
+			],
 			'react/no-unstable-nested-components': 'error',
 			'react/prefer-es6-class': 'error',
 			'react/prefer-stateless-function': 'error',

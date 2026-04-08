@@ -1,3 +1,80 @@
-import { headerStyles } from './styles.ts';
+import { useEffect } from 'react';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router';
 
-export const Header = () => <div css={headerStyles}>Header</div>;
+import { useHeaderStyles } from './hooks.ts';
+import { Button } from '../atoms/Button';
+import { API_URL } from '../../api/constants.ts';
+import { AuthEventListener } from '../AuthEventListener';
+import { useThunk } from '../../store/hooks/useThunk.ts';
+import { fetchUser, signOut } from '../../store/thunks/auth.ts';
+import { useAppSelector } from '../../store/hooks/hooks.ts';
+import { Icon } from '../atoms/Icon';
+import { buttonsContainerStyles } from './styles.ts';
+import { Typography } from '../atoms/Typography/Typography.tsx';
+
+export const Header = () => {
+	const userData = useAppSelector((state) => state.auth.userInfo);
+	const wereUserDataFetched = useAppSelector((state) => state.auth.wereUserDataFetched);
+	const navigate = useNavigate();
+	const headerStyles = useHeaderStyles();
+	const logoContainerStyles = {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: '100%',
+		'& img': { width: '50px' },
+	};
+	const [dispatchFetchUser] = useThunk(fetchUser);
+	const [dispatchLogout] = useThunk(signOut);
+
+	useEffect(() => {
+		if (!wereUserDataFetched) {
+			dispatchFetchUser();
+		}
+	}, [dispatchFetchUser, wereUserDataFetched]);
+
+	const handleLoginClick = () => {
+		const width = 500;
+		const height = 600;
+		const left = window.screenX + (window.outerWidth - width) / 2;
+		const top = window.screenY + (window.outerHeight - height) / 2;
+
+		window.open(`${API_URL}/auth/google`, 'google-auth', `width=${width},height=${height},left=${left},top=${top}`);
+	};
+
+	const handleLogoutClick = async () => {
+		await dispatchLogout();
+		navigate('/');
+	};
+
+	return (
+		<div css={headerStyles}>
+			<div css={logoContainerStyles} className="logo-container">
+				<img src="/bear-bowl.png" alt="Dual bear cooks" />
+			</div>
+			<div css={buttonsContainerStyles}>
+				{userData && (
+					<Typography variant="paragraphM" weight={700}>
+						Привіт, {userData.displayName}!
+					</Typography>
+				)}
+				{userData ? (
+					<>
+						<Button onClick={() => navigate('/recipes/create')} startIcon={<Icon icon={faPlus} />} variant="primary">
+							Додати рецепт
+						</Button>
+						<Button variant="secondary" onClick={handleLogoutClick}>
+							Вийти
+						</Button>
+					</>
+				) : (
+					<Button variant="secondary" onClick={handleLoginClick}>
+						Вхід
+					</Button>
+				)}
+			</div>
+			{!userData && <AuthEventListener />}
+		</div>
+	);
+};

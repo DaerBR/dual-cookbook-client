@@ -12,6 +12,7 @@ import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { Icon } from '../atoms/Icon';
 import { buttonsContainerStyles } from './styles.ts';
 import { Typography } from '../atoms/Typography/Typography.tsx';
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
 	const userData = useAppSelector((state) => state.auth.userInfo);
@@ -51,7 +52,9 @@ export const Header = () => {
 	return (
 		<div css={headerStyles}>
 			<div css={logoContainerStyles} className="logo-container">
-				<img src="/bear-bowl.png" alt="Dual bear cooks" />
+				<Link to="/">
+					<img src="/bear-bowl.png" alt="Dual bear cooks" />
+				</Link>
 			</div>
 			<div css={buttonsContainerStyles}>
 				{userData && (
@@ -61,7 +64,7 @@ export const Header = () => {
 				)}
 				{userData ? (
 					<>
-						<Button onClick={() => navigate('/recipes/create')} startIcon={<Icon icon={faPlus} />} variant="primary">
+						<Button onClick={() => navigate('/create-new-recipe')} startIcon={<Icon icon={faPlus} />} variant="primary">
 							Додати рецепт
 						</Button>
 						<Button variant="secondary" onClick={handleLogoutClick}>

@@ -1,9 +1,9 @@
 import { Typography } from '../../components/atoms/Typography/Typography.tsx';
 
-export const Homepage = () => (
+export const SingleRecipe = () => (
 	<div>
 		<Typography variant="paragraphL" weight={700}>
-			Головна сторінка
+			Рецепт
 		</Typography>
 	</div>
 );

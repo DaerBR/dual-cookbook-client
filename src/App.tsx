@@ -8,27 +8,22 @@ import { theme } from './styles/theme.ts';
 import './index.css';
 import { PageWrapper } from './components/PageWrapper';
 
-export const App = () => {
-	const isLoggedIn = true;
-	console.info(isLoggedIn);
-
-	return (
-		<BrowserRouter>
-			<ThemeProvider theme={theme}>
-				<Header />
-				<PageWrapper>
-					<Routes>
-						<Route path="/" element={<Homepage />} />
-						<Route path="/create-new-category" element={<AddCategory />} />
-						<Route path="/create-new-recipe" element={<AddRecipe />} />
-						<Route path="/categories" element={<Categories />} />
-						<Route path="/search" element={<Search />} />
-						<Route path="/category/:id" element={<SingleCategory />} />
-						<Route path="/recipe/:id" element={<SingleRecipe />} />
-						<Route path="*" element={<ErrorPage code={404} />} />
-					</Routes>
-				</PageWrapper>
-			</ThemeProvider>
-		</BrowserRouter>
-	);
-};
+export const App = () => (
+	<BrowserRouter>
+		<ThemeProvider theme={theme}>
+			<Header />
+			<PageWrapper>
+				<Routes>
+					<Route path="/" element={<Homepage />} />
+					<Route path="/create-new-category" element={<AddCategory />} />
+					<Route path="/create-new-recipe" element={<AddRecipe />} />
+					<Route path="/categories" element={<Categories />} />
+					<Route path="/search" element={<Search />} />
+					<Route path="/category/:id" element={<SingleCategory />} />
+					<Route path="/recipe/:id" element={<SingleRecipe />} />
+					<Route path="*" element={<ErrorPage code={404} />} />
+				</Routes>
+			</PageWrapper>
+		</ThemeProvider>
+	</BrowserRouter>
+);

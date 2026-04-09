@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 type TypographyVariant =
 	| 'h1'
@@ -28,7 +28,7 @@ export interface TypographyProps {
 	children: ReactNode | string;
 	color?: TypographyColor;
 	component?: 'span' | 'div' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-	css?: Record<string, any>;
+	customStyles?: CSSProperties;
 	variant?: TypographyVariant;
 	weight?: TypographyWeight;
 }

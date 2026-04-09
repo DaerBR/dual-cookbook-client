@@ -5,7 +5,7 @@ import { TypographyProps } from './types.ts';
 export const Typography = ({
 	color = 'textMain',
 	children,
-	css,
+	customStyles = {},
 	variant = 'paragraphM',
 	weight = 400,
 	component = 'span',
@@ -26,10 +26,10 @@ export const Typography = ({
 		textContrast: theme.colors.text.contrast,
 	};
 
-	const typographyStyles = { ...fontStyles, color: typographyColors[color], fontWeight: weight };
+	const typographyStyles = { ...fontStyles, color: typographyColors[color], fontWeight: weight, ...customStyles };
 
 	return jsx(component, {
-		css: { ...typographyStyles, ...css },
+		css: { ...typographyStyles },
 		children,
 	});
 };

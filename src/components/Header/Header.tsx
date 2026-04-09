@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router';
@@ -11,14 +12,17 @@ import { fetchUser, signOut } from '../../store/thunks/auth.ts';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { Icon } from '../atoms/Icon';
 import { buttonsContainerStyles } from './styles.ts';
-import { Typography } from '../atoms/Typography/Typography.tsx';
-import { Link } from 'react-router-dom';
+import { Typography } from '../atoms/Typography';
+import { CircularProgress } from '../atoms/CircularProgress';
 
 export const Header = () => {
 	const userData = useAppSelector((state) => state.auth.userInfo);
 	const wereUserDataFetched = useAppSelector((state) => state.auth.wereUserDataFetched);
+	const isFetching = useAppSelector((state) => state.auth.isLoading);
+
 	const navigate = useNavigate();
 	const headerStyles = useHeaderStyles();
+
 	const logoContainerStyles = {
 		display: 'flex',
 		justifyContent: 'center',
@@ -53,7 +57,7 @@ export const Header = () => {
 		<div css={headerStyles}>
 			<div css={logoContainerStyles} className="logo-container">
 				<Link to="/">
-					<img src="/bear-bowl.png" alt="Dual bear cooks" />
+					<img src="/bear-bowl.png" alt="Дуальні рецептики" />
 				</Link>
 			</div>
 			<div css={buttonsContainerStyles}>
@@ -70,6 +74,13 @@ export const Header = () => {
 						<Button variant="secondary" onClick={handleLogoutClick}>
 							Вийти
 						</Button>
+					</>
+				) : isFetching ? (
+					<>
+						<Typography variant="paragraphM" color="primary">
+							Зачекай-но...
+						</Typography>
+						<CircularProgress color="primary" sizePx={24} />
 					</>
 				) : (
 					<Button variant="secondary" onClick={handleLoginClick}>

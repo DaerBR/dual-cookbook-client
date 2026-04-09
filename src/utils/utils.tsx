@@ -10,7 +10,11 @@ export const processFieldValidationErrors: any = (errors: undefined | FieldError
 	}
 
 	if (errors.message) {
-		return <span className="custom-error">{errors.message as string}</span>;
+		return (
+			<Typography variant="paragraphXs" customStyles={{ color: '#ea3b28', marginTop: '4px' }} component="div">
+				{errors.message as string}
+			</Typography>
+		);
 	}
 
 	if (Object.keys(errors).length && !errors.message) {

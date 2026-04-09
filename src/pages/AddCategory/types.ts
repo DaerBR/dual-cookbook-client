@@ -1,3 +1,1 @@
-export interface AddCategoryFormValues {
-	categoryName: string;
-}
+export type { AddCategoryFormValues } from './validations';

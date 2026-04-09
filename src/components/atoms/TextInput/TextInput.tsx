@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { Typography } from '../Typography';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
+import { InputLabel } from '../InputLabel';
 
 interface TextInputProps {
 	customStyles?: CSSProperties;
@@ -39,7 +40,6 @@ export const TextInput = ({
 	const theme = useAppTheme();
 	const { formState } = useFormContext() ?? {};
 	const { errors } = formState ?? [];
-
 	const fieldErrors = errors ? errors[name] : undefined;
 
 	const textInputStyles = {
@@ -71,15 +71,6 @@ export const TextInput = ({
 		boxShadow: '0 0 0 3px rgba(236, 95, 81, 0.20)',
 	};
 
-	const labelStyles = {
-		fontSize: theme.typography.paragraphXs.fontSize,
-		lineHeight: theme.typography.paragraphXs.lineHeight,
-		color: theme.colors.text.main,
-		fontWeight: 600,
-		marginBottom: '4px',
-		display: 'block',
-	};
-
 	const helperTextStyles = {
 		color: theme.colors.text.caption,
 		marginTop: '4px',
@@ -87,12 +78,7 @@ export const TextInput = ({
 
 	return (
 		<div>
-			{label && (
-				<label css={labelStyles} htmlFor={id}>
-					{label}
-					{isRequired && <span style={{ color: theme.colors.error.main }}> *</span>}
-				</label>
-			)}
+			{label && <InputLabel id={id} label={label} isRequired={isRequired} />}
 			<input
 				ref={inputRef}
 				disabled={isDisabled}

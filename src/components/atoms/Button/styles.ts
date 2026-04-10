@@ -16,6 +16,9 @@ export const buttonStyles: CSSObject = {
 	'& .start-icon-container': {
 		marginRight: '8px',
 		marginLeft: '-4px',
-		svg: {},
+	},
+	'& .end-icon-container': {
+		marginRight: '-4px',
+		marginLeft: '8px',
 	},
 };

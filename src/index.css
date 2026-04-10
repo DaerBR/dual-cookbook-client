@@ -53,3 +53,16 @@ ol {
 	margin: 0;
 	padding: 0;
 }
+
+[data-sonner-toast][data-type='success'] {
+	color: #59b57f;
+	background-color: #e3f7ed;
+}
+[data-sonner-toast][data-type='error'] {
+	color: #ea3b28;
+	background-color: #fceceb;
+}
+[data-sonner-toast][data-type='info'] {
+	color: #fd9865;
+	background-color: #ffefe7;
+}

@@ -17,7 +17,7 @@ import { CircularProgress } from '../atoms/CircularProgress';
 
 export const Header = () => {
 	const userData = useAppSelector((state) => state.auth.userInfo);
-	const wereUserDataFetched = useAppSelector((state) => state.auth.wereUserDataFetched);
+	const areUserDataFetched = useAppSelector((state) => state.auth.areUserDataFetched);
 	const isFetching = useAppSelector((state) => state.auth.isLoading);
 
 	const navigate = useNavigate();
@@ -34,10 +34,10 @@ export const Header = () => {
 	const [dispatchLogout] = useThunk(signOut);
 
 	useEffect(() => {
-		if (!wereUserDataFetched) {
+		if (!areUserDataFetched) {
 			dispatchFetchUser();
 		}
-	}, [dispatchFetchUser, wereUserDataFetched]);
+	}, [dispatchFetchUser, areUserDataFetched]);
 
 	const handleLoginClick = () => {
 		const width = 500;

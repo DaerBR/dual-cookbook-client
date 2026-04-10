@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
+import { toast } from 'sonner';
+
 import { ThunkAppDispatch, useAppDispatch } from './hooks';
 import { RootState } from '../index';
+import { GlobalLoadingIndicatorContext } from '../../contexts/GlobalLoadingIndicator.tsx';
 
 interface ServerErrorResponse {
 	data: {
@@ -10,13 +13,10 @@ interface ServerErrorResponse {
 }
 
 interface ServerError {
+	error?: string;
 	message?: string;
 	status?: string;
 	statusText?: string;
-}
-
-interface FormSubmitError {
-	messages: string[];
 }
 
 interface UseThunkOptions {
@@ -25,18 +25,11 @@ interface UseThunkOptions {
 	useGlobalLoader?: boolean;
 }
 
-const getErrorText = (error: ServerError | ServerErrorResponse | FormSubmitError) => {
+const getErrorText = (error: ServerError) => {
 	if (typeof error !== 'object') {
 		return 'Unknown error occurred.';
 	}
-
-	if ('messages' in error && error.messages?.length) {
-		return error.messages[0];
-	}
-
-	if ('data' in error && error.data?.messages?.length) {
-		return error.data.messages[0];
-	}
+	if (error.message) return error.message;
 
 	if ('status' in error && error.status && error.statusText) {
 		return `Server rejected with error status ${error.status} - ${error.statusText}`;
@@ -52,59 +45,52 @@ const getErrorText = (error: ServerError | ServerErrorResponse | FormSubmitError
 export const useThunk = <TThunkArgs>(
 	thunk: (args: TThunkArgs) => (dispatch: ThunkAppDispatch, getState: () => RootState, extra: unknown) => any,
 	options: UseThunkOptions | undefined = undefined,
-): [(args?: TThunkArgs) => Promise<void>, ServerErrorResponse | ServerError | FormSubmitError | null] => {
-	const [error, setError] = useState<ServerError | ServerErrorResponse | FormSubmitError | null>(null);
+): [(args?: TThunkArgs) => Promise<void>, ServerErrorResponse | ServerError | null] => {
+	const [error, setError] = useState<ServerError | ServerErrorResponse | null>(null);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	// const { useGlobalLoader } = options ?? {};
-	// const { handleGlobalLoadingScreenState } = useContext(DrawerContext);
+	const { useGlobalLoader } = options ?? {};
+	const { handleShowLoadingIndicator } = useContext(GlobalLoadingIndicatorContext);
 
 	const dispatchThunk = useCallback(
 		async (args?: TThunkArgs) => {
-			// if (useGlobalLoader) {
-			// 	handleGlobalLoadingScreenState(true);
-			// }
+			if (useGlobalLoader) {
+				handleShowLoadingIndicator(true);
+			}
 			dispatch(thunk(args as TThunkArgs))
 				.unwrap()
 				.then(() => {
 					if (options) {
 						const { successMessage, successRedirectRoute } = options;
 						console.info(successMessage);
-						// if (successMessage) {
-						// 	pushToastMessage({
-						// 		toastVariant: 'success',
-						// 		message: successMessage,
-						// 		title: 'Success!',
-						// 	});
-						// }
-						//
-						// if (useGlobalLoader) {
-						// 	handleGlobalLoadingScreenState(false);
-						// }
+
+						if (successMessage) {
+							toast.success(successMessage);
+						}
+
+						if (useGlobalLoader) {
+							handleShowLoadingIndicator(false);
+						}
 
 						if (successRedirectRoute) {
 							navigate(successRedirectRoute);
 						}
 					}
 				})
-				.catch((e: ServerError | ServerErrorResponse | FormSubmitError) => {
+				.catch((e: ServerError) => {
 					const errorText = getErrorText(e);
-					console.log(errorText);
-					// if (useGlobalLoader) {
-					// 	handleGlobalLoadingScreenState(false);
-					// }
-					//
-					// pushToastMessage({
-					// 	toastVariant: 'error',
-					// 	message: errorText,
-					// 	title: 'Error occurred!',
-					// });
+
+					if (useGlobalLoader) {
+						handleShowLoadingIndicator(false);
+					}
+
+					toast.error(errorText);
 
 					return setError(e);
 				});
 		},
-		[dispatch, thunk, options, navigate],
+		[dispatch, thunk, options, useGlobalLoader, handleShowLoadingIndicator, navigate],
 	);
 
 	return [dispatchThunk, error];

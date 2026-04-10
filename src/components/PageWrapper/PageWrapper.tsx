@@ -9,6 +9,7 @@ export const PageWrapper = ({ children }: { children: ReactNode }) => {
 		backgroundColor: '#fff',
 		borderRadius: '4px',
 		boxSizing: 'border-box' as const,
+		position: 'relative' as const,
 	};
 
 	return (

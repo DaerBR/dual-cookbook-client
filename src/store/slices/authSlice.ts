@@ -7,11 +7,11 @@ export interface UserData {
 	id: string;
 }
 interface AuthState {
+	areUserDataFetched: boolean;
 	authorizationError: any;
 	isLoading: boolean;
 	isLoggedIn: boolean;
 	userInfo: UserData | null;
-	wereUserDataFetched: boolean;
 }
 
 const initialState: AuthState = {
@@ -19,7 +19,7 @@ const initialState: AuthState = {
 	isLoading: false,
 	isLoggedIn: false,
 	userInfo: null,
-	wereUserDataFetched: false,
+	areUserDataFetched: false,
 };
 
 export const setUserData = createAction('auth/setUserData');
@@ -35,7 +35,7 @@ const authSlice = createSlice({
 		resetUserData(state) {
 			state.userInfo = null;
 			state.isLoggedIn = false;
-			state.wereUserDataFetched = false;
+			state.areUserDataFetched = false;
 		},
 	},
 	extraReducers(builder) {
@@ -45,7 +45,7 @@ const authSlice = createSlice({
 		builder.addCase(fetchUser.fulfilled, (state, action) => {
 			state.isLoading = false;
 			state.userInfo = action.payload;
-			state.wereUserDataFetched = Boolean(action.payload);
+			state.areUserDataFetched = Boolean(action.payload);
 			state.isLoggedIn = Boolean(action.payload);
 		});
 		builder.addCase(fetchUser.rejected, (state, action) => {
@@ -59,7 +59,7 @@ const authSlice = createSlice({
 			state.isLoading = false;
 			state.isLoggedIn = false;
 			state.userInfo = null;
-			state.wereUserDataFetched = false;
+			state.areUserDataFetched = false;
 		});
 		builder.addCase(signOut.rejected, (state, action) => {
 			state.isLoading = false;

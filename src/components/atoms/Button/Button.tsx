@@ -30,6 +30,7 @@ export const Button = ({
 	type = 'button',
 	variant = 'primary',
 	startIcon,
+	endIcon,
 	...otherProps
 }: ButtonProps) => {
 	const theme = useAppTheme();
@@ -41,17 +42,17 @@ export const Button = ({
 		height: '40px',
 		backgroundColor: buttonColors.backgroundColor,
 		color: buttonColors.textColor,
-		'& .start-icon-container svg': { color: buttonColors.textColor },
+		'& .start-icon-container svg, & .end-icon-container svg, ': { color: buttonColors.textColor },
 		'&:hover': {
 			backgroundColor: buttonColors.hoverBackgroundColor,
 			color: buttonColors.hoverTextColor,
-			'& .start-icon-container svg': { color: buttonColors.hoverTextColor },
+			'& .start-icon-container svg, & .end-icon-container svg': { color: buttonColors.hoverTextColor },
 		},
 		'&:active': {
 			backgroundColor: buttonColors.activeBackgroundColor,
 			color: buttonColors.activeTextColor,
 			borderColor: variant === 'outlined' ? theme.colors.neutral.borderDarker : 'none',
-			'& .start-icon-container svg': { color: buttonColors.activeTextColor },
+			'& .start-icon-container svg, & .end-icon-container svg': { color: buttonColors.activeTextColor },
 		},
 		border: variant === 'outlined' ? `1px solid ${theme.colors.neutral.borderDefault}` : 'none',
 		boxShadow: variant === 'outlined' ? theme.boxShadows.xs : 'none',
@@ -61,7 +62,7 @@ export const Button = ({
 			color: buttonColors.disabledTextColor,
 			backgroundColor: buttonColors.disabledBackgroundColor,
 			cursor: 'default',
-			'& .start-icon-container svg': { color: buttonColors.disabledTextColor },
+			'& .start-icon-container svg, & .end-icon-container svg': { color: buttonColors.disabledTextColor },
 		},
 	};
 
@@ -83,6 +84,7 @@ export const Button = ({
 			) : (
 				children
 			)}
+			{endIcon && !isBusy && <span className="end-icon-container">{endIcon}</span>}
 		</button>
 	);
 };

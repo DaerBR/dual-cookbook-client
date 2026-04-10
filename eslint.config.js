@@ -123,10 +123,7 @@ export default [
 			'@typescript-eslint/no-array-constructor': 'error',
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-empty-function': 'error',
-			'@typescript-eslint/no-empty-interface': [
-				'error',
-				{ allowSingleExtends: true },
-			],
+			'@typescript-eslint/no-empty-interface': ['error', { allowSingleExtends: true }],
 			'@typescript-eslint/no-extra-non-null-assertion': 'error',
 			'@typescript-eslint/no-inferrable-types': 'error',
 			'@typescript-eslint/no-loop-func': 'error',
@@ -137,7 +134,13 @@ export default [
 			'@typescript-eslint/no-shadow': 'error',
 			'@typescript-eslint/no-this-alias': 'error',
 			'@typescript-eslint/no-unused-expressions': 'error',
-			'@typescript-eslint/no-unused-vars': 'error',
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{
+					argsIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+				},
+			],
 			'@typescript-eslint/no-use-before-define': 'error',
 			'@typescript-eslint/prefer-as-const': 'error',
 			'@typescript-eslint/prefer-namespace-keyword': 'error',

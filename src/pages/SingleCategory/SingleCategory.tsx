@@ -1,4 +1,4 @@
-import { Typography } from '../../components/atoms/Typography/Typography.tsx';
+import { Typography } from '../../components/atoms/Typography';
 
 export const SingleCategory = () => (
 	<div>

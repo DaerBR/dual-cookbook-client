@@ -2,7 +2,7 @@ import type { CSSObject } from '@emotion/react';
 
 export const useHeaderStyles = (): CSSObject => ({
 	boxSizing: 'border-box',
-	padding: '12px 20px',
+	padding: '12px 36px',
 	height: '80px',
 	position: 'fixed',
 	left: '50%',

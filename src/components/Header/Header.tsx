@@ -28,7 +28,7 @@ export const Header = () => {
 		justifyContent: 'center',
 		alignItems: 'center',
 		height: '100%',
-		'& img': { width: '50px' },
+		'& img': { height: '72px' },
 	};
 	const [dispatchFetchUser] = useThunk(fetchUser);
 	const [dispatchLogout] = useThunk(signOut);
@@ -56,14 +56,14 @@ export const Header = () => {
 	return (
 		<div css={headerStyles}>
 			<div css={logoContainerStyles} className="logo-container">
-				<Link to="/">
-					<img src="/bear-bowl.png" alt="Дуальні рецептики" />
+				<Link to="/" aria-label="До головної сторінки">
+					<img src="/logo-images/book-of-recipes.png" alt="До головної сторінки" />
 				</Link>
 			</div>
 			<div css={buttonsContainerStyles}>
 				{userData && (
 					<Typography variant="paragraphM" weight={700}>
-						Привіт, {userData.displayName}!
+						{userData ? `Шо, ${userData.displayName} - знайшов щось цікаве?` : 'Шо - шукаєш що б йо зжерти?'}
 					</Typography>
 				)}
 				{userData ? (

@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Typography } from '../../components/atoms/Typography';
 import { TextInput } from '../../components/atoms/TextInput';
 import { Form } from '../../components/Form';
 import { AddCategoryFormValues } from './types';
@@ -13,6 +12,7 @@ import { useThunk } from '../../store/hooks/useThunk.ts';
 import { createCategory } from '../../store/thunks/categories.ts';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { getBase64OfFile } from '../../utils/utils.tsx';
+import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 
 export const AddCategory = () => {
 	const [dispatchCreateCategory] = useThunk(createCategory, {
@@ -55,9 +55,7 @@ export const AddCategory = () => {
 
 	return (
 		<div>
-			<Typography variant="h5" weight={700} customStyles={{ marginBottom: '20px' }} component="div">
-				Створити нову категорію
-			</Typography>
+			<PageTitle title="Створити нову категорію" />
 			<div>
 				<Form form={form} onSubmit={handleFormSubmit}>
 					<div css={{ display: 'flex', gap: '12px', flexBasis: '100%', wrap: 'nowrap' }}>

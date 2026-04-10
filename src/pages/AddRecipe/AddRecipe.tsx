@@ -1,9 +1,7 @@
-import { Typography } from '../../components/atoms/Typography';
+import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 
 export const AddRecipe = () => (
 	<div>
-		<Typography variant="paragraphL" weight={700}>
-			Створити новий рецепт
-		</Typography>
+		<PageTitle title="Створити новий рецепт" withReturnButton />
 	</div>
 );

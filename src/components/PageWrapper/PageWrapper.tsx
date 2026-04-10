@@ -4,8 +4,8 @@ export const PageWrapper = ({ children }: { children: ReactNode }) => {
 	const styles = {
 		maxWidth: '1200px',
 		margin: '90px auto 0',
-		padding: '12px 20px',
-		height: '100vh',
+		padding: '24px 36px',
+		minHeight: '100vh',
 		backgroundColor: '#fff',
 		borderRadius: '4px',
 		boxSizing: 'border-box' as const,

@@ -6,9 +6,9 @@ export interface CategoryImage {
 	secureUrl: string;
 }
 export interface Category {
-	_id: string;
 	categoryImage?: CategoryImage;
 	createdAt: Date;
+	id: string;
 	name: string;
 }
 interface Pagination {

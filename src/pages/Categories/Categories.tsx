@@ -1,13 +1,13 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-
-import { Typography } from '../../components/atoms/Typography';
 import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchCategories } from '../../store/thunks/categories.ts';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { Button } from '../../components/atoms/Button';
 import { Icon } from '../../components/atoms/Icon';
+import { CategoryCard } from './copmponents/CategoryCard.tsx';
+import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 
 export const Categories = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
@@ -25,25 +25,26 @@ export const Categories = () => {
 
 	return (
 		<div>
-			<Typography variant="paragraphL" weight={700}>
-				Всі категорії
-			</Typography>
-			{isLoggedIn && (
-				<div css={{ display: 'flex', marginTop: '12px', marginBottom: '12px' }}>
-					<Button
-						onClick={() => navigate('/create-new-category')}
-						variant="secondary"
-						startIcon={<Icon icon={faPlus} />}
-					>
-						Створити категорію
-					</Button>
-				</div>
-			)}
-			<div css={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+			<PageTitle
+				title="Всі категорії"
+				controlElements={
+					isLoggedIn
+						? [
+								<Button
+									key="create-cat-button"
+									onClick={() => navigate('/create-new-category')}
+									variant="secondary"
+									startIcon={<Icon icon={faPlus} />}
+								>
+									Створити категорію
+								</Button>,
+							]
+						: undefined
+				}
+			/>
+			<div css={{ display: 'grid', gridTemplateRows: '1fr', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
 				{categoriesList.map((category) => (
-					<Typography variant="paragraphM" key={category._id}>
-						{category.name}
-					</Typography>
+					<CategoryCard category={category} key={category.id} />
 				))}
 			</div>
 		</div>

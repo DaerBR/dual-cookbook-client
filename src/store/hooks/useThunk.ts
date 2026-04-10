@@ -63,7 +63,6 @@ export const useThunk = <TThunkArgs>(
 				.then(() => {
 					if (options) {
 						const { successMessage, successRedirectRoute } = options;
-						console.info(successMessage);
 
 						if (successMessage) {
 							toast.success(successMessage);

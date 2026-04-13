@@ -2,7 +2,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchCategories } from '../../store/thunks/categories.ts';
+import { fetchAllCategories } from '../../store/thunks/categories.ts';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { Button } from '../../components/atoms/Button';
 import { Icon } from '../../components/atoms/Icon';
@@ -12,16 +12,17 @@ import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 export const Categories = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
+
 	const navigate = useNavigate();
 
-	const [dispatchFetchCategories] = useThunk(fetchCategories);
+	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 
 	useEffect(() => {
-		dispatchFetchCategories({
-			page: 1,
-			limit: 99,
-		});
-	}, [dispatchFetchCategories]);
+		if (!areCategoriesFetched) {
+			dispatchFetchCategories();
+		}
+	}, [dispatchFetchCategories, areCategoriesFetched]);
 
 	return (
 		<div>

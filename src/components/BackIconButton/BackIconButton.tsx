@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
-import { Icon } from '../Icon';
+import { Icon } from '../atoms/Icon';
 
 interface BackIconButtonProps {
 	color?: 'primary' | 'success' | 'error' | 'white' | 'neutral';

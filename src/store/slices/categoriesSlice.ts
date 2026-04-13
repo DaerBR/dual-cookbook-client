@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createCategory, fetchCategories } from '../thunks/categories.ts';
+import { createCategory, fetchAllCategories, fetchCategories } from '../thunks/categories.ts';
 
 export interface CategoryImage {
 	publicId: string;
@@ -28,7 +28,10 @@ interface CategoriesState {
 	categories: Category[];
 	isCreating: boolean;
 	isLoading: boolean;
-	pagination: Pagination | null;
+	paginatedCategories: {
+		categoriesList: Category[];
+		pagination: Pagination | null;
+	};
 }
 
 const initialState: CategoriesState = {
@@ -36,26 +39,41 @@ const initialState: CategoriesState = {
 	categories: [],
 	isCreating: false,
 	isLoading: false,
-	pagination: null,
+	paginatedCategories: {
+		categoriesList: [],
+		pagination: null,
+	},
 };
 const categoriesSlice = createSlice({
 	name: 'categories',
 	initialState,
 	reducers: {},
 	extraReducers(builder) {
+		// Fetch paginated Categories
 		builder.addCase(fetchCategories.pending, (state) => {
 			state.isLoading = true;
 		});
 		builder.addCase(fetchCategories.fulfilled, (state, action) => {
 			state.isLoading = false;
-			state.categories = action.payload.data;
-			state.pagination = action.payload.pagination;
-			state.areCategoriesFetched = Boolean(action.payload);
+			state.paginatedCategories.categoriesList = action.payload.data;
+			state.paginatedCategories.pagination = action.payload.pagination;
 		});
 		builder.addCase(fetchCategories.rejected, (state) => {
 			state.isLoading = false;
 		});
-
+		// Fetch All categories
+		builder.addCase(fetchAllCategories.pending, (state) => {
+			state.isLoading = true;
+		});
+		builder.addCase(fetchAllCategories.fulfilled, (state, action) => {
+			state.isLoading = false;
+			state.categories = action.payload;
+			state.areCategoriesFetched = Boolean(action.payload);
+		});
+		builder.addCase(fetchAllCategories.rejected, (state) => {
+			state.isLoading = false;
+		});
+		// Create Category
 		builder.addCase(createCategory.pending, (state) => {
 			state.isCreating = true;
 		});
@@ -65,6 +83,7 @@ const categoriesSlice = createSlice({
 		builder.addCase(createCategory.rejected, (state) => {
 			state.isCreating = false;
 		});
+		// Delete Category
 	},
 });
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { apiRequest } from '../../api/apiRequest.ts';
-import { CategoryPaginationModel } from '../slices/categoriesSlice.ts';
+import { Category, CategoryPaginationModel } from '../slices/categoriesSlice.ts';
 
 interface FetchCategoriesParams {
 	limit: number;
@@ -16,6 +16,22 @@ export const fetchCategories = createAsyncThunk<CategoryPaginationModel, FetchCa
 				url: `/api/categories`,
 				method: 'get',
 				params,
+			});
+
+			return response.data;
+		} catch (error: any) {
+			return rejectWithValue(error.response.data);
+		}
+	},
+);
+
+export const fetchAllCategories = createAsyncThunk<Category[]>(
+	'api/fetchAllCategories',
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await apiRequest.request({
+				url: `/api/categories/all`,
+				method: 'get',
 			});
 
 			return response.data;

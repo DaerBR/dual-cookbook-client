@@ -8,10 +8,12 @@ import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { Button } from '../Button';
 
 interface ImageInputProps {
+	customHeight?: number;
+	customWidth?: number;
 	name: string;
 }
 
-export const ImageInput = ({ name }: ImageInputProps) => {
+export const ImageInput = ({ customHeight, customWidth, name }: ImageInputProps) => {
 	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const imageInputRef = createRef<HTMLInputElement>();
 
@@ -31,12 +33,12 @@ export const ImageInput = ({ name }: ImageInputProps) => {
 		fontSize: theme.typography.paragraphS.fontSize,
 		lineHeight: theme.typography.paragraphS.lineHeight,
 		color: theme.colors.text.main,
-		width: '400px',
+		width: customWidth ? `${customWidth}px` : '400px',
 		display: 'flex',
 		flexDirection: 'column' as const,
 		justifyContent: 'center',
 		alignItems: 'center',
-		height: '240px',
+		height: customHeight ? `${customHeight}px` : '240px',
 		boxSizing: 'border-box' as const,
 	};
 

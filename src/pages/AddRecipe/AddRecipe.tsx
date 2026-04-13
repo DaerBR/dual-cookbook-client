@@ -1,7 +1,250 @@
-import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
+import { useEffect } from 'react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
-export const AddRecipe = () => (
-	<div>
-		<PageTitle title="Створити новий рецепт" withReturnButton />
-	</div>
-);
+import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
+import { AddRecipeFormValues, addRecipeValidationSchema } from './validations.ts';
+import { Form } from '../../components/Form';
+import { ImageInput } from '../../components/atoms/ImageInput';
+import { TextInput } from '../../components/atoms/TextInput';
+import { useAppSelector } from '../../store/hooks/hooks.ts';
+import { useThunk } from '../../store/hooks/useThunk.ts';
+import { fetchAllCategories } from '../../store/thunks/categories.ts';
+import { Select } from '../../components/atoms/Select';
+import { Button } from '../../components/atoms/Button';
+import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
+import { Icon } from '../../components/atoms/Icon';
+import { DeleteIconButton } from '../../components/DeleteIconButton';
+
+export const AddRecipe = () => {
+	const categoriesList = useAppSelector((state) => state.categories.categories);
+	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
+
+	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
+
+	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (!areCategoriesFetched) {
+			dispatchFetchCategories();
+		}
+	}, [dispatchFetchCategories, areCategoriesFetched]);
+
+	const form = useForm<AddRecipeFormValues>({
+		mode: 'onBlur',
+		reValidateMode: 'onChange',
+		defaultValues: {
+			name: '',
+			category: '',
+			description: '',
+			ingredients: [{ text: '' }],
+			steps: [{ stepDescription: '' }],
+			recipeImage: null,
+		},
+		resolver: zodResolver(addRecipeValidationSchema),
+	});
+
+	const {
+		handleSubmit,
+		control,
+		formState: { isValid },
+	} = form;
+
+	const handleFormSubmit = handleSubmit(async (formValues) => {
+		console.info(formValues);
+	});
+
+	const fieldBlockStyles = {
+		marginBottom: '24px',
+		display: 'flex',
+		flexDirection: 'column' as const,
+	};
+
+	const {
+		fields: stepsFields,
+		append: addStep,
+		remove: removeStep,
+	} = useFieldArray({
+		control,
+		name: 'steps',
+	});
+
+	const {
+		fields: ingredientsFields,
+		append: addIngredient,
+		remove: removeIngredient,
+	} = useFieldArray({
+		control,
+		name: 'ingredients',
+	});
+
+	return (
+		<div>
+			<PageTitle title="Створити новий рецепт" withReturnButton />
+			<div>
+				<div>
+					<Form form={form} onSubmit={handleFormSubmit}>
+						<div css={{ display: 'flex', gap: '12px', flexBasis: '100%', wrap: 'nowrap' }}>
+							<div css={{ display: 'flex', flexBasis: '300px', flexDirection: 'column' }}>
+								<ImageInput name="recipeImage" customHeight={350} customWidth={450} />
+								<div css={{ display: 'flex', flexDirection: 'column', marginTop: '24px' }}>
+									<FieldsGroupTitle title="Інгредієнти" />
+									<div>
+										{ingredientsFields.map((_, index) => (
+											<div key={index} css={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+												<Controller
+													control={control}
+													name={`ingredients.${index}.text`}
+													css={{ width: '100%', display: 'flex' }}
+													render={({ field }) => (
+														<TextInput
+															isFullWidth
+															name={`ingredients.${index}.text`}
+															value={field.value}
+															onChange={field.onChange}
+															customStyles={{ marginBottom: '20px' }}
+															placeholder='Опис (напр. "яловичина - 700 г")'
+														/>
+													)}
+												/>
+												{index !== 0 && (
+													<DeleteIconButton
+														onClick={() => removeIngredient(index)}
+														customStyles={{ position: 'absolute', right: '-20px', top: '-20px' }}
+													/>
+												)}
+											</div>
+										))}
+									</div>
+									<Button
+										startIcon={<Icon icon={faPlus} />}
+										variant="secondary"
+										onClick={() => addIngredient({ text: '' })}
+										customStyles={{ maxWidth: '120px' }}
+									>
+										Додати
+									</Button>
+								</div>
+							</div>
+							<div css={{ display: 'flex', flexDirection: 'column', marginLeft: '36px', width: '100%' }}>
+								<div css={fieldBlockStyles}>
+									<Controller
+										control={control}
+										name="name"
+										css={{ width: '100%' }}
+										render={({ field }) => (
+											<TextInput
+												isFullWidth
+												isRequired
+												id="name"
+												name="name"
+												label="Назва рецепту"
+												placeholder="Введіть назву рецепту"
+												value={field.value}
+												onChange={field.onChange}
+												customStyles={{ minWidth: '400px' }}
+											/>
+										)}
+									/>
+								</div>
+								<div css={fieldBlockStyles}>
+									<Controller
+										name="category"
+										control={control}
+										render={({ field }) => (
+											<Select
+												isRequired
+												label="Категорія"
+												placeholder="Оберіть категорію"
+												name="category"
+												onBlur={field.onBlur}
+												onChange={field.onChange}
+												options={categoriesOptions}
+												value={field.value}
+											/>
+										)}
+									/>
+								</div>
+								<div css={fieldBlockStyles}>
+									<Controller
+										control={control}
+										name="description"
+										css={{ width: '100%' }}
+										render={({ field }) => (
+											<TextInput
+												isFullWidth
+												multiline
+												name="description"
+												label="Опис"
+												placeholder="Введіть короткий опис рецепту"
+												value={field.value}
+												onChange={field.onChange}
+												customStyles={{ minWidth: '400px' }}
+											/>
+										)}
+									/>
+								</div>
+								<div css={fieldBlockStyles}>
+									<FieldsGroupTitle title="Покрокова інструкія" />
+									{stepsFields.map((_, index) => (
+										<div key={index} css={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+											<Controller
+												control={control}
+												name={`steps.${index}.stepDescription`}
+												css={{ width: '100%', display: 'flex' }}
+												render={({ field }) => (
+													<TextInput
+														isFullWidth
+														multiline
+														name={`steps.${index}.stepDescription`}
+														label={`Крок ${index + 1}`}
+														value={field.value}
+														onChange={field.onChange}
+														customStyles={{ marginBottom: '20px' }}
+													/>
+												)}
+											/>
+											{index !== 0 && (
+												<DeleteIconButton
+													onClick={() => removeStep(index)}
+													customStyles={{ position: 'absolute', right: '-20px', top: '0' }}
+												/>
+											)}
+										</div>
+									))}
+									<Button
+										startIcon={<Icon icon={faPlus} />}
+										variant="secondary"
+										onClick={() => addStep({ stepDescription: '' })}
+										customStyles={{ maxWidth: '250px' }}
+									>
+										Додати наступний крок
+									</Button>
+								</div>
+							</div>
+						</div>
+						<div css={{ display: 'flex', gap: '24px', justifyContent: 'center', marginTop: '12px' }}>
+							<Button
+								type="submit"
+								variant="primary"
+								isDisabled={
+									!isValid
+									// || isCreatingRecipe
+								}
+								// isBusy={isCreatingRecipe}
+							>
+								Створити
+							</Button>
+							<Button variant="outlined" onClick={() => navigate(-1)}>
+								Скасувати
+							</Button>
+						</div>
+					</Form>
+				</div>
+			</div>
+		</div>
+	);
+};

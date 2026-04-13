@@ -10,6 +10,7 @@ import { CircularProgress } from '../CircularProgress';
 interface ButtonProps {
 	children: string | ReactNode;
 	color?: Colors;
+	customStyles?: CSSObject;
 	endIcon?: ReactNode;
 	id?: string;
 	isBusy?: boolean;
@@ -22,6 +23,7 @@ interface ButtonProps {
 
 export const Button = ({
 	children,
+	customStyles,
 	color = 'primary',
 	id,
 	isBusy,
@@ -68,7 +70,7 @@ export const Button = ({
 
 	return (
 		<button
-			css={{ ...buttonStyles, ...configurableButtonStyles, boxSizing: 'border-box' }}
+			css={{ ...buttonStyles, ...configurableButtonStyles, boxSizing: 'border-box', ...customStyles }}
 			id={id}
 			onClick={onClick}
 			disabled={isDisabled}

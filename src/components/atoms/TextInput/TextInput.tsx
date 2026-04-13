@@ -5,20 +5,23 @@ import { useAppTheme } from '../../../styles/hooks.ts';
 import { Typography } from '../Typography';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { InputLabel } from '../InputLabel';
+import { useCommonFieldStyles } from './hooks.ts';
 
 interface TextInputProps {
 	customStyles?: CSSProperties;
 	helperText?: string;
-	id: string;
+	id?: string;
 	inputRef?: RefObject<HTMLInputElement | null>;
 	isDisabled?: boolean;
 	isFullWidth?: boolean;
 	isReadOnly?: boolean;
 	isRequired?: boolean;
 	label?: string;
+	multiline?: boolean;
 	name: string;
-	onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+	onChange?: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 	placeholder?: string;
+	rows?: number;
 	value?: string;
 }
 
@@ -36,40 +39,15 @@ export const TextInput = ({
 	name,
 	placeholder,
 	onChange,
+	multiline,
+	rows = 4,
 }: TextInputProps) => {
 	const theme = useAppTheme();
 	const { formState } = useFormContext() ?? {};
 	const { errors } = formState ?? [];
 	const fieldErrors = errors ? errors[name] : undefined;
 
-	const textInputStyles = {
-		backgroundColor: '#fff',
-		boxShadow: theme.boxShadows.xs,
-		border: `1px solid ${theme.colors.neutral.borderDefault}`,
-		borderRadius: '4px',
-		padding: '10px 20px',
-		fontSize: theme.typography.paragraphS.fontSize,
-		lineHeight: theme.typography.paragraphS.lineHeight,
-		color: theme.colors.text.main,
-		width: '100%',
-		boxSizing: 'border-box' as const,
-		maxWidth: isFullWidth ? '100%' : '300px',
-		'&:focus': {
-			outline: 'none',
-			borderColor: theme.colors.primary.borderLighter,
-			boxShadow: '0 0 0 3px rgba(254, 186, 152, 0.20)',
-		},
-		'&:disabled': {
-			borderColor: theme.colors.neutral.borderLighter,
-			backgroundColor: theme.colors.neutral.surfaceSubtle,
-			color: theme.colors.text.disabled,
-		},
-	};
-
-	const errorStyles = {
-		borderColor: theme.colors.error.borderDarker,
-		boxShadow: '0 0 0 3px rgba(236, 95, 81, 0.20)',
-	};
+	const { fieldStyles, errorStyles } = useCommonFieldStyles({ isFullWidth });
 
 	const helperTextStyles = {
 		color: theme.colors.text.caption,
@@ -77,20 +55,34 @@ export const TextInput = ({
 	};
 
 	return (
-		<div>
-			{label && <InputLabel id={id} label={label} isRequired={isRequired} />}
-			<input
-				ref={inputRef}
-				disabled={isDisabled}
-				css={{ ...textInputStyles, ...(fieldErrors ? errorStyles : {}), ...customStyles } as const}
-				type="text"
-				id={id}
-				name={name}
-				placeholder={placeholder}
-				value={value}
-				readOnly={isReadOnly}
-				onChange={onChange}
-			/>
+		<div css={{ width: isFullWidth ? '100%' : 'auto' }}>
+			{label && <InputLabel id={id ?? name} label={label} isRequired={isRequired} />}
+			{multiline ? (
+				<textarea
+					disabled={isDisabled}
+					css={{ ...fieldStyles, resize: 'none', ...(fieldErrors ? errorStyles : {}), ...customStyles } as const}
+					id={id ?? name}
+					name={name}
+					placeholder={placeholder}
+					value={value}
+					readOnly={isReadOnly}
+					rows={rows}
+					onChange={onChange}
+				/>
+			) : (
+				<input
+					ref={inputRef}
+					disabled={isDisabled}
+					css={{ ...fieldStyles, ...(fieldErrors ? errorStyles : {}), ...customStyles } as const}
+					type="text"
+					id={id ?? name}
+					name={name}
+					placeholder={placeholder}
+					value={value}
+					readOnly={isReadOnly}
+					onChange={onChange}
+				/>
+			)}
 			{(fieldErrors || helperText) && (
 				<legend>
 					{fieldErrors ? (

@@ -17,14 +17,23 @@ import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
 import { DeleteIconButton } from '../../components/DeleteIconButton';
+import { getBase64OfFile } from '../../utils/utils.tsx';
+import { createRecipe } from '../../store/thunks/recipes.ts';
 
 export const AddRecipe = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
 	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
+	const isCreatingRecipe = useAppSelector((state) => state.categories.isCreating);
 
 	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
+	const [dispatchCreateRecipe] = useThunk(createRecipe, {
+		useGlobalLoader: true,
+		successMessage: 'Рецепт успішно додано!',
+		// TODO - redirect to selected category?
+		successRedirectRoute: '/',
+	});
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -54,7 +63,21 @@ export const AddRecipe = () => {
 	} = form;
 
 	const handleFormSubmit = handleSubmit(async (formValues) => {
-		console.info(formValues);
+		const { recipeImage, name, description, steps, category, ingredients } = formValues;
+		const imageBase64Data = recipeImage ? await getBase64OfFile(recipeImage) : null;
+
+		const payload = {
+			name,
+			category,
+			ingredients,
+			steps,
+			recipeImage: recipeImage
+				? { base64Content: imageBase64Data as string, nameWithExtension: recipeImage.name }
+				: null,
+			description: description && description.length > 0 ? description : null,
+		};
+		dispatchCreateRecipe({ ...payload });
+		console.info('payload', payload);
 	});
 
 	const fieldBlockStyles = {
@@ -106,7 +129,7 @@ export const AddRecipe = () => {
 															value={field.value}
 															onChange={field.onChange}
 															customStyles={{ marginBottom: '20px' }}
-															placeholder='Опис (напр. "яловичина - 700 г")'
+															placeholder='Опис (напр. "300 гр пшеничного борошна")'
 														/>
 													)}
 												/>
@@ -230,11 +253,8 @@ export const AddRecipe = () => {
 							<Button
 								type="submit"
 								variant="primary"
-								isDisabled={
-									!isValid
-									// || isCreatingRecipe
-								}
-								// isBusy={isCreatingRecipe}
+								isDisabled={!isValid || categoriesList?.length === 0 || isCreatingRecipe}
+								isBusy={isCreatingRecipe}
 							>
 								Створити
 							</Button>

@@ -17,7 +17,7 @@ import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 export const AddCategory = () => {
 	const [dispatchCreateCategory] = useThunk(createCategory, {
 		useGlobalLoader: true,
-		successMessage: 'Category created successfully',
+		successMessage: 'Нову категорію успішно створено!',
 		successRedirectRoute: '/categories',
 	});
 	const isCreatingCategory = useAppSelector((state) => state.categories.isCreating);

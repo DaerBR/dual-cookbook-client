@@ -9,7 +9,7 @@ interface FetchCategoriesParams {
 }
 
 export const fetchCategories = createAsyncThunk<CategoryPaginationModel, FetchCategoriesParams>(
-	'api/fetchCategories',
+	'categories/fetchCategories',
 	async (params, { rejectWithValue }) => {
 		try {
 			const response = await apiRequest.request({
@@ -26,7 +26,7 @@ export const fetchCategories = createAsyncThunk<CategoryPaginationModel, FetchCa
 );
 
 export const fetchAllCategories = createAsyncThunk<Category[]>(
-	'api/fetchAllCategories',
+	'categories/fetchAllCategories',
 	async (_, { rejectWithValue }) => {
 		try {
 			const response = await apiRequest.request({
@@ -41,7 +41,7 @@ export const fetchAllCategories = createAsyncThunk<Category[]>(
 	},
 );
 
-interface CategoryParams {
+interface CreateCategoryParams {
 	categoryImage?: {
 		base64Content: string;
 		nameWithExtension: string;
@@ -49,8 +49,9 @@ interface CategoryParams {
 	name: string;
 }
 
-export const createCategory = createAsyncThunk<any, CategoryParams>(
-	'api/createCategory',
+// TODO type response
+export const createCategory = createAsyncThunk<any, CreateCategoryParams>(
+	'categories/createCategory',
 	async (params, { rejectWithValue }) => {
 		try {
 			const response = await apiRequest.request({
@@ -66,15 +67,18 @@ export const createCategory = createAsyncThunk<any, CategoryParams>(
 	},
 );
 
-export const deleteCategory = createAsyncThunk<any, any>('api/deleteCategory', async (id, { rejectWithValue }) => {
-	try {
-		const response = await apiRequest.request({
-			url: `/api/categories/${id}`,
-			method: 'delete',
-		});
+export const deleteCategory = createAsyncThunk<any, any>(
+	'categories/deleteCategory',
+	async (id, { rejectWithValue }) => {
+		try {
+			const response = await apiRequest.request({
+				url: `/api/categories/${id}`,
+				method: 'delete',
+			});
 
-		return response.data;
-	} catch (error: any) {
-		return rejectWithValue(error.response.data);
-	}
-});
+			return response.data;
+		} catch (error: any) {
+			return rejectWithValue(error.response.data);
+		}
+	},
+);

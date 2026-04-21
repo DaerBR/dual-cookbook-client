@@ -1,4 +1,3 @@
-import { jsx } from '@emotion/react';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { TypographyProps } from './types.ts';
 
@@ -28,8 +27,7 @@ export const Typography = ({
 
 	const typographyStyles = { ...fontStyles, color: typographyColors[color], fontWeight: weight, ...customStyles };
 
-	return jsx(component, {
-		css: { ...typographyStyles },
-		children,
-	});
+	const Tag = component;
+
+	return <Tag css={typographyStyles}>{children}</Tag>;
 };

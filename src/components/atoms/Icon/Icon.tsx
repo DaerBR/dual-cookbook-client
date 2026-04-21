@@ -2,9 +2,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { CSSProperties } from 'react';
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { IconColor } from './types.ts';
 
 interface IconProps {
-	color?: 'primary' | 'success' | 'error' | 'white' | 'neutral';
+	color?: IconColor;
 	customStyles?: CSSProperties;
 	fontSize?: number;
 	icon: IconDefinition;

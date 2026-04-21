@@ -12,6 +12,7 @@ interface ButtonProps {
 	color?: Colors;
 	customStyles?: CSSObject;
 	endIcon?: ReactNode;
+	fullWidth?: boolean;
 	id?: string;
 	isBusy?: boolean;
 	isDisabled?: boolean;
@@ -32,6 +33,7 @@ export const Button = ({
 	type = 'button',
 	variant = 'primary',
 	startIcon,
+	fullWidth,
 	endIcon,
 	...otherProps
 }: ButtonProps) => {
@@ -44,6 +46,7 @@ export const Button = ({
 		height: '40px',
 		backgroundColor: buttonColors.backgroundColor,
 		color: buttonColors.textColor,
+		width: fullWidth ? '100%' : 'auto',
 		'& .start-icon-container svg, & .end-icon-container svg, ': { color: buttonColors.textColor },
 		'&:hover': {
 			backgroundColor: buttonColors.hoverBackgroundColor,

@@ -2,7 +2,6 @@ import { ReactNode, useState } from 'react';
 
 import { LoadingIndicator } from '../LoadingIndicator';
 import { GlobalLoadingIndicatorContext } from '../../contexts/GlobalLoadingIndicator.tsx';
-import { StyledToaster } from '../atoms/StyledToaster';
 
 interface MainWrapperProps {
 	children: ReactNode;
@@ -22,7 +21,6 @@ export const MainWrapper = ({ children }: MainWrapperProps) => {
 				{showLoadingIndicator && <LoadingIndicator />}
 				{children}
 			</GlobalLoadingIndicatorContext>
-			<StyledToaster />
 		</div>
 	);
 };

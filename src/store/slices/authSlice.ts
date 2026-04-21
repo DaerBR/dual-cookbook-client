@@ -11,14 +11,14 @@ interface AuthState {
 	authorizationError: any;
 	isLoading: boolean;
 	isLoggedIn: boolean;
-	userInfo: UserData | null;
+	userData: UserData | null;
 }
 
 const initialState: AuthState = {
 	authorizationError: null,
 	isLoading: false,
 	isLoggedIn: false,
-	userInfo: null,
+	userData: null,
 	areUserDataFetched: false,
 };
 
@@ -30,10 +30,10 @@ const authSlice = createSlice({
 	initialState,
 	reducers: {
 		setUserData(state, payload) {
-			state.userInfo = payload.payload;
+			state.userData = payload.payload;
 		},
 		resetUserData(state) {
-			state.userInfo = null;
+			state.userData = null;
 			state.isLoggedIn = false;
 			state.areUserDataFetched = false;
 		},
@@ -44,9 +44,9 @@ const authSlice = createSlice({
 		});
 		builder.addCase(fetchUser.fulfilled, (state, action) => {
 			state.isLoading = false;
-			state.userInfo = action.payload;
-			state.areUserDataFetched = Boolean(action.payload);
-			state.isLoggedIn = Boolean(action.payload);
+			state.userData = action.payload;
+			state.areUserDataFetched = true;
+			state.isLoggedIn = true;
 		});
 		builder.addCase(fetchUser.rejected, (state, action) => {
 			state.isLoading = false;
@@ -58,7 +58,7 @@ const authSlice = createSlice({
 		builder.addCase(signOut.fulfilled, (state) => {
 			state.isLoading = false;
 			state.isLoggedIn = false;
-			state.userInfo = null;
+			state.userData = null;
 			state.areUserDataFetched = false;
 		});
 		builder.addCase(signOut.rejected, (state, action) => {

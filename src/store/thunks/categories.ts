@@ -67,6 +67,36 @@ export const createCategory = createAsyncThunk<any, CreateCategoryParams>(
 	},
 );
 
+interface UpdateCategoryParams {
+	categoryId: string;
+	categoryImage?: {
+		base64Content: string;
+		nameWithExtension: string;
+	} | null;
+	name: string;
+}
+
+export const updateCategory = createAsyncThunk<any, UpdateCategoryParams>(
+	'categories/updateCategory',
+	async (params, { rejectWithValue, dispatch }) => {
+		const { categoryId } = params;
+
+		try {
+			const response = await apiRequest.request({
+				url: `/api/categories/${categoryId}`,
+				method: 'put',
+				data: params,
+			});
+
+			dispatch(fetchAllCategories());
+
+			return response.data;
+		} catch (error: any) {
+			return rejectWithValue(error.response.data);
+		}
+	},
+);
+
 export const deleteCategory = createAsyncThunk<any, any>(
 	'categories/deleteCategory',
 	async (id, { rejectWithValue }) => {

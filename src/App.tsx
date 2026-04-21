@@ -8,17 +8,43 @@ import { theme } from './styles/theme.ts';
 import './index.css';
 import { PageWrapper } from './components/PageWrapper';
 import { MainWrapper } from './components/MainWrapper';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { StyledToaster } from './components/atoms/StyledToaster';
+import { EditCategory } from './pages/EditCategory/EditCategory.tsx';
 
 export const App = () => (
 	<BrowserRouter>
 		<ThemeProvider theme={theme}>
 			<Header />
 			<MainWrapper>
+				<StyledToaster />
 				<PageWrapper>
 					<Routes>
 						<Route path="/" element={<Homepage />} />
-						<Route path="/create-new-category" element={<AddCategory />} />
-						<Route path="/create-new-recipe" element={<AddRecipe />} />
+						<Route
+							path="/create-new-category"
+							element={
+								<ProtectedRoute>
+									<AddCategory />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/edit-category/:id"
+							element={
+								<ProtectedRoute>
+									<EditCategory />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/create-new-recipe"
+							element={
+								<ProtectedRoute>
+									<AddRecipe />
+								</ProtectedRoute>
+							}
+						/>
 						<Route path="/categories" element={<Categories />} />
 						<Route path="/search" element={<Search />} />
 						<Route path="/category/:id" element={<SingleCategory />} />

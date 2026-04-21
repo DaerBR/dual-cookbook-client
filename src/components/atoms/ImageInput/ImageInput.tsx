@@ -1,4 +1,4 @@
-import { ChangeEvent, createRef, useState } from 'react';
+import { ChangeEvent, createRef, useEffect, useState } from 'react';
 import { faPizzaSlice } from '@fortawesome/free-solid-svg-icons';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -10,10 +10,12 @@ import { Button } from '../Button';
 interface ImageInputProps {
 	customHeight?: number;
 	customWidth?: number;
+	initialImageUrl?: string;
+	isEdit?: boolean;
 	name: string;
 }
 
-export const ImageInput = ({ customHeight, customWidth, name }: ImageInputProps) => {
+export const ImageInput = ({ customHeight, customWidth, isEdit, initialImageUrl, name }: ImageInputProps) => {
 	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const imageInputRef = createRef<HTMLInputElement>();
 
@@ -21,6 +23,12 @@ export const ImageInput = ({ customHeight, customWidth, name }: ImageInputProps)
 	const { setValue, formState, control } = useFormContext() ?? {};
 	const { errors } = formState ?? {};
 	const fieldErrors = errors ? errors[name] : undefined;
+
+	useEffect(() => {
+		if (isEdit && initialImageUrl) {
+			setImagePreview(initialImageUrl);
+		}
+	}, [isEdit, initialImageUrl]);
 
 	const imageFieldStyles = {
 		backgroundColor: '#fff',

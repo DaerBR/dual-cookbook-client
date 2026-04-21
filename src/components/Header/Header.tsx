@@ -16,9 +16,9 @@ import { Typography } from '../atoms/Typography';
 import { CircularProgress } from '../atoms/CircularProgress';
 
 export const Header = () => {
-	const userData = useAppSelector((state) => state.auth.userInfo);
+	const userData = useAppSelector((state) => state.auth.userData);
 	const areUserDataFetched = useAppSelector((state) => state.auth.areUserDataFetched);
-	const isFetching = useAppSelector((state) => state.auth.isLoading);
+	const isFetchingUserData = useAppSelector((state) => state.auth.isLoading);
 
 	const navigate = useNavigate();
 	const headerStyles = useHeaderStyles();
@@ -75,7 +75,7 @@ export const Header = () => {
 							Вийти
 						</Button>
 					</>
-				) : isFetching ? (
+				) : isFetchingUserData ? (
 					<>
 						<Typography variant="paragraphM" color="primary">
 							Зачекай-но...

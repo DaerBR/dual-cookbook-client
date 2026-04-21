@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createCategory, fetchAllCategories, fetchCategories } from '../thunks/categories.ts';
+import {
+	createCategory,
+	deleteCategory,
+	fetchAllCategories,
+	fetchCategories,
+	updateCategory,
+} from '../thunks/categories.ts';
 
 export interface CategoryImage {
 	publicId: string;
@@ -28,6 +34,7 @@ interface CategoriesState {
 	categories: Category[];
 	isCreating: boolean;
 	isLoading: boolean;
+	isUpdating: boolean;
 	paginatedCategories: {
 		categoriesList: Category[];
 		pagination: Pagination | null;
@@ -39,6 +46,7 @@ const initialState: CategoriesState = {
 	categories: [],
 	isCreating: false,
 	isLoading: false,
+	isUpdating: false,
 	paginatedCategories: {
 		categoriesList: [],
 		pagination: null,
@@ -68,7 +76,7 @@ const categoriesSlice = createSlice({
 		builder.addCase(fetchAllCategories.fulfilled, (state, action) => {
 			state.isLoading = false;
 			state.categories = action.payload;
-			state.areCategoriesFetched = Boolean(action.payload);
+			state.areCategoriesFetched = true;
 		});
 		builder.addCase(fetchAllCategories.rejected, (state) => {
 			state.isLoading = false;
@@ -83,7 +91,26 @@ const categoriesSlice = createSlice({
 		builder.addCase(createCategory.rejected, (state) => {
 			state.isCreating = false;
 		});
+		// Update Category
+		builder.addCase(updateCategory.pending, (state) => {
+			state.isUpdating = true;
+		});
+		builder.addCase(updateCategory.fulfilled, (state) => {
+			state.isUpdating = false;
+		});
+		builder.addCase(updateCategory.rejected, (state) => {
+			state.isUpdating = false;
+		});
 		// Delete Category
+		builder.addCase(deleteCategory.pending, (state) => {
+			state.isLoading = true;
+		});
+		builder.addCase(deleteCategory.fulfilled, (state) => {
+			state.isLoading = false;
+		});
+		builder.addCase(deleteCategory.rejected, (state) => {
+			state.isLoading = false;
+		});
 	},
 });
 

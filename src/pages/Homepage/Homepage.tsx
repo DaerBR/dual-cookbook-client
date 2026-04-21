@@ -7,6 +7,7 @@ import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchRecipes } from '../../store/thunks/recipes.ts';
 import { Typography } from '../../components/atoms/Typography';
+import { RecipeCard } from '../../components/RecipeCard';
 
 export const Homepage = () => {
 	const navigate = useNavigate();
@@ -14,7 +15,10 @@ export const Homepage = () => {
 	const [dispatchFetchRecipes] = useThunk(fetchRecipes);
 
 	useEffect(() => {
-		dispatchFetchRecipes();
+		dispatchFetchRecipes({
+			limit: 10,
+			page: 1,
+		});
 	}, [dispatchFetchRecipes]);
 
 	return (
@@ -36,35 +40,7 @@ export const Homepage = () => {
 			</Typography>
 			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
 				{recipes.map((recipe) => (
-					<div
-						key={recipe.id}
-						css={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px', display: 'flex' }}
-					>
-						<div
-							css={{
-								display: 'flex',
-								justifyContent: 'center',
-								marginBottom: '12px',
-								backgroundImage: `url(${recipe.recipeImage?.secureUrl ?? ''})`,
-								backgroundSize: 'contain',
-								width: '300px',
-								height: '200px',
-								borderRadius: '8px',
-								backgroundPosition: 'center',
-							}}
-						/>
-						<div css={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-							<Typography variant="paragraphM" weight={700}>
-								{recipe.name}
-							</Typography>
-							<Typography variant="paragraphXs" weight={500} color="primary">
-								{recipe.category?.name ?? ''}
-							</Typography>
-							<Typography variant="paragraphS" weight={400} color="textSubtitle">
-								{recipe.description ?? ''}
-							</Typography>
-						</div>
-					</div>
+					<RecipeCard key={recipe.id} recipe={recipe} />
 				))}
 			</div>
 		</div>

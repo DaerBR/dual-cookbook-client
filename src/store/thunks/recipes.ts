@@ -3,6 +3,7 @@ import { apiRequest } from '../../api/apiRequest.ts';
 import { RecipeIngredient, RecipeStep, RecipesPaginationModel } from '../slices/recipesSlice.ts';
 
 interface FetchRecipesParams {
+	category?: string;
 	limit: number;
 	page: number;
 	search?: string;

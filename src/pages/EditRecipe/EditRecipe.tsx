@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useParams } from 'react-router';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { EditRecipeFormValues, editRecipeValidationSchema } from './validations.ts';
@@ -18,16 +18,17 @@ import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
 import { DeleteIconButton } from '../../components/DeleteIconButton';
 import { getBase64OfFile } from '../../utils/utils.tsx';
-import { createRecipe, fetchRecipeDetails } from '../../store/thunks/recipes.ts';
+import { fetchRecipeDetails, updateRecipe } from '../../store/thunks/recipes.ts';
+import { DeleteRecipeModal } from '../SingleRecipe/modals/DeleteRecipeModal.tsx';
 
 export const EditRecipe = () => {
 	const { id: recipeId } = useParams();
 	const recipeDetails = useAppSelector((state) => state.recipes.recipeDetails.recipeData);
 	const isFetchingDetails = useAppSelector((state) => state.recipes.recipeDetails.isLoading);
 	const [initialImageUrl, setInitialImageUrl] = useState<string | undefined>(undefined);
+	const [isDeleteRecipeModalOpen, setIsDeleteRecipeModalOpen] = useState(false);
 
-	// const [dispatchFetchRecipeDetails] = useThunk(fetchRecipeDetails, { useGlobalLoader: true });
-	const [dispatchFetchRecipeDetails] = useThunk(fetchRecipeDetails);
+	const [dispatchFetchRecipeDetails] = useThunk(fetchRecipeDetails, { useGlobalLoader: true });
 
 	useEffect(() => {
 		if (recipeId) {
@@ -41,10 +42,10 @@ export const EditRecipe = () => {
 	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
-	const [dispatchUpdateRecipe] = useThunk(createRecipe, {
+	const [dispatchUpdateRecipe] = useThunk(updateRecipe, {
 		useGlobalLoader: true,
 		successMessage: 'Рецепт успішно додано!',
-		successRedirectRoute: '/',
+		successRedirectRoute: recipeDetails?.category ? `/categories/${recipeDetails?.category.id}` : '/categories',
 	});
 	const navigate = useNavigate();
 
@@ -90,6 +91,10 @@ export const EditRecipe = () => {
 	}, [dispatchFetchRecipeDetails, recipeDetails, recipeId, reset]);
 
 	const handleFormSubmit = handleSubmit(async (formValues) => {
+		if (!recipeId) {
+			return;
+		}
+
 		const { recipeImage, name, description, steps, category, ingredients } = formValues;
 		const imageBase64Data = recipeImage ? await getBase64OfFile(recipeImage) : null;
 
@@ -103,8 +108,7 @@ export const EditRecipe = () => {
 				: null,
 			description: description && description.length > 0 ? description : null,
 		};
-		dispatchUpdateRecipe({ ...payload });
-		console.info('payload', payload);
+		dispatchUpdateRecipe({ ...payload, recipeId });
 	});
 
 	const fieldBlockStyles = {
@@ -133,7 +137,20 @@ export const EditRecipe = () => {
 
 	return (
 		<div>
-			<PageTitle title={`Редагуванння рецепту ${recipeDetails?.name ?? ''}`} withReturnButton />
+			<PageTitle
+				title={`Редагуванння рецепту ${recipeDetails?.name ?? ''}`}
+				withReturnButton
+				controlElements={[
+					<Button
+						key="delete-recipe"
+						onClick={() => setIsDeleteRecipeModalOpen(true)}
+						color="error"
+						startIcon={<Icon icon={faTrash} />}
+					>
+						Видалити рецепт
+					</Button>,
+				]}
+			/>
 			<div>
 				<div>
 					<Form form={form} onSubmit={handleFormSubmit}>
@@ -296,6 +313,12 @@ export const EditRecipe = () => {
 							</Button>
 						</div>
 					</Form>
+					<DeleteRecipeModal
+						categoryId={recipeDetails?.category.id ?? ''}
+						recipeId={recipeId ?? ''}
+						closeModalHandler={setIsDeleteRecipeModalOpen}
+						isModalOpen={isDeleteRecipeModalOpen}
+					/>
 				</div>
 			</div>
 		</div>

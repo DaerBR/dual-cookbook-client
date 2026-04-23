@@ -77,3 +77,48 @@ export const fetchRecipeDetails = createAsyncThunk<RecipeDetailModel, FetchRecip
 		}
 	},
 );
+
+interface UpdateRecipeParams extends CreateRecipesParams {
+	recipeId: string;
+}
+
+export const updateRecipe = createAsyncThunk<any, UpdateRecipeParams>(
+	'recipes/updateRecipe',
+	async (params, { rejectWithValue }) => {
+		const { recipeId } = params;
+
+		try {
+			const response = await apiRequest.request({
+				url: `/api/recipes/${recipeId}`,
+				method: 'put',
+				data: params,
+			});
+
+			return response.data;
+		} catch (error: any) {
+			return rejectWithValue(error.response.data);
+		}
+	},
+);
+
+interface DeleteRecipeParams {
+	recipeId: string;
+}
+
+export const deleteRecipe = createAsyncThunk<any, DeleteRecipeParams>(
+	'recipes/deleteRecipe',
+	async (params, { rejectWithValue }) => {
+		const { recipeId } = params;
+
+		try {
+			const response = await apiRequest.request({
+				url: `/api/recipes/${recipeId}`,
+				method: 'delete',
+			});
+
+			return response.data;
+		} catch (error: any) {
+			return rejectWithValue(error.response.data);
+		}
+	},
+);

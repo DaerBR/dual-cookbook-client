@@ -18,6 +18,7 @@ export const DeleteCategoryModal = ({
 	closeModalHandler,
 }: DeleteCategoryModalProps) => {
 	const [dispatchDeleteCategory] = useThunk(deleteCategory, {
+		useGlobalLoader: true,
 		successRedirectRoute: '/categories',
 		successMessage: `Категорія видалена`,
 	});

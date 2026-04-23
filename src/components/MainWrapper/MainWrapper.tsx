@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { LoadingIndicator } from '../LoadingIndicator';
 import { GlobalLoadingIndicatorContext } from '../../contexts/GlobalLoadingIndicator.tsx';
@@ -10,10 +10,17 @@ interface MainWrapperProps {
 export const MainWrapper = ({ children }: MainWrapperProps) => {
 	const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
 
-	const globalLoadingIndicatorContextValue = {
-		handleShowLoadingIndicator: (isVisible: boolean) => setShowLoadingIndicator(isVisible),
-		isVisible: showLoadingIndicator,
-	};
+	const handleShowLoadingIndicator = useCallback((isVisible: boolean) => {
+		setShowLoadingIndicator(isVisible);
+	}, []);
+
+	const globalLoadingIndicatorContextValue = useMemo(
+		() => ({
+			handleShowLoadingIndicator,
+			isVisible: showLoadingIndicator,
+		}),
+		[handleShowLoadingIndicator, showLoadingIndicator],
+	);
 
 	return (
 		<div>

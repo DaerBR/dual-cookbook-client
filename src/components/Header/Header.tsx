@@ -69,7 +69,7 @@ export const Header = () => {
 				{userData ? (
 					<>
 						<Button onClick={() => navigate('/create-new-recipe')} startIcon={<Icon icon={faPlus} />} variant="primary">
-							Додати рецепт
+							Створити рецепт
 						</Button>
 						<Button variant="secondary" onClick={handleLogoutClick}>
 							Вийти

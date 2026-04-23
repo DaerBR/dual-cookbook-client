@@ -52,13 +52,15 @@ interface CreateCategoryParams {
 // TODO type response
 export const createCategory = createAsyncThunk<any, CreateCategoryParams>(
 	'categories/createCategory',
-	async (params, { rejectWithValue }) => {
+	async (params, { rejectWithValue, dispatch }) => {
 		try {
 			const response = await apiRequest.request({
 				url: `/api/categories`,
 				method: 'post',
 				data: params,
 			});
+
+			dispatch(fetchAllCategories());
 
 			return response.data;
 		} catch (error: any) {
@@ -103,7 +105,7 @@ interface DeleteCategoryParams {
 
 export const deleteCategory = createAsyncThunk<any, DeleteCategoryParams>(
 	'categories/deleteCategory',
-	async (params, { rejectWithValue }) => {
+	async (params, { rejectWithValue, dispatch }) => {
 		const { categoryId } = params;
 
 		try {
@@ -111,6 +113,8 @@ export const deleteCategory = createAsyncThunk<any, DeleteCategoryParams>(
 				url: `/api/categories/${categoryId}`,
 				method: 'delete',
 			});
+
+			dispatch(fetchAllCategories());
 
 			return response.data;
 		} catch (error: any) {

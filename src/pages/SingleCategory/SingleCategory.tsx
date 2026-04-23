@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router';
-import { useEffect, useState } from 'react';
-import { faPencilAlt, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useEffect } from 'react';
+import { faPencilAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
@@ -11,7 +11,6 @@ import { Icon } from '../../components/atoms/Icon';
 import { fetchRecipes } from '../../store/thunks/recipes.ts';
 import { RecipeCard } from '../../components/RecipeCard';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
-import { DeleteCategoryModal } from './modals/DeleteCategoryModal.tsx';
 
 export const SingleCategory = () => {
 	const { id: categoryId } = useParams();
@@ -21,7 +20,6 @@ export const SingleCategory = () => {
 	const categoryRecipes = useAppSelector((state) => state.recipes.paginatedRecipes.recipesList);
 	const navigate = useNavigate();
 	const isFetchingRecipes = useAppSelector((state) => state.recipes.isLoading);
-	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 	const [dispatchFetchRecipes] = useThunk(fetchRecipes);
@@ -53,19 +51,10 @@ export const SingleCategory = () => {
 					isDisabled={!categoryId}
 					onClick={() => navigate(`/edit-category/${categoryId}`)}
 				>
-					Редагувати категорію
+					Редагувати
 				</Button>,
 				<Button startIcon={<Icon icon={faPlus} />} key="add-recipe-button" variant="primary" color="primary">
-					Додати рецепт в категорію
-				</Button>,
-				<Button
-					onClick={() => setIsDeleteModalOpen(true)}
-					startIcon={<Icon icon={faTrash} />}
-					key="delete-category-button"
-					variant="primary"
-					color="error"
-				>
-					Видалити
+					Додати рецепт
 				</Button>,
 			]
 		: [];
@@ -87,12 +76,6 @@ export const SingleCategory = () => {
 					categoryRecipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
 				)}
 			</div>
-			<DeleteCategoryModal
-				categoryId={categoryId}
-				categoryName={selectedCategoryData?.name ?? ''}
-				closeModalHandler={setIsDeleteModalOpen}
-				isModalOpen={isDeleteModalOpen}
-			/>
 		</div>
 	);
 };

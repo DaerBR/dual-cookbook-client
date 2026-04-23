@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { TextInput } from '../../components/atoms/TextInput';
 import { Form } from '../../components/Form';
@@ -14,6 +15,8 @@ import { fetchAllCategories, updateCategory } from '../../store/thunks/categorie
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { getBase64OfFile } from '../../utils/utils.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
+import { DeleteCategoryModal } from '../SingleCategory/modals/DeleteCategoryModal.tsx';
+import { Icon } from '../../components/atoms/Icon';
 
 export const EditCategory = () => {
 	const { id: categoryId } = useParams();
@@ -22,6 +25,7 @@ export const EditCategory = () => {
 	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
 	const selectedCategory = categoriesData.find((category) => category.id === categoryId);
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
 	useEffect(() => {
 		if (!areCategoriesFetched) {
@@ -91,7 +95,20 @@ export const EditCategory = () => {
 
 	return (
 		<div>
-			<PageTitle title="Редагувати категорію" />
+			<PageTitle
+				title="Редагувати категорію"
+				controlElements={[
+					<Button
+						onClick={() => setIsDeleteModalOpen(true)}
+						startIcon={<Icon icon={faTrash} />}
+						key="delete-category-button"
+						variant="primary"
+						color="error"
+					>
+						Видалити
+					</Button>,
+				]}
+			/>
 			<div>
 				<Form form={form} onSubmit={handleFormSubmit}>
 					<div css={{ display: 'flex', gap: '12px', flexBasis: '100%', wrap: 'nowrap' }}>
@@ -133,6 +150,12 @@ export const EditCategory = () => {
 						</Button>
 					</div>
 				</Form>
+				<DeleteCategoryModal
+					categoryId={categoryId ?? ''}
+					categoryName={selectedCategory?.name ?? ''}
+					closeModalHandler={setIsDeleteModalOpen}
+					isModalOpen={isDeleteModalOpen}
+				/>
 			</div>
 		</div>
 	);

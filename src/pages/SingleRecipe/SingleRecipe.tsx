@@ -1,17 +1,19 @@
 import { useNavigate, useParams } from 'react-router';
 import { useEffect } from 'react';
 
-import { Typography } from '../../components/atoms/Typography';
 import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchRecipeDetails } from '../../store/thunks/recipes.ts';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { Button } from '../../components/atoms/Button';
+import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
+import { LoadingIndicator } from '../../components/LoadingIndicator';
 
 export const SingleRecipe = () => {
 	const { id: recipeId } = useParams();
 	const recipeDetails = useAppSelector((state) => state.recipes.recipeDetails.recipeData);
+	const userData = useAppSelector((state) => state.auth.userData);
+	const isFetchingRecipeDetails = useAppSelector((state) => state.recipes.recipeDetails.isLoading);
 	const navigate = useNavigate();
-	// TODO - global loader fix in useThunk
 	const [dispatchFetchRecipeDetails] = useThunk(fetchRecipeDetails);
 
 	useEffect(() => {
@@ -20,12 +22,25 @@ export const SingleRecipe = () => {
 		}
 	}, [dispatchFetchRecipeDetails, recipeId]);
 
+	const recipeControlButtons = userData
+		? [
+				<Button
+					key="edit-recipe"
+					variant="primary"
+					color="primary"
+					onClick={() => navigate(`/edit-recipe/${recipeId}`)}
+				>
+					Редагувати
+				</Button>,
+			]
+		: [];
+
 	return (
 		<div>
-			<Typography variant="paragraphL" weight={700}>{`${recipeDetails?.name ?? ''}`}</Typography>
-			<Button variant="primary" color="primary" onClick={() => navigate(`/edit-recipe/${recipeId}`)}>
-				Редагувати
-			</Button>
+			<PageTitle title={`${recipeDetails?.name ?? ''}`} controlElements={recipeControlButtons} />
+			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
+				{isFetchingRecipeDetails ? <LoadingIndicator /> : <div>{recipeDetails?.name}</div>}
+			</div>
 		</div>
 	);
 };

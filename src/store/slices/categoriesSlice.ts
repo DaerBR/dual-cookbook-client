@@ -1,11 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-	createCategory,
-	deleteCategory,
-	fetchAllCategories,
-	fetchCategories,
-	updateCategory,
-} from '../thunks/categories.ts';
+import { createCategory, fetchAllCategories, fetchCategories, updateCategory } from '../thunks/categories.ts';
 
 export interface CategoryImage {
 	publicId: string;
@@ -100,16 +94,6 @@ const categoriesSlice = createSlice({
 		});
 		builder.addCase(updateCategory.rejected, (state) => {
 			state.isUpdating = false;
-		});
-		// Delete Category
-		builder.addCase(deleteCategory.pending, (state) => {
-			state.isLoading = true;
-		});
-		builder.addCase(deleteCategory.fulfilled, (state) => {
-			state.isLoading = false;
-		});
-		builder.addCase(deleteCategory.rejected, (state) => {
-			state.isLoading = false;
 		});
 	},
 });

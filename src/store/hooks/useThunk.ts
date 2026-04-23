@@ -50,7 +50,10 @@ export const useThunk = <TThunkArgs>(
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	const { useGlobalLoader } = options ?? {};
+	// Primitive deps only — inline `options` objects must not recreate the callback every render.
+	const successMessage = options?.successMessage;
+	const successRedirectRoute = options?.successRedirectRoute;
+	const useGlobalLoader = options?.useGlobalLoader ?? false;
 	const { handleShowLoadingIndicator } = useContext(GlobalLoadingIndicatorContext);
 
 	const dispatchThunk = useCallback(
@@ -58,38 +61,37 @@ export const useThunk = <TThunkArgs>(
 			if (useGlobalLoader) {
 				handleShowLoadingIndicator(true);
 			}
-			dispatch(thunk(args as TThunkArgs))
-				.unwrap()
-				.then(() => {
-					if (options) {
-						const { successMessage, successRedirectRoute } = options;
 
-						if (successMessage) {
-							toast.success(successMessage);
-						}
+			try {
+				await dispatch(thunk(args as TThunkArgs)).unwrap();
 
-						if (useGlobalLoader) {
-							handleShowLoadingIndicator(false);
-						}
+				if (successMessage) {
+					toast.success(successMessage);
+				}
 
-						if (successRedirectRoute) {
-							navigate(successRedirectRoute);
-						}
-					}
-				})
-				.catch((e: ServerError) => {
-					const errorText = getErrorText(e);
+				if (successRedirectRoute) {
+					navigate(successRedirectRoute);
+				}
+			} catch (e) {
+				const errorText = getErrorText(e as ServerError);
 
-					if (useGlobalLoader) {
-						handleShowLoadingIndicator(false);
-					}
-
-					toast.error(errorText);
-
-					return setError(e);
-				});
+				toast.error(errorText);
+				setError(e as ServerError);
+			} finally {
+				if (useGlobalLoader) {
+					handleShowLoadingIndicator(false);
+				}
+			}
 		},
-		[dispatch, thunk, options, useGlobalLoader, handleShowLoadingIndicator, navigate],
+		[
+			dispatch,
+			thunk,
+			successMessage,
+			successRedirectRoute,
+			useGlobalLoader,
+			handleShowLoadingIndicator,
+			navigate,
+		],
 	);
 
 	return [dispatchThunk, error];

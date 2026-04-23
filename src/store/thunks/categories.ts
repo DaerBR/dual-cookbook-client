@@ -97,12 +97,18 @@ export const updateCategory = createAsyncThunk<any, UpdateCategoryParams>(
 	},
 );
 
-export const deleteCategory = createAsyncThunk<any, any>(
+interface DeleteCategoryParams {
+	categoryId: string;
+}
+
+export const deleteCategory = createAsyncThunk<any, DeleteCategoryParams>(
 	'categories/deleteCategory',
-	async (id, { rejectWithValue }) => {
+	async (params, { rejectWithValue }) => {
+		const { categoryId } = params;
+
 		try {
 			const response = await apiRequest.request({
-				url: `/api/categories/${id}`,
+				url: `/api/categories/${categoryId}`,
 				method: 'delete',
 			});
 

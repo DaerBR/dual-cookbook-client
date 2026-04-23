@@ -3,6 +3,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ModalControls } from '../../../components/atoms/Modal/types.ts';
 import { Modal } from '../../../components/atoms/Modal/Modal.tsx';
 import { Button } from '../../../components/atoms/Button';
+import { useThunk } from '../../../store/hooks/useThunk.ts';
+import { deleteCategory } from '../../../store/thunks/categories.ts';
 
 interface DeleteCategoryModalProps extends ModalControls {
 	categoryId: string;
@@ -15,10 +17,17 @@ export const DeleteCategoryModal = ({
 	isModalOpen,
 	closeModalHandler,
 }: DeleteCategoryModalProps) => {
+	const [dispatchDeleteCategory] = useThunk(deleteCategory, {
+		successRedirectRoute: '/categories',
+		successMessage: `Категорія видалена`,
+	});
+
 	const handleCloseModal = () => closeModalHandler(false);
 
 	const handleDeleteCategory = () => {
-		console.info('Delete category clicked', categoryId);
+		dispatchDeleteCategory({
+			categoryId,
+		});
 		closeModalHandler(false);
 	};
 

@@ -8,11 +8,13 @@ import { Button } from '../../components/atoms/Button';
 import { Icon } from '../../components/atoms/Icon';
 import { CategoryCard } from './copmponents/CategoryCard.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
+import { LoadingIndicator } from '../../components/LoadingIndicator';
 
 export const Categories = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
+	const isFetchingCategories = useAppSelector((state) => state.categories.isLoading);
 
 	const navigate = useNavigate();
 
@@ -44,9 +46,11 @@ export const Categories = () => {
 				}
 			/>
 			<div css={{ display: 'grid', gridTemplateRows: '1fr', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
-				{categoriesList.map((category) => (
-					<CategoryCard category={category} key={category.id} />
-				))}
+				{isFetchingCategories ? (
+					<LoadingIndicator />
+				) : (
+					categoriesList.map((category) => <CategoryCard category={category} key={category.id} />)
+				)}
 			</div>
 		</div>
 	);

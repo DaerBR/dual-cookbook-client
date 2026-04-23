@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router';
 import { useEffect } from 'react';
 
 import { Button } from '../../components/atoms/Button';
-import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchRecipes } from '../../store/thunks/recipes.ts';
@@ -23,7 +22,6 @@ export const Homepage = () => {
 
 	return (
 		<div>
-			<PageTitle title="Головна сторінка" />
 			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
 				<Button variant="secondary" onClick={() => navigate('/categories')}>
 					Перейти до категорій
@@ -36,7 +34,7 @@ export const Homepage = () => {
 				customStyles={{ marginTop: '24px' }}
 				component="div"
 			>
-				Останні рецепти:
+				Нещодавні рецепти:
 			</Typography>
 			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
 				{recipes.map((recipe) => (

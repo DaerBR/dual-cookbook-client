@@ -16,7 +16,7 @@ export const SingleCategory = () => {
 	const { id: categoryId } = useParams();
 	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
 	const categoriesData = useAppSelector((state) => state.categories.categories);
-	const userData = useAppSelector((state) => state.auth.userData);
+	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 	const categoryRecipes = useAppSelector((state) => state.recipes.paginatedRecipes.recipesList);
 	const navigate = useNavigate();
 	const isFetchingRecipes = useAppSelector((state) => state.recipes.isLoading);
@@ -42,7 +42,7 @@ export const SingleCategory = () => {
 
 	const selectedCategoryData = categoriesData.find((category) => category.id === categoryId);
 
-	const categoryButtons = userData
+	const categoryButtons = isLoggedIn
 		? [
 				<Button
 					startIcon={<Icon icon={faPencilAlt} />}
@@ -64,7 +64,7 @@ export const SingleCategory = () => {
 	return (
 		<div>
 			<PageTitle
-				title={selectedCategoryData?.name ?? ''}
+				title={`Категорія ${selectedCategoryData?.name ?? ''}`}
 				controlElements={categoryButtons}
 				withReturnButton
 				returnUrl={'/categories' as const}

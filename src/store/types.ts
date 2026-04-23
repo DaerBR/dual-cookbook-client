@@ -22,6 +22,7 @@ export interface RecipeIngredient {
 }
 
 export interface RecipeDetailModel extends RecipeTableModel {
+	createdBy: { displayName: string; id: string };
 	description: 'string';
 	ingredients: RecipeIngredient[];
 	recipeImage: RecipeImage;

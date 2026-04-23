@@ -152,174 +152,172 @@ export const EditRecipe = () => {
 				]}
 			/>
 			<div>
-				<div>
-					<Form form={form} onSubmit={handleFormSubmit}>
-						<div css={{ display: 'flex', gap: '12px', flexBasis: '100%', wrap: 'nowrap' }}>
-							<div css={{ display: 'flex', flexBasis: '300px', flexDirection: 'column' }}>
-								<ImageInput
-									name="recipeImage"
-									customHeight={350}
-									customWidth={450}
-									isEdit
-									initialImageUrl={initialImageUrl}
-								/>
-								<div css={{ display: 'flex', flexDirection: 'column', marginTop: '24px' }}>
-									<FieldsGroupTitle title="Інгредієнти" />
-									<div>
-										{ingredientsFields.map((_, index) => (
-											<div key={index} css={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-												<Controller
-													control={control}
-													name={`ingredients.${index}.text`}
-													css={{ width: '100%', display: 'flex' }}
-													render={({ field }) => (
-														<TextInput
-															isFullWidth
-															name={`ingredients.${index}.text`}
-															value={field.value}
-															onChange={field.onChange}
-															customStyles={{ marginBottom: '20px' }}
-															placeholder='Опис (напр. "300 гр пшеничного борошна")'
-														/>
-													)}
-												/>
-												{index !== 0 && (
-													<DeleteIconButton
-														onClick={() => removeIngredient(index)}
-														customStyles={{ position: 'absolute', right: '-20px', top: '-20px' }}
-													/>
-												)}
-											</div>
-										))}
-									</div>
-									<Button
-										startIcon={<Icon icon={faPlus} />}
-										variant="secondary"
-										onClick={() => addIngredient({ text: '' })}
-										customStyles={{ maxWidth: '120px' }}
-									>
-										Додати
-									</Button>
-								</div>
-							</div>
-							<div css={{ display: 'flex', flexDirection: 'column', marginLeft: '36px', width: '100%' }}>
-								<div css={fieldBlockStyles}>
-									<Controller
-										control={control}
-										name="name"
-										css={{ width: '100%' }}
-										render={({ field }) => (
-											<TextInput
-												isFullWidth
-												isRequired
-												id="name"
-												name="name"
-												label="Назва рецепту"
-												placeholder="Введіть назву рецепту"
-												value={field.value}
-												onChange={field.onChange}
-												customStyles={{ minWidth: '400px' }}
-											/>
-										)}
-									/>
-								</div>
-								<div css={fieldBlockStyles}>
-									<Controller
-										name="category"
-										control={control}
-										render={({ field }) => (
-											<Select
-												isRequired
-												label="Категорія"
-												placeholder="Оберіть категорію"
-												name="category"
-												onBlur={field.onBlur}
-												onChange={field.onChange}
-												options={categoriesOptions}
-												value={field.value}
-											/>
-										)}
-									/>
-								</div>
-								<div css={fieldBlockStyles}>
-									<Controller
-										control={control}
-										name="description"
-										css={{ width: '100%' }}
-										render={({ field }) => (
-											<TextInput
-												isFullWidth
-												multiline
-												name="description"
-												label="Опис"
-												placeholder="Введіть короткий опис рецепту"
-												value={field.value}
-												onChange={field.onChange}
-												customStyles={{ minWidth: '400px' }}
-											/>
-										)}
-									/>
-								</div>
-								<div css={fieldBlockStyles}>
-									<FieldsGroupTitle title="Покрокова інструкія" />
-									{stepsFields.map((_, index) => (
+				<Form form={form} onSubmit={handleFormSubmit}>
+					<div css={{ display: 'flex', gap: '12px', flexBasis: '100%', wrap: 'nowrap' }}>
+						<div css={{ display: 'flex', flexBasis: '300px', flexDirection: 'column' }}>
+							<ImageInput
+								name="recipeImage"
+								customHeight={350}
+								customWidth={450}
+								isEdit
+								initialImageUrl={initialImageUrl}
+							/>
+							<div css={{ display: 'flex', flexDirection: 'column', marginTop: '24px' }}>
+								<FieldsGroupTitle title="Інгредієнти" />
+								<div>
+									{ingredientsFields.map((_, index) => (
 										<div key={index} css={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
 											<Controller
 												control={control}
-												name={`steps.${index}.stepDescription`}
+												name={`ingredients.${index}.text`}
 												css={{ width: '100%', display: 'flex' }}
 												render={({ field }) => (
 													<TextInput
 														isFullWidth
-														multiline
-														name={`steps.${index}.stepDescription`}
-														label={`Крок ${index + 1}`}
+														name={`ingredients.${index}.text`}
 														value={field.value}
 														onChange={field.onChange}
 														customStyles={{ marginBottom: '20px' }}
+														placeholder='Опис (напр. "300 гр пшеничного борошна")'
 													/>
 												)}
 											/>
 											{index !== 0 && (
 												<DeleteIconButton
-													onClick={() => removeStep(index)}
-													customStyles={{ position: 'absolute', right: '-20px', top: '0' }}
+													onClick={() => removeIngredient(index)}
+													customStyles={{ position: 'absolute', right: '-20px', top: '-20px' }}
 												/>
 											)}
 										</div>
 									))}
-									<Button
-										startIcon={<Icon icon={faPlus} />}
-										variant="secondary"
-										onClick={() => addStep({ stepDescription: '' })}
-										customStyles={{ maxWidth: '250px' }}
-									>
-										Додати наступний крок
-									</Button>
 								</div>
+								<Button
+									startIcon={<Icon icon={faPlus} />}
+									variant="secondary"
+									onClick={() => addIngredient({ text: '' })}
+									customStyles={{ maxWidth: '120px' }}
+								>
+									Додати
+								</Button>
 							</div>
 						</div>
-						<div css={{ display: 'flex', gap: '24px', justifyContent: 'center', marginTop: '12px' }}>
-							<Button
-								type="submit"
-								variant="primary"
-								isDisabled={!isValid || categoriesList?.length === 0 || isFetchingDetails}
-								isBusy={isFetchingDetails}
-							>
-								Зберегти
-							</Button>
-							<Button variant="outlined" onClick={() => navigate(-1)}>
-								Скасувати
-							</Button>
+						<div css={{ display: 'flex', flexDirection: 'column', marginLeft: '36px', width: '100%' }}>
+							<div css={fieldBlockStyles}>
+								<Controller
+									control={control}
+									name="name"
+									css={{ width: '100%' }}
+									render={({ field }) => (
+										<TextInput
+											isFullWidth
+											isRequired
+											id="name"
+											name="name"
+											label="Назва рецепту"
+											placeholder="Введіть назву рецепту"
+											value={field.value}
+											onChange={field.onChange}
+											customStyles={{ minWidth: '400px' }}
+										/>
+									)}
+								/>
+							</div>
+							<div css={fieldBlockStyles}>
+								<Controller
+									name="category"
+									control={control}
+									render={({ field }) => (
+										<Select
+											isRequired
+											label="Категорія"
+											placeholder="Оберіть категорію"
+											name="category"
+											onBlur={field.onBlur}
+											onChange={field.onChange}
+											options={categoriesOptions}
+											value={field.value}
+										/>
+									)}
+								/>
+							</div>
+							<div css={fieldBlockStyles}>
+								<Controller
+									control={control}
+									name="description"
+									css={{ width: '100%' }}
+									render={({ field }) => (
+										<TextInput
+											isFullWidth
+											multiline
+											name="description"
+											label="Опис"
+											placeholder="Введіть короткий опис рецепту"
+											value={field.value}
+											onChange={field.onChange}
+											customStyles={{ minWidth: '400px' }}
+										/>
+									)}
+								/>
+							</div>
+							<div css={fieldBlockStyles}>
+								<FieldsGroupTitle title="Покрокова інструкія" />
+								{stepsFields.map((_, index) => (
+									<div key={index} css={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+										<Controller
+											control={control}
+											name={`steps.${index}.stepDescription`}
+											css={{ width: '100%', display: 'flex' }}
+											render={({ field }) => (
+												<TextInput
+													isFullWidth
+													multiline
+													name={`steps.${index}.stepDescription`}
+													label={`Крок ${index + 1}`}
+													value={field.value}
+													onChange={field.onChange}
+													customStyles={{ marginBottom: '20px' }}
+												/>
+											)}
+										/>
+										{index !== 0 && (
+											<DeleteIconButton
+												onClick={() => removeStep(index)}
+												customStyles={{ position: 'absolute', right: '-20px', top: '0' }}
+											/>
+										)}
+									</div>
+								))}
+								<Button
+									startIcon={<Icon icon={faPlus} />}
+									variant="secondary"
+									onClick={() => addStep({ stepDescription: '' })}
+									customStyles={{ maxWidth: '250px' }}
+								>
+									Додати наступний крок
+								</Button>
+							</div>
 						</div>
-					</Form>
-					<DeleteRecipeModal
-						categoryId={recipeDetails?.category.id ?? ''}
-						recipeId={recipeId ?? ''}
-						closeModalHandler={setIsDeleteRecipeModalOpen}
-						isModalOpen={isDeleteRecipeModalOpen}
-					/>
-				</div>
+					</div>
+					<div css={{ display: 'flex', gap: '24px', justifyContent: 'center', marginTop: '12px' }}>
+						<Button
+							type="submit"
+							variant="primary"
+							isDisabled={!isValid || categoriesList?.length === 0 || isFetchingDetails}
+							isBusy={isFetchingDetails}
+						>
+							Зберегти
+						</Button>
+						<Button variant="outlined" onClick={() => navigate(-1)}>
+							Скасувати
+						</Button>
+					</div>
+				</Form>
+				<DeleteRecipeModal
+					categoryId={recipeDetails?.category.id ?? ''}
+					recipeId={recipeId ?? ''}
+					closeModalHandler={setIsDeleteRecipeModalOpen}
+					isModalOpen={isDeleteRecipeModalOpen}
+				/>
 			</div>
 		</div>
 	);

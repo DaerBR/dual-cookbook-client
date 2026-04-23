@@ -10,13 +10,12 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 	const { id } = recipe;
 
 	return (
-		<Link to={`/recipe/${id}`} css={{ textDecoration: 'none', color: 'inherit' }}>
+		<Link to={`/recipe/${id}`} css={{ textDecoration: 'none', color: 'inherit', marginBottom: '20px' }}>
 			<div css={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px', display: 'flex' }}>
 				<div
 					css={{
 						display: 'flex',
 						justifyContent: 'center',
-						marginBottom: '12px',
 						backgroundImage: `url(${recipe.recipeImage?.secureUrl ?? ''})`,
 						backgroundSize: 'contain',
 						width: '300px',

@@ -57,7 +57,18 @@ export const Header = () => {
 		<div css={headerStyles}>
 			<div css={logoContainerStyles} className="logo-container">
 				<Link to="/" aria-label="До головної сторінки">
-					<img src="/logo-images/book-of-recipes.png" alt="До головної сторінки" />
+					<div
+						css={{
+							backgroundImage: 'url("/logo-images/squirrel.png")',
+							height: '64px',
+							width: '64px',
+							backgroundSize: 'contain',
+							backgroundRepeat: 'no-repeat',
+							backgroundPosition: 'center',
+							borderRadius: '50%',
+							border: '2px solid #fda477',
+						}}
+					/>
 				</Link>
 			</div>
 			<div css={buttonsContainerStyles}>

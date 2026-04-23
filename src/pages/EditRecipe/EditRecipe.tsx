@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
-import { AddRecipeFormValues, addRecipeValidationSchema } from './validations.ts';
+import { EditRecipeFormValues, editRecipeValidationSchema } from './validations.ts';
 import { Form } from '../../components/Form';
 import { ImageInput } from '../../components/atoms/ImageInput';
 import { TextInput } from '../../components/atoms/TextInput';
@@ -18,20 +18,32 @@ import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
 import { DeleteIconButton } from '../../components/DeleteIconButton';
 import { getBase64OfFile } from '../../utils/utils.tsx';
-import { createRecipe } from '../../store/thunks/recipes.ts';
+import { createRecipe, fetchRecipeDetails } from '../../store/thunks/recipes.ts';
 
-export const AddRecipe = () => {
+export const EditRecipe = () => {
+	const { id: recipeId } = useParams();
+	const recipeDetails = useAppSelector((state) => state.recipes.recipeDetails.recipeData);
+	const isFetchingDetails = useAppSelector((state) => state.recipes.recipeDetails.isLoading);
+	const [initialImageUrl, setInitialImageUrl] = useState<string | undefined>(undefined);
+
+	// const [dispatchFetchRecipeDetails] = useThunk(fetchRecipeDetails, { useGlobalLoader: true });
+	const [dispatchFetchRecipeDetails] = useThunk(fetchRecipeDetails);
+
+	useEffect(() => {
+		if (recipeId) {
+			dispatchFetchRecipeDetails({ recipeId });
+		}
+	}, [dispatchFetchRecipeDetails, recipeId]);
+
 	const categoriesList = useAppSelector((state) => state.categories.categories);
 	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
-	const isCreatingRecipe = useAppSelector((state) => state.recipes.isCreating);
 
 	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
-	const [dispatchCreateRecipe] = useThunk(createRecipe, {
+	const [dispatchUpdateRecipe] = useThunk(createRecipe, {
 		useGlobalLoader: true,
 		successMessage: 'Рецепт успішно додано!',
-		// TODO - redirect to selected category?
 		successRedirectRoute: '/',
 	});
 	const navigate = useNavigate();
@@ -42,7 +54,7 @@ export const AddRecipe = () => {
 		}
 	}, [dispatchFetchCategories, areCategoriesFetched]);
 
-	const form = useForm<AddRecipeFormValues>({
+	const form = useForm<EditRecipeFormValues>({
 		mode: 'onBlur',
 		reValidateMode: 'onChange',
 		defaultValues: {
@@ -53,14 +65,29 @@ export const AddRecipe = () => {
 			steps: [{ stepDescription: '' }],
 			recipeImage: null,
 		},
-		resolver: zodResolver(addRecipeValidationSchema),
+		resolver: zodResolver(editRecipeValidationSchema),
 	});
 
 	const {
 		handleSubmit,
 		control,
+		reset,
 		formState: { isValid },
 	} = form;
+
+	useEffect(() => {
+		if (recipeDetails) {
+			reset({
+				name: recipeDetails.name,
+				category: recipeDetails.category.id,
+				description: recipeDetails.description,
+				ingredients: recipeDetails.ingredients.map((ingredient) => ({ text: ingredient.text })),
+				steps: recipeDetails.steps.map((step) => ({ stepDescription: step.stepDescription })),
+				recipeImage: null,
+			});
+			setInitialImageUrl(recipeDetails.recipeImage?.secureUrl);
+		}
+	}, [dispatchFetchRecipeDetails, recipeDetails, recipeId, reset]);
 
 	const handleFormSubmit = handleSubmit(async (formValues) => {
 		const { recipeImage, name, description, steps, category, ingredients } = formValues;
@@ -76,7 +103,7 @@ export const AddRecipe = () => {
 				: null,
 			description: description && description.length > 0 ? description : null,
 		};
-		dispatchCreateRecipe({ ...payload });
+		dispatchUpdateRecipe({ ...payload });
 		console.info('payload', payload);
 	});
 
@@ -106,13 +133,19 @@ export const AddRecipe = () => {
 
 	return (
 		<div>
-			<PageTitle title="Створити новий рецепт" withReturnButton />
+			<PageTitle title={`Редагуванння рецепту ${recipeDetails?.name ?? ''}`} withReturnButton />
 			<div>
 				<div>
 					<Form form={form} onSubmit={handleFormSubmit}>
 						<div css={{ display: 'flex', gap: '12px', flexBasis: '100%', wrap: 'nowrap' }}>
 							<div css={{ display: 'flex', flexBasis: '300px', flexDirection: 'column' }}>
-								<ImageInput name="recipeImage" customHeight={350} customWidth={450} />
+								<ImageInput
+									name="recipeImage"
+									customHeight={350}
+									customWidth={450}
+									isEdit
+									initialImageUrl={initialImageUrl}
+								/>
 								<div css={{ display: 'flex', flexDirection: 'column', marginTop: '24px' }}>
 									<FieldsGroupTitle title="Інгредієнти" />
 									<div>
@@ -253,10 +286,10 @@ export const AddRecipe = () => {
 							<Button
 								type="submit"
 								variant="primary"
-								isDisabled={!isValid || categoriesList?.length === 0 || isCreatingRecipe}
-								isBusy={isCreatingRecipe}
+								isDisabled={!isValid || categoriesList?.length === 0 || isFetchingDetails}
+								isBusy={isFetchingDetails}
 							>
-								Створити
+								Зберегти
 							</Button>
 							<Button variant="outlined" onClick={() => navigate(-1)}>
 								Скасувати

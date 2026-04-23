@@ -1,0 +1,12 @@
+import * as z from 'zod';
+
+export const editRecipeValidationSchema = z.object({
+	description: z.string(),
+	category: z.string(),
+	ingredients: z.array(z.object({ text: z.string() })).min(1, 'Додайте принаймні один інгредієнт'),
+	name: z.string().min(3, 'Введіть назву категорії, принаймні 3 символи'),
+	recipeImage: z.union([z.instanceof(File), z.null()]),
+	steps: z.array(z.object({ stepDescription: z.string() })).min(1, 'Додайте принаймні один крок'),
+});
+
+export type EditRecipeFormValues = z.infer<typeof editRecipeValidationSchema>;

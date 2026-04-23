@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Typography } from '../atoms/Typography';
-import { RecipeTableModel } from '../../store/slices/recipesSlice.ts';
+import { RecipeTableModel } from '../../store/types.ts';
 
 interface RecipeCardProps {
 	recipe: RecipeTableModel;

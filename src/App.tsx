@@ -2,7 +2,18 @@ import { BrowserRouter } from 'react-router-dom';
 import { Route, Routes } from 'react-router';
 import { ThemeProvider } from '@emotion/react';
 
-import { AddCategory, AddRecipe, Categories, ErrorPage, Homepage, Search, SingleCategory, SingleRecipe } from './pages';
+import {
+	AddCategory,
+	AddRecipe,
+	Categories,
+	EditCategory,
+	EditRecipe,
+	ErrorPage,
+	Homepage,
+	Search,
+	SingleCategory,
+	SingleRecipe,
+} from './pages';
 import { Header } from './components/Header/Header.tsx';
 import { theme } from './styles/theme.ts';
 import './index.css';
@@ -10,7 +21,6 @@ import { PageWrapper } from './components/PageWrapper';
 import { MainWrapper } from './components/MainWrapper';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { StyledToaster } from './components/atoms/StyledToaster';
-import { EditCategory } from './pages/EditCategory/EditCategory.tsx';
 
 export const App = () => (
 	<BrowserRouter>
@@ -42,6 +52,14 @@ export const App = () => (
 							element={
 								<ProtectedRoute>
 									<AddRecipe />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/edit-recipe/:id"
+							element={
+								<ProtectedRoute>
+									<EditRecipe />
 								</ProtectedRoute>
 							}
 						/>

@@ -1,47 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createRecipe, fetchRecipes } from '../thunks/recipes.ts';
-
-export interface RecipeImage {
-	publicId: string;
-	secureUrl: string;
-}
-export interface RecipeTableModel {
-	category: { id: string; name: string };
-	createdAt: Date;
-	description: string | null;
-	id: string;
-	name: string;
-	recipeImage?: RecipeImage;
-	updatedAt: Date;
-}
-
-export interface RecipeStep {
-	id?: string;
-	stepDescription: string;
-}
-export interface RecipeIngredient {
-	id?: string;
-	text: string;
-}
-
-export interface RecipeModel extends RecipeTableModel {
-	description: 'string';
-	ingredients: RecipeIngredient[];
-	recipeImage: RecipeImage;
-	steps: RecipeStep[];
-}
-
-interface Pagination {
-	limit: number;
-	page: number;
-	total: number;
-	totalPages: number;
-}
-
-export interface RecipesPaginationModel {
-	data: RecipeTableModel[];
-	pagination: Pagination | null;
-}
+import { createRecipe, fetchRecipeDetails, fetchRecipes } from '../thunks/recipes.ts';
+import { Pagination, RecipeDetailModel, RecipeTableModel } from '../types.ts';
 
 interface RecipesState {
 	isCreating: boolean;
@@ -52,7 +11,7 @@ interface RecipesState {
 	};
 	recipeDetails: {
 		isLoading: boolean;
-		recipeData: RecipeModel | null;
+		recipeData: RecipeDetailModel | null;
 	};
 }
 
@@ -86,6 +45,17 @@ const recipesSlice = createSlice({
 		builder.addCase(fetchRecipes.rejected, (state) => {
 			state.isLoading = false;
 		});
+		// Fetch Recipe details
+		builder.addCase(fetchRecipeDetails.pending, (state) => {
+			state.recipeDetails.isLoading = true;
+		});
+		builder.addCase(fetchRecipeDetails.fulfilled, (state, action) => {
+			state.recipeDetails.isLoading = false;
+			state.recipeDetails.recipeData = action.payload;
+		});
+		builder.addCase(fetchRecipeDetails.rejected, (state) => {
+			state.recipeDetails.isLoading = false;
+		});
 		// Create a Recipe
 		builder.addCase(createRecipe.pending, (state) => {
 			state.isCreating = true;
@@ -96,6 +66,16 @@ const recipesSlice = createSlice({
 		builder.addCase(createRecipe.rejected, (state) => {
 			state.isCreating = false;
 		});
+		// // Update a Recipe
+		// builder.addCase(updateRecipe.pending, (state) => {
+		// 	state.isCreating = true;
+		// });
+		// builder.addCase(updateRecipe.fulfilled, (state) => {
+		// 	state.isCreating = false;
+		// });
+		// builder.addCase(updateRecipe.rejected, (state) => {
+		// 	state.isCreating = false;
+		// });
 	},
 });
 

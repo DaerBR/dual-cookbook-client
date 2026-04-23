@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { apiRequest } from '../../api/apiRequest.ts';
-import { RecipeIngredient, RecipeStep, RecipesPaginationModel } from '../slices/recipesSlice.ts';
+import { RecipeDetailModel, RecipeIngredient, RecipeStep, RecipesPaginationModel } from '../types.ts';
 
 interface FetchRecipesParams {
 	category?: string;
@@ -47,6 +47,28 @@ export const createRecipe = createAsyncThunk<any, CreateRecipesParams>(
 				url: `/api/recipes`,
 				method: 'post',
 				data: params,
+			});
+
+			return response.data;
+		} catch (error: any) {
+			return rejectWithValue(error.response.data);
+		}
+	},
+);
+
+interface FetchRecipeDetailsParams {
+	recipeId: string;
+}
+
+export const fetchRecipeDetails = createAsyncThunk<RecipeDetailModel, FetchRecipeDetailsParams>(
+	'recipes/fetchRecipeDetails',
+	async (params, { rejectWithValue }) => {
+		const { recipeId } = params;
+
+		try {
+			const response = await apiRequest.request({
+				url: `/api/recipes/${recipeId}`,
+				method: 'get',
 			});
 
 			return response.data;

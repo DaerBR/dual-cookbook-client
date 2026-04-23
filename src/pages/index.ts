@@ -6,3 +6,5 @@ export { Homepage } from './Homepage';
 export { Search } from './Search';
 export { SingleCategory } from './SingleCategory';
 export { SingleRecipe } from './SingleRecipe';
+export { EditCategory } from './EditCategory';
+export { EditRecipe } from './EditRecipe';

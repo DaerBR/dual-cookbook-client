@@ -45,7 +45,7 @@ export const EditRecipe = () => {
 	const [dispatchUpdateRecipe] = useThunk(updateRecipe, {
 		useGlobalLoader: true,
 		successMessage: 'Рецепт успішно додано!',
-		successRedirectRoute: recipeDetails?.category ? `/categories/${recipeDetails?.category.id}` : '/categories',
+		successRedirectRoute: recipeDetails?.category ? `/category/${recipeDetails?.category.id}` : '/categories',
 	});
 	const navigate = useNavigate();
 
@@ -65,6 +65,7 @@ export const EditRecipe = () => {
 			ingredients: [{ text: '' }],
 			steps: [{ stepDescription: '' }],
 			recipeImage: null,
+			sourceUrl: '',
 		},
 		resolver: zodResolver(editRecipeValidationSchema),
 	});
@@ -95,7 +96,7 @@ export const EditRecipe = () => {
 			return;
 		}
 
-		const { recipeImage, name, description, steps, category, ingredients } = formValues;
+		const { recipeImage, name, description, steps, category, ingredients, sourceUrl } = formValues;
 		const imageBase64Data = recipeImage ? await getBase64OfFile(recipeImage) : null;
 
 		const payload = {
@@ -107,6 +108,7 @@ export const EditRecipe = () => {
 				? { base64Content: imageBase64Data as string, nameWithExtension: recipeImage.name }
 				: null,
 			description: description && description.length > 0 ? description : null,
+			sourceUrl,
 		};
 		dispatchUpdateRecipe({ ...payload, recipeId });
 	});
@@ -182,7 +184,7 @@ export const EditRecipe = () => {
 													/>
 												)}
 											/>
-											{index !== 0 && (
+											{ingredientsFields.length > 1 && (
 												<DeleteIconButton
 													onClick={() => removeIngredient(index)}
 													customStyles={{ position: 'absolute', right: '-20px', top: '-20px' }}
@@ -199,6 +201,25 @@ export const EditRecipe = () => {
 								>
 									Додати
 								</Button>
+							</div>
+							<div css={{ marginTop: '24px' }}>
+								<Controller
+									control={control}
+									name="sourceUrl"
+									css={{ width: '100%' }}
+									render={({ field }) => (
+										<TextInput
+											isFullWidth
+											id="sourceUrl"
+											name="sourceUrl"
+											label="Посилання"
+											placeholder="Вставте посилання на джерело (відео, пост і т.д.)"
+											value={field.value}
+											onChange={field.onChange}
+											customStyles={{ minWidth: '400px' }}
+										/>
+									)}
+								/>
 							</div>
 						</div>
 						<div css={{ display: 'flex', flexDirection: 'column', marginLeft: '36px', width: '100%' }}>

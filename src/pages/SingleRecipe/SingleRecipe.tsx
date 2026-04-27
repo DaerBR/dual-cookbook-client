@@ -44,7 +44,8 @@ export const SingleRecipe = () => {
 			]
 		: [];
 
-	const { category, createdAt, recipeImage, ingredients, steps, description, createdBy } = recipeDetails ?? {};
+	const { category, createdAt, recipeImage, ingredients, steps, description, createdBy, sourceUrl } =
+		recipeDetails ?? {};
 
 	return (
 		<div>
@@ -111,6 +112,12 @@ export const SingleRecipe = () => {
 								{recipeDetails?.steps.map((step) => (
 									<div key={step.id}>{step.stepDescription}</div>
 								))}
+							</div>
+						)}
+						{sourceUrl && (
+							<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
+								<FieldsGroupTitle title="Посилання на джерело" />
+								<div>{sourceUrl}</div>
 							</div>
 						)}
 						<div>

@@ -26,6 +26,7 @@ export interface RecipeDetailModel extends RecipeTableModel {
 	description: 'string';
 	ingredients: RecipeIngredient[];
 	recipeImage: RecipeImage;
+	sourceUrl?: string;
 	steps: RecipeStep[];
 }
 

@@ -15,6 +15,7 @@ export const DeleteIconButton = ({ onClick, iconFontSize, customStyles = {} }: D
 
 	return (
 		<button
+			type="button"
 			css={{
 				padding: '12px',
 				border: 'none',

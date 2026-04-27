@@ -43,7 +43,7 @@ export const AddRecipe = () => {
 	}, [dispatchFetchCategories, areCategoriesFetched]);
 
 	const form = useForm<AddRecipeFormValues>({
-		mode: 'onBlur',
+		mode: 'all',
 		reValidateMode: 'onChange',
 		defaultValues: {
 			name: '',
@@ -52,6 +52,7 @@ export const AddRecipe = () => {
 			ingredients: [{ text: '' }],
 			steps: [{ stepDescription: '' }],
 			recipeImage: null,
+			sourceUrl: '',
 		},
 		resolver: zodResolver(addRecipeValidationSchema),
 	});
@@ -63,7 +64,7 @@ export const AddRecipe = () => {
 	} = form;
 
 	const handleFormSubmit = handleSubmit(async (formValues) => {
-		const { recipeImage, name, description, steps, category, ingredients } = formValues;
+		const { recipeImage, name, description, steps, category, ingredients, sourceUrl } = formValues;
 		const imageBase64Data = recipeImage ? await getBase64OfFile(recipeImage) : null;
 
 		const payload = {
@@ -75,9 +76,9 @@ export const AddRecipe = () => {
 				? { base64Content: imageBase64Data as string, nameWithExtension: recipeImage.name }
 				: null,
 			description: description && description.length > 0 ? description : null,
+			sourceUrl,
 		};
 		dispatchCreateRecipe({ ...payload });
-		console.info('payload', payload);
 	});
 
 	const fieldBlockStyles = {
@@ -149,6 +150,25 @@ export const AddRecipe = () => {
 								>
 									Додати
 								</Button>
+							</div>
+							<div css={{ marginTop: '24px', marginBottom: '36px' }}>
+								<Controller
+									control={control}
+									name="sourceUrl"
+									css={{ width: '100%' }}
+									render={({ field }) => (
+										<TextInput
+											isFullWidth
+											id="sourceUrl"
+											name="sourceUrl"
+											label="Посилання"
+											placeholder="Вставте посилання на джерело (відео, пост і т.д.)"
+											value={field.value}
+											onChange={field.onChange}
+											customStyles={{ minWidth: '400px' }}
+										/>
+									)}
+								/>
 							</div>
 						</div>
 						<div css={{ display: 'flex', flexDirection: 'column', marginLeft: '36px', width: '100%' }}>

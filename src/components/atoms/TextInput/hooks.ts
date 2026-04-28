@@ -9,6 +9,7 @@ export const useCommonFieldStyles = ({ isFullWidth }: UseCommonFieldStylesProps)
 
 	return {
 		fieldStyles: {
+			minHeight: '38px',
 			backgroundColor: '#fff',
 			boxShadow: theme.boxShadows.xs,
 			border: `1px solid ${theme.colors.neutral.borderDefault}`,

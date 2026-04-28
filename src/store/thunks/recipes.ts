@@ -26,6 +26,23 @@ export const fetchRecipes = createAsyncThunk<RecipesPaginationModel, FetchRecipe
 	},
 );
 
+export const searchRecipes = createAsyncThunk<RecipesPaginationModel, FetchRecipesParams>(
+	'recipes/searchRecipes',
+	async (params, { rejectWithValue }) => {
+		try {
+			const response = await apiRequest.request({
+				url: `/api/recipes`,
+				method: 'get',
+				params,
+			});
+
+			return response.data;
+		} catch (error: any) {
+			return rejectWithValue(error.response.data);
+		}
+	},
+);
+
 interface CreateRecipesParams {
 	category: string;
 	description: string | null;

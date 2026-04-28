@@ -139,6 +139,7 @@ export const Select = ({
 		position: 'relative' as const,
 		width: fieldStyles.width,
 		maxWidth: fieldStyles.maxWidth,
+		...customStyles,
 	};
 
 	const selectInputStyles = {
@@ -208,7 +209,6 @@ export const Select = ({
 	const mergedTriggerStyles = {
 		...selectInputStyles,
 		...(fieldErrors ? errorStyles : {}),
-		...customStyles,
 		color: placeholder && value === '' ? theme.colors.text.disabled : '#000',
 	} as const;
 

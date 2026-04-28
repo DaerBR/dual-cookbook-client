@@ -79,9 +79,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 						<Typography variant="paragraphM" weight={700}>
 							{recipe.name}
 						</Typography>
-						<Link to={`/category/${recipe.category.id}`} css={{ textDecoration: 'none' }}>
-							<Chip color="primary" size="sm" text={recipe.category?.name ?? ''} withHover />
-						</Link>
+						<Chip color="primary" size="sm" text={recipe.category?.name ?? ''} />
 						<Typography
 							variant="paragraphS"
 							weight={400}

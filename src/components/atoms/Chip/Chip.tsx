@@ -6,12 +6,12 @@ import { chipHeight, chipPadding } from './constants.ts';
 interface ChipProps {
 	color?: 'primary' | 'neutral' | 'success' | 'error';
 	isOutlined?: boolean;
+	onClick?: () => void;
 	size?: 'lg' | 'md' | 'sm' | 'xs';
 	text: string;
-	withHover?: boolean;
 }
 
-export const Chip = ({ color = 'primary', size = 'md', isOutlined, text, withHover }: ChipProps) => {
+export const Chip = ({ onClick, color = 'primary', size = 'md', isOutlined, text }: ChipProps) => {
 	const theme = useAppTheme();
 	const typographySize: Record<string, TypographyVariant> = {
 		lg: 'paragraphS',
@@ -23,7 +23,7 @@ export const Chip = ({ color = 'primary', size = 'md', isOutlined, text, withHov
 		color: isOutlined ? theme.colors[color].main : '#fff',
 		backgroundColor: isOutlined ? '#fff' : theme.colors[color].surfaceDefault,
 		border: isOutlined ? `1px solid ${theme.colors[color].borderDarker}` : 'none',
-		cursor: withHover ? 'pointer' : 'default',
+		cursor: onClick ? 'pointer' : 'default',
 		height: chipHeight[size],
 		padding: `0 ${chipPadding[size]}`,
 		borderRadius: '16px',
@@ -34,13 +34,21 @@ export const Chip = ({ color = 'primary', size = 'md', isOutlined, text, withHov
 		justifyContent: 'center',
 		'&:hover': {
 			textDecoration: 'none',
-			backgroundColor: withHover ? theme.colors[color].surfaceLighter : theme.colors[color].surfaceDefault,
+			backgroundColor: onClick ? theme.colors[color].surfaceLighter : theme.colors[color].surfaceDefault,
 		},
 	};
 
-	return (
+	const typographyContent = (
 		<Typography weight={600} variant={typographySize[size]} customStyles={chipStyles}>
 			{text}
 		</Typography>
+	);
+
+	return onClick ? (
+		<button type="button" onClick={onClick} css={{ border: 'none', backgroundColor: 'transparent' }}>
+			{typographyContent}
+		</button>
+	) : (
+		typographyContent
 	);
 };

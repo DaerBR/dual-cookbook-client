@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createRecipe, fetchRecipeDetails, fetchRecipes } from '../thunks/recipes.ts';
+import { createRecipe, fetchRecipeDetails, fetchRecipes, searchRecipes, updateRecipe } from '../thunks/recipes.ts';
 import { Pagination, RecipeDetailModel, RecipeTableModel } from '../types.ts';
 
 interface RecipesState {
 	isCreating: boolean;
 	isLoading: boolean;
+	isUpdating: boolean;
 	paginatedRecipes: {
 		pagination: Pagination | null;
 		recipesList: RecipeTableModel[];
@@ -13,11 +14,17 @@ interface RecipesState {
 		isLoading: boolean;
 		recipeData: RecipeDetailModel | null;
 	};
+	search: {
+		isSearching: boolean;
+		pagination: Pagination | null;
+		recipesList: RecipeTableModel[];
+	};
 }
 
 const initialState: RecipesState = {
 	isCreating: false,
 	isLoading: false,
+	isUpdating: false,
 	paginatedRecipes: {
 		recipesList: [],
 		pagination: null,
@@ -25,6 +32,11 @@ const initialState: RecipesState = {
 	recipeDetails: {
 		isLoading: false,
 		recipeData: null,
+	},
+	search: {
+		isSearching: false,
+		recipesList: [],
+		pagination: null,
 	},
 };
 
@@ -44,6 +56,18 @@ const recipesSlice = createSlice({
 		});
 		builder.addCase(fetchRecipes.rejected, (state) => {
 			state.isLoading = false;
+		});
+		// Search Recipes
+		builder.addCase(searchRecipes.pending, (state) => {
+			state.search.isSearching = true;
+		});
+		builder.addCase(searchRecipes.fulfilled, (state, action) => {
+			state.search.isSearching = false;
+			state.search.recipesList = action.payload.data;
+			state.search.pagination = action.payload.pagination;
+		});
+		builder.addCase(searchRecipes.rejected, (state) => {
+			state.search.isSearching = false;
 		});
 		// Fetch Recipe details
 		builder.addCase(fetchRecipeDetails.pending, (state) => {
@@ -66,16 +90,16 @@ const recipesSlice = createSlice({
 		builder.addCase(createRecipe.rejected, (state) => {
 			state.isCreating = false;
 		});
-		// // Update a Recipe
-		// builder.addCase(updateRecipe.pending, (state) => {
-		// 	state.isCreating = true;
-		// });
-		// builder.addCase(updateRecipe.fulfilled, (state) => {
-		// 	state.isCreating = false;
-		// });
-		// builder.addCase(updateRecipe.rejected, (state) => {
-		// 	state.isCreating = false;
-		// });
+		// Update a Recipe
+		builder.addCase(updateRecipe.pending, (state) => {
+			state.isUpdating = true;
+		});
+		builder.addCase(updateRecipe.fulfilled, (state) => {
+			state.isUpdating = false;
+		});
+		builder.addCase(updateRecipe.rejected, (state) => {
+			state.isUpdating = false;
+		});
 	},
 });
 

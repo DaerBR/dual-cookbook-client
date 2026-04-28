@@ -6,12 +6,10 @@ import { keyframes } from '@emotion/react';
 import { components } from 'react-select';
 import type {
 	ClearIndicatorProps,
-	ControlProps,
 	DropdownIndicatorProps,
 	GroupBase,
 	IndicatorSeparatorProps,
 	IndicatorsContainerProps,
-	InputProps,
 	LoadingIndicatorProps,
 	MenuListProps,
 	MenuProps,
@@ -20,12 +18,12 @@ import type {
 	PlaceholderProps,
 	SelectComponentsConfig,
 	SingleValueProps,
-	ValueContainerProps,
+	StylesConfig,
 } from 'react-select';
 
-import { useAppTheme } from '../../styles/hooks.ts';
-import { useCommonFieldStyles } from '../../components/atoms/TextInput/hooks.ts';
-import { Icon } from '../../components/atoms/Icon';
+import { useAppTheme } from '../../../styles/hooks.ts';
+import { useCommonFieldStyles } from '../TextInput/hooks.ts';
+import { Icon } from '../Icon';
 import type { RecipeOption } from './types.ts';
 
 const spin = keyframes`
@@ -39,7 +37,7 @@ const spin = keyframes`
 
 type Config = SelectComponentsConfig<RecipeOption, false, GroupBase<RecipeOption>>;
 
-export const useSearchAsyncSelectComponents = (): Config => {
+export const useSearchAsyncSelectStyles = (): StylesConfig<RecipeOption, false, GroupBase<RecipeOption>> => {
 	const theme = useAppTheme();
 	const { fieldStyles } = useCommonFieldStyles({ isFullWidth: true });
 
@@ -48,18 +46,26 @@ export const useSearchAsyncSelectComponents = (): Config => {
 		delete fieldBase['&:focus'];
 		delete fieldBase['&:disabled'];
 
-		const focusRing = {
-			borderColor: theme.colors.primary.borderLighter,
-			boxShadow: theme.boxShadows.xs,
+		return {
+			control: (base, state) => ({
+				...base,
+				...fieldBase,
+				outline: 'none',
+				border: 'none',
+				boxShadow: 'none',
+				borderRadius: 0,
+				borderBottom: `1px solid ${theme.colors.primary.borderDarker}`,
+				cursor: state.isDisabled ? 'not-allowed' : 'pointer',
+				paddingLeft: '24px',
+			}),
 		};
+	}, [fieldStyles, theme]);
+};
 
-		const disabledControl = {
-			borderColor: theme.colors.neutral.borderLighter,
-			backgroundColor: theme.colors.neutral.surfaceSubtle,
-			color: theme.colors.text.disabled,
-			cursor: 'not-allowed' as const,
-		};
+export const useSearchAsyncSelectComponents = (): Config => {
+	const theme = useAppTheme();
 
+	return useMemo(() => {
 		const listPanel = {
 			marginTop: '4px',
 			padding: 0,
@@ -81,60 +87,8 @@ export const useSearchAsyncSelectComponents = (): Config => {
 			backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
 		});
 
-		const chevronColor = theme.colors.text.subtitle;
-
-		const Control = (props: ControlProps<RecipeOption, false, GroupBase<RecipeOption>>) => {
-			const { isFocused, isDisabled } = props;
-
-			return (
-				<components.Control
-					{...props}
-					css={[
-						fieldBase,
-						{
-							display: 'flex',
-							flexWrap: 'wrap',
-							alignItems: 'center',
-							minHeight: '40px',
-							outline: 'none',
-							cursor: isDisabled ? 'not-allowed' : 'pointer',
-							...(isFocused ? focusRing : {}),
-							...(isDisabled ? disabledControl : {}),
-						},
-					]}
-				/>
-			);
-		};
-
-		const ValueContainer = (props: ValueContainerProps<RecipeOption, false, GroupBase<RecipeOption>>) => (
-			<components.ValueContainer
-				{...props}
-				css={{
-					flex: '1 1 0%',
-					minWidth: 0,
-					padding: 0,
-				}}
-			/>
-		);
-
-		const Input = (props: InputProps<RecipeOption, false, GroupBase<RecipeOption>>) => (
-			<components.Input
-				{...props}
-				css={{
-					margin: 0,
-					padding: 0,
-					border: 0,
-					backgroundColor: 'transparent',
-					font: 'inherit',
-					color: 'inherit',
-					outline: 'none',
-					flex: '1 1 auto',
-				}}
-			/>
-		);
-
 		const Placeholder = (props: PlaceholderProps<RecipeOption, false, GroupBase<RecipeOption>>) => (
-			<components.Placeholder {...props} css={{ color: theme.colors.text.disabled }} />
+			<components.Placeholder {...props} css={{ color: theme.colors.primary.disabled }} />
 		);
 
 		const SingleValue = (props: SingleValueProps<RecipeOption, false, GroupBase<RecipeOption>>) => (
@@ -152,22 +106,17 @@ export const useSearchAsyncSelectComponents = (): Config => {
 			/>
 		);
 
-		const DropdownIndicator = (props: DropdownIndicatorProps<RecipeOption, false, GroupBase<RecipeOption>>) => {
-			const { isDisabled } = props;
-
-			return (
-				<components.DropdownIndicator {...props}>
-					<Icon
-						icon={faChevronDown}
-						customStyles={{
-							color: isDisabled ? theme.colors.text.disabled : chevronColor,
-							pointerEvents: 'none',
-							display: 'none',
-						}}
-					/>
-				</components.DropdownIndicator>
-			);
-		};
+		const DropdownIndicator = (props: DropdownIndicatorProps<RecipeOption, false, GroupBase<RecipeOption>>) => (
+			<components.DropdownIndicator {...props}>
+				<Icon
+					icon={faChevronDown}
+					customStyles={{
+						pointerEvents: 'none',
+						display: 'none',
+					}}
+				/>
+			</components.DropdownIndicator>
+		);
 
 		const ClearIndicator = (props: ClearIndicatorProps<RecipeOption, false, GroupBase<RecipeOption>>) => {
 			const isDisabled = props.selectProps.isDisabled ?? false;
@@ -177,8 +126,9 @@ export const useSearchAsyncSelectComponents = (): Config => {
 					<Icon
 						icon={faXmark}
 						fontSize={12}
+						color="primary"
 						customStyles={{
-							color: isDisabled ? theme.colors.text.disabled : chevronColor,
+							color: isDisabled ? theme.colors.text.disabled : theme.colors.primary.main,
 							cursor: isDisabled ? 'not-allowed' : 'pointer',
 						}}
 					/>
@@ -251,10 +201,8 @@ export const useSearchAsyncSelectComponents = (): Config => {
 
 		return {
 			ClearIndicator,
-			Control,
 			DropdownIndicator,
 			IndicatorSeparator,
-			Input,
 			LoadingIndicator,
 			LoadingMessage,
 			Menu,
@@ -263,8 +211,7 @@ export const useSearchAsyncSelectComponents = (): Config => {
 			Option,
 			Placeholder,
 			SingleValue,
-			ValueContainer,
 			IndicatorsContainer,
 		};
-	}, [fieldStyles, theme]);
+	}, [theme]);
 };

@@ -63,8 +63,11 @@ const recipesSlice = createSlice({
 		});
 		builder.addCase(searchRecipes.fulfilled, (state, action) => {
 			state.search.isSearching = false;
-			state.search.recipesList = action.payload.data;
-			state.search.pagination = action.payload.pagination;
+
+			if (!action.meta.arg.asSuggestions) {
+				state.search.recipesList = action.payload.data;
+				state.search.pagination = action.payload.pagination;
+			}
 		});
 		builder.addCase(searchRecipes.rejected, (state) => {
 			state.search.isSearching = false;

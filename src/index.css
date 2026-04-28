@@ -33,7 +33,10 @@ input[data-autocompleted] {
 	opacity: 1;
 	color: #9FA4AB;
 }
-
+.header-search-input::placeholder {
+	color: red!important;
+	opacity: 1; /* Required for Firefox to show full color */
+}
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
 	-webkit-appearance: none;

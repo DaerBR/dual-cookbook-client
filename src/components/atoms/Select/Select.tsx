@@ -18,11 +18,7 @@ import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { Typography } from '../Typography';
 import { Icon } from '../Icon';
 import { useCommonFieldStyles } from '../TextInput/hooks.ts';
-
-interface Option {
-	label: string;
-	value: string;
-}
+import { Option } from './types.ts';
 
 interface SelectProps {
 	customStyles?: CSSProperties;

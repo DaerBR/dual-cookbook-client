@@ -26,7 +26,11 @@ export const fetchRecipes = createAsyncThunk<RecipesPaginationModel, FetchRecipe
 	},
 );
 
-export const searchRecipes = createAsyncThunk<RecipesPaginationModel, FetchRecipesParams>(
+interface SearchRecipesParams extends FetchRecipesParams {
+	asSuggestions?: boolean;
+}
+
+export const searchRecipes = createAsyncThunk<RecipesPaginationModel, SearchRecipesParams>(
 	'recipes/searchRecipes',
 	async (params, { rejectWithValue }) => {
 		try {

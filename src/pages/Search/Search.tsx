@@ -1,55 +1,61 @@
-import AsyncSelect from 'react-select/async';
-import { useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router';
-import type { SingleValue } from 'react-select';
+import type { ChangeEvent } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Typography } from '../../components/atoms/Typography';
-import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks.ts';
-import { searchRecipes } from '../../store/thunks/recipes.ts';
+import { TextInput } from '../../components/atoms/TextInput';
+import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { RecipeCard } from '../../components/RecipeCard';
-import { useSearchAsyncSelectComponents } from './asyncSelectComponents.tsx';
+import { useThunk } from '../../store/hooks/useThunk.ts';
+import { searchRecipes } from '../../store/thunks/recipes.ts';
+import { getQueryParameter } from '../../utils/utils.tsx';
+import { DEBOUNCE_MS, MIN_QUERY_LENGTH } from './constants.ts';
 import { createDebouncedRecipeSearch } from './utils.ts';
-import { RecipeOption } from './types.ts';
-
-const MIN_QUERY_LENGTH = 3;
-const DEBOUNCE_MS = 400;
 
 export const Search = () => {
-	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
+	const [dispatchSearchRecipes] = useThunk(searchRecipes);
 	const isSearching = useAppSelector((state) => state.recipes.search.isSearching);
 	const searchResults = useAppSelector((state) => state.recipes.search.recipesList);
-	const searchSelectComponents = useSearchAsyncSelectComponents();
+	const initialSearchTerm = getQueryParameter('searchTerm');
+	const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
 	const handleSearch = useCallback(
 		async (query: string) => {
-			const result = await dispatch(
-				searchRecipes({
-					limit: 10,
-					page: 1,
-					search: query,
-				}),
-			).unwrap();
+			await dispatchSearchRecipes({
+				limit: 10,
+				page: 1,
+				search: query,
+			});
 
-			return result.data;
+			return [];
 		},
-		[dispatch],
+		[dispatchSearchRecipes],
 	);
 
-	const loadOptions = useMemo(
+	const debouncedRecipeSearch = useMemo(
 		() => createDebouncedRecipeSearch(handleSearch, DEBOUNCE_MS, MIN_QUERY_LENGTH),
 		[handleSearch],
 	);
 
-	const handleOptionClick = useCallback(
-		(option: SingleValue<RecipeOption>) => {
-			if (option) {
-				navigate(`/recipe/${option.value}`);
-			}
+	const handleSearchInputChange = useCallback(
+		(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+			const value = event.target.value;
+			setSearchTerm(value);
+			debouncedRecipeSearch(value).catch(() => undefined);
 		},
-		[navigate],
+		[debouncedRecipeSearch],
 	);
+
+	useEffect(() => {
+		if (initialSearchTerm) {
+			setSearchTerm(initialSearchTerm);
+			dispatchSearchRecipes({
+				limit: 10,
+				page: 1,
+				search: initialSearchTerm,
+			});
+		}
+	}, [dispatchSearchRecipes, initialSearchTerm]);
 
 	return (
 		<div>
@@ -59,22 +65,12 @@ export const Search = () => {
 
 			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
 				<div css={{ marginBottom: '24px', maxWidth: '450px' }}>
-					<AsyncSelect<RecipeOption, false>
-						cacheOptions={false}
-						components={searchSelectComponents}
-						defaultOptions={false}
-						isClearable
-						isLoading={isSearching}
-						loadOptions={loadOptions}
-						loadingMessage={() => 'Завантаження...'}
-						noOptionsMessage={({ inputValue }: { inputValue: string }) =>
-							inputValue.trim().length < MIN_QUERY_LENGTH
-								? `Введіть щонайменше ${MIN_QUERY_LENGTH} символи`
-								: 'Нічого не знайдено'
-						}
-						onChange={handleOptionClick}
+					<TextInput
+						isFullWidth
+						name="searchInput"
+						onChange={handleSearchInputChange}
 						placeholder="Почніть вводити назву страви..."
-						unstyled
+						value={searchTerm ?? ''}
 					/>
 				</div>
 				{isSearching ? (

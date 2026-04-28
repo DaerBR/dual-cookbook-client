@@ -59,3 +59,10 @@ export const getBase64OfFile = (file: File) =>
 		reader.onload = () => resolve((reader.result as string).split('base64,')[1]);
 		reader.onerror = (error) => reject(error);
 	});
+
+export const getQueryParameter = (parameterName: string) => {
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+
+	return urlParams.get(parameterName);
+};

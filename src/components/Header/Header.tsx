@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { faPlus, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router';
@@ -15,11 +15,13 @@ import { buttonsContainerStyles } from './styles.ts';
 import { Typography } from '../atoms/Typography';
 import { CircularProgress } from '../atoms/CircularProgress';
 import { theme } from '../../styles/theme.ts';
+import { SearchSuggestionsInputField } from '../atoms/SearchSuggestionsInputField';
 
 export const Header = () => {
 	const userData = useAppSelector((state) => state.auth.userData);
 	const areUserDataFetched = useAppSelector((state) => state.auth.areUserDataFetched);
 	const isFetchingUserData = useAppSelector((state) => state.auth.isLoading);
+	const location = useLocation();
 
 	const navigate = useNavigate();
 	const headerStyles = useHeaderStyles();
@@ -86,9 +88,11 @@ export const Header = () => {
 				<Link to="/categories" css={linkStyles}>
 					Всі категорії
 				</Link>
-				<Link to="/search" css={linkStyles}>
-					Пошук
-				</Link>
+				{location?.pathname !== '/search' && (
+					<div css={{ width: '300px' }}>
+						<SearchSuggestionsInputField />
+					</div>
+				)}
 			</div>
 			<div css={buttonsContainerStyles}>
 				{userData ? (

@@ -54,6 +54,11 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 						borderRadius: '8px',
 						display: 'flex',
 						position: 'relative',
+						boxShadow: theme.boxShadows.xs,
+						overflow: 'hidden',
+						'&:hover': {
+							boxShadow: theme.boxShadows.md,
+						},
 					}}
 				>
 					<div
@@ -67,6 +72,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 							backgroundRepeat: 'no-repeat',
 							minWidth: '200px',
 							padding: '4px',
+							borderRadius: '4px',
 						}}
 					>
 						{recipe.recipeImage?.secureUrl ? (

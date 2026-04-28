@@ -277,7 +277,7 @@ export const AddRecipe = () => {
 						>
 							Створити
 						</Button>
-						<Button variant="outlined" onClick={() => navigate(-1)}>
+						<Button variant="outlined-neutral" onClick={() => navigate(-1)}>
 							Скасувати
 						</Button>
 					</div>

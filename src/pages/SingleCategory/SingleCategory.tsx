@@ -44,17 +44,17 @@ export const SingleCategory = () => {
 
 	const categoryButtons = isLoggedIn
 		? [
+				<Button startIcon={<Icon icon={faPlus} />} key="add-recipe-button" variant="primary" color="primary">
+					Додати рецепт
+				</Button>,
 				<Button
 					startIcon={<Icon icon={faPencilAlt} />}
 					key="edit-category-button"
-					variant="primary"
+					variant="outlined-primary"
 					isDisabled={!categoryId}
 					onClick={() => navigate(`/edit-category/${categoryId}`)}
 				>
-					Редагувати
-				</Button>,
-				<Button startIcon={<Icon icon={faPlus} />} key="add-recipe-button" variant="primary" color="primary">
-					Додати рецепт
+					Змінити
 				</Button>,
 			]
 		: [];
@@ -64,7 +64,7 @@ export const SingleCategory = () => {
 	return (
 		<div>
 			<PageTitle
-				title={`Категорія ${selectedCategoryData?.name ?? ''}`}
+				title={`Рецепти категорії ${selectedCategoryData?.name ?? ''}`}
 				controlElements={categoryButtons}
 				withReturnButton
 				returnUrl={'/categories' as const}

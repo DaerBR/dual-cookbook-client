@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router';
 
 import { useHeaderStyles } from './hooks.ts';
@@ -14,6 +14,7 @@ import { Icon } from '../atoms/Icon';
 import { buttonsContainerStyles } from './styles.ts';
 import { Typography } from '../atoms/Typography';
 import { CircularProgress } from '../atoms/CircularProgress';
+import { theme } from '../../styles/theme.ts';
 
 export const Header = () => {
 	const userData = useAppSelector((state) => state.auth.userData);
@@ -53,6 +54,17 @@ export const Header = () => {
 		navigate('/');
 	};
 
+	const linkStyles = {
+		color: theme.colors.primary.main,
+		fontWeight: 700,
+		marginRight: '16px',
+		textDecoration: 'none',
+		fontSize: theme.typography.paragraphM.fontSize,
+		'&:hover': {
+			textDecoration: 'underline',
+		},
+	};
+
 	return (
 		<div css={headerStyles}>
 			<div css={logoContainerStyles} className="logo-container">
@@ -67,23 +79,29 @@ export const Header = () => {
 							backgroundPosition: 'center',
 							borderRadius: '50%',
 							border: '2px solid #fda477',
+							marginRight: '16px',
 						}}
 					/>
 				</Link>
+				<Link to="/categories" css={linkStyles}>
+					Всі категорії
+				</Link>
+				<Link to="/search" css={linkStyles}>
+					Пошук
+				</Link>
 			</div>
 			<div css={buttonsContainerStyles}>
-				{userData && (
-					<Typography variant="paragraphM" weight={700}>
-						{userData ? `Шо, ${userData.displayName} - знайшов щось цікаве?` : 'Шо - шукаєш що б йо зжерти?'}
-					</Typography>
-				)}
 				{userData ? (
 					<>
 						<Button onClick={() => navigate('/create-new-recipe')} startIcon={<Icon icon={faPlus} />} variant="primary">
 							Створити рецепт
 						</Button>
-						<Button variant="secondary" onClick={handleLogoutClick}>
-							Вийти
+						<Button
+							variant="outlined-neutral"
+							onClick={handleLogoutClick}
+							css={{ border: 'none', boxShadow: 'none', minWidth: 0, padding: '10px 16px' }}
+						>
+							<Icon icon={faSignOut} color="primary" />
 						</Button>
 					</>
 				) : isFetchingUserData ? (

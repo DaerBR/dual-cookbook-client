@@ -5,7 +5,7 @@ export interface CategoryImage {
 	publicId: string;
 	secureUrl: string;
 }
-export interface Category {
+export interface CategoryModel {
 	categoryImage?: CategoryImage;
 	createdAt: Date;
 	id: string;
@@ -19,18 +19,18 @@ interface Pagination {
 }
 
 export interface CategoryPaginationModel {
-	data: Category[];
+	data: CategoryModel[];
 	pagination: Pagination;
 }
 
 interface CategoriesState {
 	areCategoriesFetched: boolean;
-	categories: Category[];
+	categories: CategoryModel[];
 	isCreating: boolean;
 	isLoading: boolean;
 	isUpdating: boolean;
 	paginatedCategories: {
-		categoriesList: Category[];
+		categoriesList: CategoryModel[];
 		pagination: Pagination | null;
 	};
 }

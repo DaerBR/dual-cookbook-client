@@ -92,7 +92,7 @@ export const AddCategory = () => {
 						>
 							Створити
 						</Button>
-						<Button variant="outlined" onClick={() => navigate('/categories')}>
+						<Button variant="outlined-neutral" onClick={() => navigate('/categories')}>
 							Скасувати
 						</Button>
 					</div>

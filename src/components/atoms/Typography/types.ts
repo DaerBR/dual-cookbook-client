@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode } from 'react';
 
-type TypographyVariant =
+export type TypographyVariant =
 	| 'h1'
 	| 'h2'
 	| 'h3'

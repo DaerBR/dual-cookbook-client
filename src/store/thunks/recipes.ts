@@ -38,8 +38,7 @@ interface CreateRecipesParams {
 	steps: RecipeStep[];
 }
 
-// TODO type response
-export const createRecipe = createAsyncThunk<any, CreateRecipesParams>(
+export const createRecipe = createAsyncThunk<RecipeDetailModel, CreateRecipesParams>(
 	'recipes/createRecipe',
 	async (params, { rejectWithValue }) => {
 		try {
@@ -82,7 +81,7 @@ interface UpdateRecipeParams extends CreateRecipesParams {
 	recipeId: string;
 }
 
-export const updateRecipe = createAsyncThunk<any, UpdateRecipeParams>(
+export const updateRecipe = createAsyncThunk<RecipeDetailModel, UpdateRecipeParams>(
 	'recipes/updateRecipe',
 	async (params, { rejectWithValue }) => {
 		const { recipeId } = params;

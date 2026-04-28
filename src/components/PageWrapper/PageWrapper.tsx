@@ -10,6 +10,9 @@ export const PageWrapper = ({ children }: { children: ReactNode }) => {
 		borderRadius: '4px',
 		boxSizing: 'border-box' as const,
 		position: 'relative' as const,
+		'@media (max-width: 768px)': {
+			padding: '8px 12px',
+		},
 	};
 
 	return (

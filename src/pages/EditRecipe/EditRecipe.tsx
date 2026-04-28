@@ -86,6 +86,7 @@ export const EditRecipe = () => {
 				ingredients: recipeDetails.ingredients.map((ingredient) => ({ text: ingredient.text })),
 				steps: recipeDetails.steps.map((step) => ({ stepDescription: step.stepDescription })),
 				recipeImage: null,
+				sourceUrl: recipeDetails.sourceUrl,
 			});
 			setInitialImageUrl(recipeDetails.recipeImage?.secureUrl);
 		}
@@ -328,7 +329,7 @@ export const EditRecipe = () => {
 						>
 							Зберегти
 						</Button>
-						<Button variant="outlined" onClick={() => navigate(-1)}>
+						<Button variant="outlined-neutral" onClick={() => navigate(-1)}>
 							Скасувати
 						</Button>
 					</div>

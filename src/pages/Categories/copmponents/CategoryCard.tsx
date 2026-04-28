@@ -1,19 +1,15 @@
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-import { Category } from '../../../store/slices/categoriesSlice.ts';
+import { CategoryModel } from '../../../store/slices/categoriesSlice.ts';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { Typography } from '../../../components/atoms/Typography';
 import { categoryImageSectionStyles } from '../styles.ts';
-import { useAppSelector } from '../../../store/hooks/hooks.ts';
-import { Icon } from '../../../components/atoms/Icon';
 
 interface CategoryCardProps {
-	category: Category;
+	category: CategoryModel;
 }
 
 export const CategoryCard = ({ category }: CategoryCardProps) => {
-	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 	const { id, name, categoryImage } = category;
 	const theme = useAppTheme();
 	const linkStyles = {
@@ -31,48 +27,16 @@ export const CategoryCard = ({ category }: CategoryCardProps) => {
 			display: 'block',
 		},
 	};
-	const editButtonStyles = {
-		display: 'none',
-		padding: '8px',
-		boxSizing: 'border-box' as const,
-		border: 'none',
-		backgroundColor: 'transparent',
-		position: 'absolute' as const,
-		right: '16px',
-		top: '16px',
-		cursor: 'pointer',
-		zIndex: 3,
-		borderRadius: '50%',
-		opacity: 0.6,
-		'&:hover': {
-			border: '1px solid',
-			opacity: 1,
-			borderColor: categoryImage ? '#fff' : theme.colors.primary.main,
-		},
-		'&:hover svg': {
-			boxShadow: theme.boxShadows.lg,
-			color: categoryImage ? '#fff' : theme.colors.primary.surfaceDarker,
-		},
-	};
 
 	const titleStyles = {
 		fontSize: '36px',
 		color: categoryImage ? '#fff' : theme.colors.primary.main,
-		boxShadow: theme.boxShadows.xs,
 		zIndex: 2,
+		textShadow: categoryImage ? '1px 1px 4px #df8150' : 'none',
 	};
 
 	return (
 		<Link to={`/category/${id}`} css={linkStyles} key={id}>
-			{isLoggedIn && (
-				<button css={editButtonStyles}>
-					<Icon
-						icon={faPencilAlt}
-						color="primary"
-						customStyles={{ color: categoryImage ? '#fff' : theme.colors.primary.main }}
-					/>
-				</button>
-			)}
 			<div
 				css={{
 					...categoryImageSectionStyles,

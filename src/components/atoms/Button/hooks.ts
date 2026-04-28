@@ -6,51 +6,53 @@ interface UseButtonColorsProps {
 	variant: Variants;
 }
 
+type OutlinedSemanticKey = 'primary' | 'success' | 'error';
+
+const outlinedSemanticVariant = (variant: Variants): OutlinedSemanticKey | null => {
+	switch (variant) {
+		case 'outlined-primary':
+			return 'primary';
+		case 'outlined-success':
+			return 'success';
+		case 'outlined-error':
+			return 'error';
+		default:
+			return null;
+	}
+};
+
 export const useButtonColors = ({ color, variant }: UseButtonColorsProps) => {
 	const theme = useAppTheme();
+	const semanticOutlined = outlinedSemanticVariant(variant);
+
+	if (variant === 'outlined-neutral' || semanticOutlined) {
+		const semantic = semanticOutlined ? theme.colors[semanticOutlined] : null;
+
+		return {
+			backgroundColor: '#fff',
+			hoverBackgroundColor: semantic ? semantic.surfaceSubtle : '#fff',
+			activeBackgroundColor: '#fff',
+			textColor: semantic ? semantic.main : theme.colors.text.title,
+			hoverTextColor: semantic ? semantic.main : theme.colors.text.subtitle,
+			activeTextColor: semantic ? semantic.dark : theme.colors.text.title,
+			disabledTextColor: semantic ? semantic.disabled : theme.colors.text.disabled,
+			disabledBackgroundColor: '#fff',
+		};
+	}
 
 	return {
-		backgroundColor:
-			variant === 'outlined'
-				? '#fff'
-				: variant === 'secondary'
-					? theme.colors[color].surfaceSubtle
-					: theme.colors[color].surfaceDefault,
+		backgroundColor: variant === 'secondary' ? theme.colors[color].surfaceSubtle : theme.colors[color].surfaceDefault,
 
 		hoverBackgroundColor:
-			variant === 'outlined'
-				? '#fff'
-				: variant === 'secondary'
-					? theme.colors[color].surfaceLighter
-					: theme.colors[color].surfaceMedium,
+			variant === 'secondary' ? theme.colors[color].surfaceLighter : theme.colors[color].surfaceMedium,
 		activeBackgroundColor:
-			variant === 'outlined'
-				? '#fff'
-				: variant === 'secondary'
-					? theme.colors[color].surfaceSubtle
-					: theme.colors[color].surfaceDarker,
-		textColor:
-			variant === 'outlined' ? theme.colors.text.title : variant === 'secondary' ? theme.colors[color].main : '#fff',
-		hoverTextColor:
-			variant === 'outlined' ? theme.colors.text.subtitle : variant === 'secondary' ? theme.colors[color].main : '#fff',
+			variant === 'secondary' ? theme.colors[color].surfaceSubtle : theme.colors[color].surfaceDarker,
+		textColor: variant === 'secondary' ? theme.colors[color].main : '#fff',
+		hoverTextColor: variant === 'secondary' ? theme.colors[color].main : '#fff',
 
-		activeTextColor:
-			variant === 'outlined'
-				? theme.colors.text.title
-				: variant === 'secondary'
-					? theme.colors[color].dark
-					: theme.colors.text.title,
-		disabledTextColor:
-			variant === 'outlined'
-				? theme.colors.text.disabled
-				: variant === 'secondary'
-					? theme.colors[color].disabled
-					: '#fff',
+		activeTextColor: variant === 'secondary' ? theme.colors[color].dark : theme.colors.text.title,
+		disabledTextColor: variant === 'secondary' ? theme.colors[color].disabled : '#fff',
 		disabledBackgroundColor:
-			variant === 'outlined'
-				? '#fff'
-				: variant === 'secondary'
-					? theme.colors[color].surfaceSubtle
-					: theme.colors.neutral.surfaceSubtle,
+			variant === 'secondary' ? theme.colors[color].surfaceSubtle : theme.colors.neutral.surfaceSubtle,
 	};
 };

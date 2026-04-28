@@ -12,6 +12,7 @@ import { Icon } from '../../components/atoms/Icon';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { useAppTheme } from '../../styles/hooks.ts';
 import { Typography } from '../../components/atoms/Typography';
+import { Chip } from '../../components/atoms/Chip';
 
 export const SingleRecipe = () => {
 	const { id: recipeId } = useParams();
@@ -85,15 +86,14 @@ export const SingleRecipe = () => {
 								</div>
 							)}
 						</div>
-						<div css={{ margin: '12px 0' }}>
-							{category && (
-								<Typography
-									color="primary"
-									weight={500}
-									variant="paragraphXs"
-								>{`Категорія: ${category.name}`}</Typography>
-							)}
-						</div>
+						{category && (
+							<div css={{ margin: '12px 0', display: 'flex', gap: '8px', alignItems: 'center' }}>
+								<Typography variant="paragraphM" weight={600}>
+									Категорія:{' '}
+								</Typography>
+								<Chip text={category.name} />
+							</div>
+						)}
 						<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
 							<FieldsGroupTitle title="Опис" />
 							<div>{description}</div>
@@ -116,8 +116,18 @@ export const SingleRecipe = () => {
 						)}
 						{sourceUrl && (
 							<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
-								<FieldsGroupTitle title="Посилання на джерело" />
-								<div>{sourceUrl}</div>
+								<Typography variant="paragraphS" weight={600}>
+									Посилання:
+									<span css={{ marginLeft: '4px' }} />
+									<a
+										href={sourceUrl}
+										css={{ textDecoration: 'none', color: theme.colors.primary.main }}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										{sourceUrl}
+									</a>
+								</Typography>
 							</div>
 						)}
 						<div>

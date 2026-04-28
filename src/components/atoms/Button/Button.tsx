@@ -39,6 +39,44 @@ export const Button = ({
 }: ButtonProps) => {
 	const theme = useAppTheme();
 	const buttonColors = useButtonColors({ variant: variant ?? 'primary', color: color ?? 'primary' });
+
+	const isOutlinedVariant =
+		variant === 'outlined-neutral' ||
+		variant === 'outlined-primary' ||
+		variant === 'outlined-success' ||
+		variant === 'outlined-error';
+
+	const outlinedBorderColor = isOutlinedVariant
+		? variant === 'outlined-neutral'
+			? theme.colors.neutral.borderDefault
+			: variant === 'outlined-primary'
+				? theme.colors.primary.main
+				: variant === 'outlined-success'
+					? theme.colors.success.main
+					: theme.colors.error.main
+		: theme.colors.neutral.borderDefault;
+
+	const outlinedActiveBorderColor = isOutlinedVariant
+		? variant === 'outlined-neutral'
+			? theme.colors.neutral.borderDarker
+			: variant === 'outlined-primary'
+				? theme.colors.primary.borderDarker
+				: variant === 'outlined-success'
+					? theme.colors.success.borderDarker
+					: theme.colors.error.borderDarker
+		: theme.colors.neutral.borderDarker;
+
+	const busyOutlinedProgressColor =
+		variant === 'outlined-neutral'
+			? 'neutral'
+			: variant === 'outlined-primary'
+				? 'primary'
+				: variant === 'outlined-success'
+					? 'success'
+					: variant === 'outlined-error'
+						? 'error'
+						: null;
+
 	const configurableButtonStyles: CSSObject = {
 		fontSize: theme.typography.paragraphS.fontSize,
 		lineHeight: theme.typography.paragraphS.lineHeight,
@@ -56,14 +94,14 @@ export const Button = ({
 		'&:active': {
 			backgroundColor: buttonColors.activeBackgroundColor,
 			color: buttonColors.activeTextColor,
-			borderColor: variant === 'outlined' ? theme.colors.neutral.borderDarker : 'none',
+			borderColor: isOutlinedVariant ? outlinedActiveBorderColor : 'none',
 			'& .start-icon-container svg, & .end-icon-container svg': { color: buttonColors.activeTextColor },
 		},
-		border: variant === 'outlined' ? `1px solid ${theme.colors.neutral.borderDefault}` : 'none',
-		boxShadow: variant === 'outlined' ? theme.boxShadows.xs : 'none',
+		border: isOutlinedVariant ? `1px solid ${outlinedBorderColor}` : 'none',
+		boxShadow: isOutlinedVariant ? theme.boxShadows.xs : 'none',
 		'&:disabled': {
 			pointerEvents: 'none',
-			boxShadow: variant === 'outlined' ? theme.boxShadows.xs : 'none',
+			boxShadow: isOutlinedVariant ? theme.boxShadows.xs : 'none',
 			color: buttonColors.disabledTextColor,
 			backgroundColor: buttonColors.disabledBackgroundColor,
 			cursor: 'default',
@@ -84,7 +122,9 @@ export const Button = ({
 			{isBusy ? (
 				<CircularProgress
 					sizePx={16}
-					color={variant === 'outlined' ? 'neutral' : variant === 'primary' ? 'white' : color}
+					color={
+						busyOutlinedProgressColor ?? (variant === 'primary' ? 'white' : color)
+					}
 				/>
 			) : (
 				children

@@ -39,7 +39,7 @@ export const Categories = () => {
 									variant="secondary"
 									startIcon={<Icon icon={faPlus} />}
 								>
-									Створити категорію
+									Додати категорію
 								</Button>,
 							]
 						: undefined

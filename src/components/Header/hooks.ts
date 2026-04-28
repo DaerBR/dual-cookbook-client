@@ -17,4 +17,7 @@ export const useHeaderStyles = (): CSSObject => ({
 	backgroundColor: '#fff',
 	borderRadius: '4px',
 	zIndex: 3,
+	'@media (max-width: 768px)': {
+		padding: '10px 12px',
+	},
 });

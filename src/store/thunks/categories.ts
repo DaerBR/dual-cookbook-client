@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { apiRequest } from '../../api/apiRequest.ts';
-import { Category, CategoryPaginationModel } from '../slices/categoriesSlice.ts';
+import { CategoryModel, CategoryPaginationModel } from '../slices/categoriesSlice.ts';
 
 interface FetchCategoriesParams {
 	limit: number;
@@ -25,7 +25,7 @@ export const fetchCategories = createAsyncThunk<CategoryPaginationModel, FetchCa
 	},
 );
 
-export const fetchAllCategories = createAsyncThunk<Category[]>(
+export const fetchAllCategories = createAsyncThunk<CategoryModel[]>(
 	'categories/fetchAllCategories',
 	async (_, { rejectWithValue }) => {
 		try {
@@ -49,8 +49,7 @@ interface CreateCategoryParams {
 	name: string;
 }
 
-// TODO type response
-export const createCategory = createAsyncThunk<any, CreateCategoryParams>(
+export const createCategory = createAsyncThunk<CategoryModel, CreateCategoryParams>(
 	'categories/createCategory',
 	async (params, { rejectWithValue, dispatch }) => {
 		try {
@@ -78,7 +77,7 @@ interface UpdateCategoryParams {
 	name: string;
 }
 
-export const updateCategory = createAsyncThunk<any, UpdateCategoryParams>(
+export const updateCategory = createAsyncThunk<CategoryModel, UpdateCategoryParams>(
 	'categories/updateCategory',
 	async (params, { rejectWithValue, dispatch }) => {
 		const { categoryId } = params;

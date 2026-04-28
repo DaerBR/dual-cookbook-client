@@ -31,7 +31,7 @@ export const DeleteRecipeModal = ({ categoryId, recipeId, isModalOpen, closeModa
 		<Button onClick={handleDeleteRecipe} variant="primary" color="error" key="confirm" fullWidth>
 			Видалити
 		</Button>,
-		<Button onClick={handleCloseModal} variant="outlined" key="cancel" fullWidth>
+		<Button onClick={handleCloseModal} variant="outlined-neutral" key="cancel" fullWidth>
 			Скасувати
 		</Button>,
 	];

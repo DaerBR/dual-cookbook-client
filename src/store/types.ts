@@ -30,7 +30,7 @@ export interface RecipeDetailModel extends RecipeTableModel {
 	steps: RecipeStep[];
 }
 
-export interface Pagination {
+export interface PaginationModel {
 	limit: number;
 	page: number;
 	total: number;
@@ -39,5 +39,5 @@ export interface Pagination {
 
 export interface RecipesPaginationModel {
 	data: RecipeTableModel[];
-	pagination: Pagination | null;
+	pagination: PaginationModel | null;
 }

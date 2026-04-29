@@ -11,6 +11,7 @@ import { Icon } from '../../components/atoms/Icon';
 import { fetchRecipes } from '../../store/thunks/recipes.ts';
 import { RecipeCard } from '../../components/RecipeCard';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
+import { Pagination } from '../../components/atoms/Pagination/Pagination.tsx';
 
 export const SingleCategory = () => {
 	const { id: categoryId } = useParams();
@@ -20,6 +21,7 @@ export const SingleCategory = () => {
 	const categoryRecipes = useAppSelector((state) => state.recipes.paginatedRecipes.recipesList);
 	const navigate = useNavigate();
 	const isFetchingRecipes = useAppSelector((state) => state.recipes.isLoading);
+	const categoryRecipesPagination = useAppSelector((state) => state.recipes.paginatedRecipes.pagination);
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 	const [dispatchFetchRecipes] = useThunk(fetchRecipes);
@@ -28,7 +30,8 @@ export const SingleCategory = () => {
 		if (categoryId) {
 			dispatchFetchRecipes({
 				category: categoryId,
-				limit: 10,
+				// limit: 10,
+				limit: 1,
 				page: 1,
 			});
 		}
@@ -76,6 +79,14 @@ export const SingleCategory = () => {
 					categoryRecipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
 				)}
 			</div>
+			{categoryRecipesPagination && (
+				<Pagination
+					currentPage={categoryRecipesPagination.page}
+					fetchDataMethod={dispatchFetchRecipes}
+					fetchParams={{ limit: 1, category: categoryId }}
+					totalPages={categoryRecipesPagination.totalPages}
+				/>
+			)}
 		</div>
 	);
 };

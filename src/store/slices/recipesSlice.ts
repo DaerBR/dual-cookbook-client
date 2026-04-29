@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createRecipe, fetchRecipeDetails, fetchRecipes, searchRecipes, updateRecipe } from '../thunks/recipes.ts';
-import { Pagination, RecipeDetailModel, RecipeTableModel } from '../types.ts';
+import { PaginationModel, RecipeDetailModel, RecipeTableModel } from '../types.ts';
 
 interface RecipesState {
 	isCreating: boolean;
 	isLoading: boolean;
 	isUpdating: boolean;
 	paginatedRecipes: {
-		pagination: Pagination | null;
+		pagination: PaginationModel | null;
 		recipesList: RecipeTableModel[];
 	};
 	recipeDetails: {
@@ -16,7 +16,7 @@ interface RecipesState {
 	};
 	search: {
 		isSearching: boolean;
-		pagination: Pagination | null;
+		pagination: PaginationModel | null;
 		recipesList: RecipeTableModel[];
 	};
 }

@@ -56,7 +56,7 @@ export const useSearchAsyncSelectStyles = (): StylesConfig<RecipeOption, false, 
 				borderRadius: 0,
 				borderBottom: `1px solid ${theme.colors.primary.borderDarker}`,
 				cursor: state.isDisabled ? 'not-allowed' : 'pointer',
-				paddingLeft: '24px',
+				paddingLeft: 0,
 			}),
 		};
 	}, [fieldStyles, theme]);

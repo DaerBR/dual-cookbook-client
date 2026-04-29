@@ -1,7 +1,7 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import AsyncSelect from 'react-select/async';
 import { useNavigate } from 'react-router';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { GroupBase, SingleValue, StylesConfig } from 'react-select';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks/hooks.ts';
@@ -12,8 +12,10 @@ import { searchRecipes } from '../../../store/thunks/recipes.ts';
 import { DEBOUNCE_MS, MIN_QUERY_LENGTH } from './constants.ts';
 import { createDebouncedRecipeSearch } from './utils.ts';
 import { Option } from '../Select/types.ts';
+import { Button } from '../Button';
 
 export const SearchSuggestionsInputField = () => {
+	const [searchTerm, setSearchTerm] = useState('');
 	const theme = useAppTheme();
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
@@ -33,6 +35,7 @@ export const SearchSuggestionsInputField = () => {
 
 	const handleSearch = useCallback(
 		async (query: string) => {
+			setSearchTerm(query);
 			const result = await dispatch(
 				searchRecipes({
 					limit: 10,
@@ -55,51 +58,63 @@ export const SearchSuggestionsInputField = () => {
 	const handleOptionClick = useCallback(
 		(option: SingleValue<Option>) => {
 			if (option) {
-				navigate(`/search?searchTerm=${option.value}`);
-				// Reset input value ?
+				navigate(`/recipe/${option.value}`);
 			}
 		},
 		[navigate],
 	);
 
+	const handleNavigateToSearch = () => {
+		if (searchTerm !== '') {
+			navigate(`/search?searchTerm=${searchTerm}`);
+		}
+	};
+
 	return (
-		<div
-			css={{
-				position: 'relative',
-				width: '100%',
-			}}
-		>
-			<span
-				aria-hidden
+		<div css={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', maxWidth: '300px' }}>
+			<div
 				css={{
-					position: 'absolute',
-					left: 0,
-					top: '50%',
-					transform: 'translateY(-50%)',
-					zIndex: 1,
-					display: 'flex',
-					alignItems: 'center',
-					pointerEvents: 'none',
-					color: theme.colors.primary.disabled,
+					position: 'relative',
+					width: '100%',
 				}}
 			>
+				<span
+					aria-hidden
+					css={{
+						position: 'absolute',
+						left: 0,
+						top: '50%',
+						transform: 'translateY(-50%)',
+						zIndex: 1,
+						display: 'flex',
+						alignItems: 'center',
+						pointerEvents: 'none',
+						color: theme.colors.primary.disabled,
+					}}
+				/>
+				<AsyncSelect<Option, false>
+					cacheOptions={false}
+					components={searchSelectComponents}
+					defaultOptions={false}
+					isClearable
+					isLoading={isSearching}
+					loadOptions={loadOptions}
+					loadingMessage={() => 'Пошук...'}
+					noOptionsMessage={() => 'Нічого не знайдено'}
+					onChange={handleOptionClick}
+					placeholder="Шукати"
+					styles={searchSelectStyles}
+					unstyled
+					inputId="header-search-input"
+				/>
+			</div>
+			<Button
+				variant="outlined-primary"
+				onClick={handleNavigateToSearch}
+				customStyles={{ minWidth: 0, padding: '10px 12px', border: 'none', boxShadow: 'none' }}
+			>
 				<Icon icon={faMagnifyingGlass} fontSize={14} customStyles={{ color: 'inherit' }} />
-			</span>
-			<AsyncSelect<Option, false>
-				cacheOptions={false}
-				components={searchSelectComponents}
-				defaultOptions={false}
-				isClearable
-				isLoading={isSearching}
-				loadOptions={loadOptions}
-				loadingMessage={() => 'Пошук...'}
-				noOptionsMessage={() => 'Нічого не знайдено'}
-				onChange={handleOptionClick}
-				placeholder="Шукати"
-				styles={searchSelectStyles}
-				unstyled
-				inputId="header-search-input"
-			/>
+			</Button>
 		</div>
 	);
 };

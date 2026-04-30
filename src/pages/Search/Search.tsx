@@ -11,6 +11,7 @@ import { searchRecipes } from '../../store/thunks/recipes.ts';
 import { getQueryParameter } from '../../utils/utils.tsx';
 import { DEBOUNCE_MS, MIN_QUERY_LENGTH } from './constants.ts';
 import { createDebouncedRecipeSearch } from './utils.ts';
+import { Pagination } from '../../components/atoms/Pagination/Pagination.tsx';
 
 export const Search = () => {
 	const [dispatchSearchRecipes] = useThunk(searchRecipes);
@@ -18,6 +19,7 @@ export const Search = () => {
 	const searchResults = useAppSelector((state) => state.recipes.search.recipesList);
 	const initialSearchTerm = getQueryParameter('searchTerm');
 	const [searchTerm, setSearchTerm] = useState<string | null>(null);
+	const searchResultsPagination = useAppSelector((state) => state.recipes.search.pagination);
 
 	const handleSearch = useCallback(
 		async (query: string) => {
@@ -77,6 +79,14 @@ export const Search = () => {
 					<LoadingIndicator />
 				) : (
 					searchResults.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
+				)}
+				{searchResultsPagination && (
+					<Pagination
+						currentPage={searchResultsPagination.page}
+						fetchDataMethod={dispatchSearchRecipes}
+						fetchParams={{ limit: 10, search: searchTerm }}
+						totalPages={searchResultsPagination.totalPages}
+					/>
 				)}
 			</div>
 		</div>

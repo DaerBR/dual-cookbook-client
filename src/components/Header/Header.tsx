@@ -59,7 +59,7 @@ export const Header = () => {
 	const linkStyles = {
 		color: theme.colors.primary.main,
 		fontWeight: 700,
-		marginRight: '16px',
+		marginRight: '24px',
 		textDecoration: 'none',
 		fontSize: theme.typography.paragraphM.fontSize,
 		'&:hover': {

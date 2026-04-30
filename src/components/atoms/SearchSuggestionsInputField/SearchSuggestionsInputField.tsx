@@ -5,7 +5,6 @@ import { useCallback, useMemo, useState } from 'react';
 import type { GroupBase, SingleValue, StylesConfig } from 'react-select';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks/hooks.ts';
-import { useAppTheme } from '../../../styles/hooks.ts';
 import { Icon } from '../Icon';
 import { useSearchAsyncSelectComponents, useSearchAsyncSelectStyles } from './asyncSelectComponents.tsx';
 import { searchRecipes } from '../../../store/thunks/recipes.ts';
@@ -13,10 +12,10 @@ import { DEBOUNCE_MS, MIN_QUERY_LENGTH } from './constants.ts';
 import { createDebouncedRecipeSearch } from './utils.ts';
 import { Option } from '../Select/types.ts';
 import { Button } from '../Button';
+import { searchContainerStyles } from './styles.ts';
 
 export const SearchSuggestionsInputField = () => {
 	const [searchTerm, setSearchTerm] = useState('');
-	const theme = useAppTheme();
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const isSearching = useAppSelector((state) => state.recipes.search.isSearching);
@@ -71,27 +70,13 @@ export const SearchSuggestionsInputField = () => {
 	};
 
 	return (
-		<div css={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', maxWidth: '300px' }}>
+		<div css={searchContainerStyles}>
 			<div
 				css={{
 					position: 'relative',
 					width: '100%',
 				}}
 			>
-				<span
-					aria-hidden
-					css={{
-						position: 'absolute',
-						left: 0,
-						top: '50%',
-						transform: 'translateY(-50%)',
-						zIndex: 1,
-						display: 'flex',
-						alignItems: 'center',
-						pointerEvents: 'none',
-						color: theme.colors.primary.disabled,
-					}}
-				/>
 				<AsyncSelect<Option, false>
 					cacheOptions={false}
 					components={searchSelectComponents}

@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router';
 import { useEffect } from 'react';
-import { faPencilAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
@@ -30,8 +30,7 @@ export const SingleCategory = () => {
 		if (categoryId) {
 			dispatchFetchRecipes({
 				category: categoryId,
-				// limit: 10,
-				limit: 1,
+				limit: 10,
 				page: 1,
 			});
 		}
@@ -47,9 +46,6 @@ export const SingleCategory = () => {
 
 	const categoryButtons = isLoggedIn
 		? [
-				<Button startIcon={<Icon icon={faPlus} />} key="add-recipe-button" variant="primary" color="primary">
-					Додати рецепт
-				</Button>,
 				<Button
 					startIcon={<Icon icon={faPencilAlt} />}
 					key="edit-category-button"
@@ -83,7 +79,7 @@ export const SingleCategory = () => {
 				<Pagination
 					currentPage={categoryRecipesPagination.page}
 					fetchDataMethod={dispatchFetchRecipes}
-					fetchParams={{ limit: 1, category: categoryId }}
+					fetchParams={{ limit: 10, category: categoryId }}
 					totalPages={categoryRecipesPagination.totalPages}
 				/>
 			)}

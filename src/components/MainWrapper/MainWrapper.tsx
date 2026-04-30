@@ -25,7 +25,7 @@ export const MainWrapper = ({ children }: MainWrapperProps) => {
 	return (
 		<div>
 			<GlobalLoadingIndicatorContext value={globalLoadingIndicatorContextValue}>
-				{showLoadingIndicator && <LoadingIndicator />}
+				{showLoadingIndicator && <LoadingIndicator asGlobal />}
 				{children}
 			</GlobalLoadingIndicatorContext>
 		</div>

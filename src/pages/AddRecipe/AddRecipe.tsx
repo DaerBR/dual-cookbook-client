@@ -31,7 +31,6 @@ export const AddRecipe = () => {
 	const [dispatchCreateRecipe] = useThunk(createRecipe, {
 		useGlobalLoader: true,
 		successMessage: 'Рецепт успішно додано!',
-		// TODO - redirect to selected category?
 		successRedirectRoute: '/',
 	});
 	const navigate = useNavigate();
@@ -240,6 +239,7 @@ export const AddRecipe = () => {
 											render={({ field }) => (
 												<TextInput
 													isFullWidth
+													isRequired={index === 0}
 													multiline
 													name={`steps.${index}.stepDescription`}
 													label={`Крок ${index + 1}`}

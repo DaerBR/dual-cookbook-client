@@ -1,6 +1,10 @@
 import { CircularProgress } from '../atoms/CircularProgress';
 
-export const LoadingIndicator = () => (
+interface LoadingIndicatorProps {
+	asGlobal?: boolean;
+}
+
+export const LoadingIndicator = ({ asGlobal }: LoadingIndicatorProps) => (
 	<div
 		css={{
 			backgroundColor: 'rgb(255 255 255 / 70%)',
@@ -9,7 +13,7 @@ export const LoadingIndicator = () => (
 			alignItems: 'center',
 			width: '100%',
 			height: '100%',
-			position: 'absolute',
+			position: asGlobal ? 'fixed' : 'absolute',
 			left: 0,
 			top: 0,
 			zIndex: 3,

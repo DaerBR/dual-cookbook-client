@@ -56,7 +56,7 @@ export const SingleRecipe = () => {
 					<LoadingIndicator />
 				) : (
 					<>
-						<div css={{ textAlign: 'center' }}>
+						<div css={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
 							{recipeImage?.secureUrl ? (
 								<img
 									src={recipeImage?.secureUrl ?? ''}
@@ -75,11 +75,11 @@ export const SingleRecipe = () => {
 										height: '200px',
 										width: '420px',
 										border: '1px solid',
-										borderColor: theme.colors.primary.borderDarker,
 										borderRadius: '12px',
 										display: 'flex',
 										justifyContent: 'center',
 										alignItems: 'center',
+										borderColor: theme.colors.primary.borderDarker,
 									}}
 								>
 									<Icon icon={faPizzaSlice} fontSize={48} customStyles={{ color: theme.colors.primary.borderDarker }} />

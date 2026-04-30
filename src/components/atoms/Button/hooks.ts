@@ -34,7 +34,7 @@ export const useButtonColors = ({ color, variant }: UseButtonColorsProps) => {
 			activeBackgroundColor: '#fff',
 			textColor: semantic ? semantic.main : theme.colors.text.title,
 			hoverTextColor: semantic ? semantic.main : theme.colors.text.subtitle,
-			activeTextColor: semantic ? semantic.dark : theme.colors.text.title,
+			activeTextColor: semantic ? semantic.main : theme.colors.text.title,
 			disabledTextColor: semantic ? semantic.disabled : theme.colors.text.disabled,
 			disabledBackgroundColor: '#fff',
 		};
@@ -50,7 +50,7 @@ export const useButtonColors = ({ color, variant }: UseButtonColorsProps) => {
 		textColor: variant === 'secondary' ? theme.colors[color].main : '#fff',
 		hoverTextColor: variant === 'secondary' ? theme.colors[color].main : '#fff',
 
-		activeTextColor: variant === 'secondary' ? theme.colors[color].dark : theme.colors.text.title,
+		activeTextColor: variant === 'secondary' ? theme.colors[color].main : '#fff',
 		disabledTextColor: variant === 'secondary' ? theme.colors[color].disabled : '#fff',
 		disabledBackgroundColor:
 			variant === 'secondary' ? theme.colors[color].surfaceSubtle : theme.colors.neutral.surfaceSubtle,

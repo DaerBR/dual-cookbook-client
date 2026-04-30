@@ -1,8 +1,11 @@
-import { useState } from 'react';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import { Button } from '../Button';
 import { Icon } from '../Icon';
+import { getPageItems } from './utils.ts';
+import { useAppTheme } from '../../../styles/hooks.ts';
+import { Typography } from '../Typography';
+import { ellipsisStyles, paginationButtonStyles, paginationContainerStyles } from './styles.ts';
 
 interface PaginationProps {
 	currentPage: number;
@@ -12,50 +15,69 @@ interface PaginationProps {
 }
 
 export const Pagination = ({ currentPage, totalPages, fetchDataMethod, fetchParams }: PaginationProps) => {
-	const [currentPageNumber, setCurrentPageNumber] = useState(currentPage);
+	const theme = useAppTheme();
 
-	const handleFetchPageData = () => {
-		fetchDataMethod({ ...fetchParams, page: currentPageNumber });
+	const handleChangePage = (page: number) => {
+		fetchDataMethod({ ...fetchParams, page });
 	};
-
-	const pageButtons = Array.from({ length: totalPages }, (_, index) => (
-		<Button
-			variant="outlined-neutral"
-			key={index}
-			isDisabled={currentPageNumber === index + 1}
-			onClick={() => {
-				setCurrentPageNumber(index + 1);
-				handleFetchPageData();
-			}}
-		>
-			{index + 1}
-		</Button>
-	));
+	const pageItems = getPageItems(currentPage, totalPages);
 
 	return (
-		<div css={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+		<div css={paginationContainerStyles}>
 			<Button
+				customStyles={paginationButtonStyles}
 				variant="outlined-neutral"
+				isDisabled={currentPage <= 1}
 				onClick={() => {
 					if (currentPage > 1) {
-						setCurrentPageNumber(currentPage - 1);
-						handleFetchPageData();
+						handleChangePage(currentPage - 1);
 					}
 				}}
 			>
-				<Icon icon={faArrowLeft} fontSize={14} customStyles={{ color: 'inherit' }} />
+				<Icon icon={faArrowLeft} fontSize={10} customStyles={{ color: 'inherit' }} />
 			</Button>
-			<div css={{ display: 'flex', gap: '12px' }}>{pageButtons}</div>
+			<div css={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+				{pageItems.map((item, index) =>
+					item === 'ellipsis' ? (
+						<span
+							key={`ellipsis-${index}`}
+							css={{
+								...paginationButtonStyles,
+								...ellipsisStyles,
+							}}
+						>
+							<Typography variant="paragraphS">…</Typography>
+						</span>
+					) : (
+						<Button
+							customStyles={{
+								...paginationButtonStyles,
+								borderColor:
+									currentPage === item ? theme.colors.neutral.borderDarker : theme.colors.neutral.borderDefault,
+								boxShadow: currentPage === item ? theme.boxShadows.sm : theme.boxShadows.xs,
+								color: currentPage === item ? theme.colors.text.title : `${theme.colors.text.caption}!important`,
+								fontWeight: currentPage === item ? 600 : 400,
+							}}
+							variant="outlined-neutral"
+							key={item}
+							onClick={() => handleChangePage(item)}
+						>
+							{item}
+						</Button>
+					),
+				)}
+			</div>
 			<Button
+				customStyles={paginationButtonStyles}
 				variant="outlined-neutral"
+				isDisabled={currentPage >= totalPages}
 				onClick={() => {
 					if (currentPage < totalPages) {
-						setCurrentPageNumber(currentPage + 1);
-						handleFetchPageData();
+						handleChangePage(currentPage + 1);
 					}
 				}}
 			>
-				<Icon icon={faArrowRight} fontSize={14} customStyles={{ color: 'inherit' }} />
+				<Icon icon={faArrowRight} fontSize={10} customStyles={{ color: 'inherit' }} />
 			</Button>
 		</div>
 	);

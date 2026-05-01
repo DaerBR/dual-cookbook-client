@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 import { createRecipe, fetchRecipeDetails, fetchRecipes, searchRecipes, updateRecipe } from '../thunks/recipes.ts';
 import { PaginationModel, RecipeDetailModel, RecipeTableModel } from '../types.ts';
 
@@ -40,10 +40,17 @@ const initialState: RecipesState = {
 	},
 };
 
+export const resetSearchData = createAction('recipes/resetSearchData');
+
 const recipesSlice = createSlice({
 	name: 'recipes',
 	initialState,
-	reducers: {},
+	reducers: {
+		resetSearchData(state) {
+			state.search.recipesList = [];
+			state.search.pagination = null;
+		},
+	},
 	extraReducers(builder) {
 		// Fetch paginated Recipes
 		builder.addCase(fetchRecipes.pending, (state) => {

@@ -5,7 +5,9 @@ import { RecipeDetailModel, RecipeIngredient, RecipeStep, RecipesPaginationModel
 interface FetchRecipesParams {
 	category?: string;
 	limit: number;
+	order?: 'asc' | 'desc';
 	page: number;
+	recipeAuthor?: string;
 	search?: string;
 }
 

@@ -16,6 +16,7 @@ import { searchContainerStyles } from './styles.ts';
 
 export const SearchSuggestionsInputField = () => {
 	const [searchTerm, setSearchTerm] = useState('');
+	const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>(null);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const isSearching = useAppSelector((state) => state.recipes.search.isSearching);
@@ -59,12 +60,16 @@ export const SearchSuggestionsInputField = () => {
 			if (option) {
 				navigate(`/recipe/${option.value}`);
 			}
+			setSelectedOption(null);
+			setSearchTerm('');
 		},
 		[navigate],
 	);
 
 	const handleNavigateToSearch = () => {
-		if (searchTerm !== '') {
+		if (searchTerm === '') {
+			navigate('/search');
+		} else {
 			navigate(`/search?searchTerm=${searchTerm}`);
 		}
 	};
@@ -88,6 +93,7 @@ export const SearchSuggestionsInputField = () => {
 					noOptionsMessage={() => 'Нічого не знайдено'}
 					onChange={handleOptionClick}
 					placeholder="Шукати"
+					value={selectedOption}
 					styles={searchSelectStyles}
 					unstyled
 					inputId="header-search-input"

@@ -2,15 +2,13 @@
   "name": "dual-cookbook-client",
   "private": true,
   "version": "0.0.1",
+  "packageManager": "pnpm@8.15.9",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
-  },
-  "engines": {
-    "pnpm": "8.15.9"
   },
   "dependencies": {
     "@emotion/babel-preset-css-prop": "^11.12.0",

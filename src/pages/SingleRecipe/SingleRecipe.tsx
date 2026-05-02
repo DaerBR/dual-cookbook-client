@@ -45,7 +45,7 @@ export const SingleRecipe = () => {
 			]
 		: [];
 
-	const { category, createdAt, recipeImage, ingredients, steps, description, createdBy, sourceUrl } =
+	const { categories, createdAt, recipeImage, ingredients, steps, description, createdBy, sourceUrl } =
 		recipeDetails ?? {};
 
 	return (
@@ -86,12 +86,14 @@ export const SingleRecipe = () => {
 								</div>
 							)}
 						</div>
-						{category && (
+						{categories && (
 							<div css={{ margin: '12px 0', display: 'flex', gap: '8px', alignItems: 'center' }}>
 								<Typography variant="paragraphM" weight={600}>
-									Категорія:{' '}
+									Категорії:{' '}
 								</Typography>
-								<Chip text={category.name} />
+								{categories.map((category) => (
+									<Chip key={category.id} color="primary" size="md" text={category?.name ?? ''} />
+								))}
 							</div>
 						)}
 						<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>

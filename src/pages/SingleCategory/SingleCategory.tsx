@@ -29,7 +29,7 @@ export const SingleCategory = () => {
 	useEffect(() => {
 		if (categoryId) {
 			dispatchFetchRecipes({
-				category: categoryId,
+				categories: categoryId,
 				limit: 10,
 				page: 1,
 			});

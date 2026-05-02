@@ -12,13 +12,13 @@ import { TextInput } from '../../components/atoms/TextInput';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchAllCategories } from '../../store/thunks/categories.ts';
-import { Select } from '../../components/atoms/Select';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
 import { DeleteIconButton } from '../../components/DeleteIconButton';
-import { getBase64OfFile } from '../../utils/utils.tsx';
+import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
 import { createRecipe } from '../../store/thunks/recipes.ts';
+import { MultiSelect } from '../../components/atoms/MultiSelect';
 
 export const AddRecipe = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
@@ -46,7 +46,7 @@ export const AddRecipe = () => {
 		reValidateMode: 'onChange',
 		defaultValues: {
 			name: '',
-			category: '',
+			categories: [],
 			description: '',
 			ingredients: [{ text: '' }],
 			steps: [{ stepDescription: '' }],
@@ -63,12 +63,13 @@ export const AddRecipe = () => {
 	} = form;
 
 	const handleFormSubmit = handleSubmit(async (formValues) => {
-		const { recipeImage, name, description, steps, category, ingredients, sourceUrl } = formValues;
+		const { recipeImage, name, description, steps, categories, ingredients, sourceUrl } = formValues;
 		const imageBase64Data = recipeImage ? await getBase64OfFile(recipeImage) : null;
+		const categoriesIds = pluck('value', categories);
 
 		const payload = {
 			name,
-			category,
+			categories: categoriesIds,
 			ingredients,
 			steps,
 			recipeImage: recipeImage
@@ -193,16 +194,15 @@ export const AddRecipe = () => {
 							</div>
 							<div css={fieldBlockStyles}>
 								<Controller
-									name="category"
+									name="categories"
 									control={control}
 									render={({ field }) => (
-										<Select
+										<MultiSelect
 											isRequired
-											label="Категорія"
-											placeholder="Оберіть категорію"
-											name="category"
-											onBlur={field.onBlur}
-											onChange={field.onChange}
+											label="Категорії"
+											placeholder="Оберіть категорії"
+											name="categories"
+											onChange={(newValue) => field.onChange([...newValue])}
 											options={categoriesOptions}
 											value={field.value}
 										/>

@@ -66,3 +66,13 @@ export const getQueryParameter = (parameterName: string) => {
 
 	return urlParams.get(parameterName);
 };
+
+export const pluck = (parameter: string, valuesArray: Record<string, any>) => {
+	if (!parameter || !valuesArray) {
+		return [];
+	}
+
+	return valuesArray
+		.map((item: Record<string, any>) => item[parameter])
+		.filter((value: any) => value !== undefined && value !== null);
+};

@@ -3,7 +3,7 @@ import { apiRequest } from '../../api/apiRequest.ts';
 import { RecipeDetailModel, RecipeIngredient, RecipeStep, RecipesPaginationModel } from '../types.ts';
 
 interface FetchRecipesParams {
-	category?: string;
+	categories?: string;
 	limit: number;
 	order?: 'asc' | 'desc';
 	page: number;
@@ -50,7 +50,7 @@ export const searchRecipes = createAsyncThunk<RecipesPaginationModel, SearchReci
 );
 
 interface CreateRecipesParams {
-	category: string;
+	categories: string[];
 	description: string | null;
 	ingredients: RecipeIngredient[];
 	name: string;

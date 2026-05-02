@@ -12,14 +12,14 @@ import { TextInput } from '../../components/atoms/TextInput';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchAllCategories } from '../../store/thunks/categories.ts';
-import { Select } from '../../components/atoms/Select';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
 import { DeleteIconButton } from '../../components/DeleteIconButton';
-import { getBase64OfFile } from '../../utils/utils.tsx';
+import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
 import { fetchRecipeDetails, updateRecipe } from '../../store/thunks/recipes.ts';
 import { DeleteRecipeModal } from '../SingleRecipe/modals/DeleteRecipeModal.tsx';
+import { MultiSelect } from '../../components/atoms/MultiSelect';
 
 export const EditRecipe = () => {
 	const { id: recipeId } = useParams();
@@ -45,7 +45,7 @@ export const EditRecipe = () => {
 	const [dispatchUpdateRecipe] = useThunk(updateRecipe, {
 		useGlobalLoader: true,
 		successMessage: 'Рецепт успішно додано!',
-		successRedirectRoute: recipeDetails?.category ? `/category/${recipeDetails?.category.id}` : '/categories',
+		successRedirectRoute: recipeDetails?.categories ? `/category/${recipeDetails?.categories[0].id}` : '/categories',
 	});
 	const navigate = useNavigate();
 
@@ -60,7 +60,7 @@ export const EditRecipe = () => {
 		reValidateMode: 'onChange',
 		defaultValues: {
 			name: '',
-			category: '',
+			categories: [],
 			description: '',
 			ingredients: [{ text: '' }],
 			steps: [{ stepDescription: '' }],
@@ -79,9 +79,13 @@ export const EditRecipe = () => {
 
 	useEffect(() => {
 		if (recipeDetails) {
+			const categoriesValues = recipeDetails.categories.map((category) => ({
+				value: category.id,
+				label: category.name,
+			}));
 			reset({
 				name: recipeDetails.name,
-				category: recipeDetails.category.id,
+				categories: categoriesValues,
 				description: recipeDetails.description,
 				ingredients: recipeDetails.ingredients.map((ingredient) => ({ text: ingredient.text })),
 				steps: recipeDetails.steps.map((step) => ({ stepDescription: step.stepDescription })),
@@ -97,12 +101,13 @@ export const EditRecipe = () => {
 			return;
 		}
 
-		const { recipeImage, name, description, steps, category, ingredients, sourceUrl } = formValues;
+		const { recipeImage, name, description, steps, categories, ingredients, sourceUrl } = formValues;
 		const imageBase64Data = recipeImage ? await getBase64OfFile(recipeImage) : null;
+		const categoriesIds = pluck('value', categories);
 
 		const payload = {
 			name,
-			category,
+			categories: categoriesIds,
 			ingredients,
 			steps,
 			recipeImage: recipeImage
@@ -246,16 +251,15 @@ export const EditRecipe = () => {
 							</div>
 							<div css={fieldBlockStyles}>
 								<Controller
-									name="category"
+									name="categories"
 									control={control}
 									render={({ field }) => (
-										<Select
+										<MultiSelect
 											isRequired
-											label="Категорія"
-											placeholder="Оберіть категорію"
-											name="category"
-											onBlur={field.onBlur}
-											onChange={field.onChange}
+											label="Категорії"
+											placeholder="Оберіть категорії"
+											name="categories"
+											onChange={(newValue) => field.onChange([...newValue])}
 											options={categoriesOptions}
 											value={field.value}
 										/>
@@ -335,7 +339,7 @@ export const EditRecipe = () => {
 					</div>
 				</Form>
 				<DeleteRecipeModal
-					categoryId={recipeDetails?.category.id ?? ''}
+					categoryId={recipeDetails?.categories[0].id ?? ''}
 					recipeId={recipeId ?? ''}
 					closeModalHandler={setIsDeleteRecipeModalOpen}
 					isModalOpen={isDeleteRecipeModalOpen}

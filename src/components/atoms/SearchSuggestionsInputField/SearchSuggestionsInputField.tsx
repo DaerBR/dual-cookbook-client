@@ -10,13 +10,13 @@ import { useSearchAsyncSelectComponents, useSearchAsyncSelectStyles } from './as
 import { searchRecipes } from '../../../store/thunks/recipes.ts';
 import { DEBOUNCE_MS, MIN_QUERY_LENGTH } from './constants.ts';
 import { createDebouncedRecipeSearch } from './utils.ts';
-import { Option } from '../Select/types.ts';
+import { SelectOption } from '../Select/types.ts';
 import { Button } from '../Button';
 import { searchContainerStyles } from './styles.ts';
 
 export const SearchSuggestionsInputField = () => {
 	const [searchTerm, setSearchTerm] = useState('');
-	const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>(null);
+	const [selectedOption, setSelectedOption] = useState<SingleValue<SelectOption>>(null);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const isSearching = useAppSelector((state) => state.recipes.search.isSearching);
@@ -24,7 +24,7 @@ export const SearchSuggestionsInputField = () => {
 	const baseSelectStyles = useSearchAsyncSelectStyles();
 
 	const searchSelectStyles = useMemo(
-		(): StylesConfig<Option, false, GroupBase<Option>> => ({
+		(): StylesConfig<SelectOption, false, GroupBase<SelectOption>> => ({
 			...baseSelectStyles,
 			control: (base, state) => ({
 				...(baseSelectStyles.control?.(base, state) ?? base),
@@ -56,7 +56,7 @@ export const SearchSuggestionsInputField = () => {
 	);
 
 	const handleOptionClick = useCallback(
-		(option: SingleValue<Option>) => {
+		(option: SingleValue<SelectOption>) => {
 			if (option) {
 				navigate(`/recipe/${option.value}`);
 			}
@@ -82,7 +82,7 @@ export const SearchSuggestionsInputField = () => {
 					width: '100%',
 				}}
 			>
-				<AsyncSelect<Option, false>
+				<AsyncSelect<SelectOption, false>
 					cacheOptions={false}
 					components={searchSelectComponents}
 					defaultOptions={false}

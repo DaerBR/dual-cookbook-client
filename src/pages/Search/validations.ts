@@ -2,11 +2,11 @@ import * as z from 'zod';
 
 export const searchValidationSchema = z
 	.object({
-		category: z.string(),
+		categories: z.array(z.object({ value: z.string(), label: z.string() })),
 		recipeAuthor: z.string(),
 		searchInput: z.string(),
 	})
-	.refine((data) => data.searchInput !== '' || data.category !== '' || data.recipeAuthor !== '', {
+	.refine((data) => data.searchInput !== '' || data.categories.length !== 0 || data.recipeAuthor !== '', {
 		message: 'Використайте будь-який параметр для пошуку',
 		path: ['searchInput'],
 	});

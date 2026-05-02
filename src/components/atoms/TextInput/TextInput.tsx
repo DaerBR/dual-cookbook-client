@@ -1,11 +1,10 @@
 import { CSSProperties, ChangeEvent, RefObject } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { useAppTheme } from '../../../styles/hooks.ts';
-import { Typography } from '../Typography';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { InputLabel } from '../InputLabel';
 import { useCommonFieldStyles } from './hooks.ts';
+import { HelperText } from '../HelperText';
 
 interface TextInputProps {
 	customStyles?: CSSProperties;
@@ -42,17 +41,11 @@ export const TextInput = ({
 	multiline,
 	rows = 4,
 }: TextInputProps) => {
-	const theme = useAppTheme();
 	const { formState } = useFormContext() ?? {};
 	const { errors } = formState ?? [];
 	const fieldErrors = errors ? errors[name] : undefined;
 
 	const { fieldStyles, errorStyles } = useCommonFieldStyles({ isFullWidth });
-
-	const helperTextStyles = {
-		color: theme.colors.text.caption,
-		marginTop: '4px',
-	};
 
 	return (
 		<div css={{ width: isFullWidth ? '100%' : 'auto' }}>
@@ -84,15 +77,7 @@ export const TextInput = ({
 				/>
 			)}
 			{(fieldErrors || helperText) && (
-				<legend>
-					{fieldErrors ? (
-						processFieldValidationErrors(fieldErrors)
-					) : (
-						<Typography variant="paragraphXs" customStyles={helperTextStyles} component="div">
-							{helperText}
-						</Typography>
-					)}
-				</legend>
+				<legend>{fieldErrors ? processFieldValidationErrors(fieldErrors) : <HelperText text={helperText} />}</legend>
 			)}
 		</div>
 	);

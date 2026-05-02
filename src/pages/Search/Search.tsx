@@ -10,7 +10,7 @@ import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { RecipeCard } from '../../components/RecipeCard';
 import { useThunk } from '../../store/hooks/useThunk.ts';
 import { searchRecipes } from '../../store/thunks/recipes.ts';
-import { getQueryParameter } from '../../utils/utils.tsx';
+import { getQueryParameter, pluck } from '../../utils/utils.tsx';
 import { Pagination } from '../../components/atoms/Pagination/Pagination.tsx';
 import { Form } from '../../components/Form';
 import { Button } from '../../components/atoms/Button';
@@ -20,6 +20,7 @@ import { resetSearchData } from '../../store/slices/recipesSlice.ts';
 import { Select } from '../../components/atoms/Select';
 import { SearchFormValues, searchValidationSchema } from './validations.ts';
 import { fetchAllCategories } from '../../store/thunks/categories.ts';
+import { MultiSelect } from '../../components/atoms/MultiSelect';
 
 export const Search = () => {
 	const [dispatchSearchRecipes] = useThunk(searchRecipes);
@@ -53,7 +54,7 @@ export const Search = () => {
 		defaultValues: {
 			searchInput: '',
 			recipeAuthor: '',
-			category: '',
+			categories: [],
 		},
 		resolver: zodResolver(searchValidationSchema),
 	});
@@ -80,12 +81,13 @@ export const Search = () => {
 	}, [dispatchSearchRecipes, initialSearchTerm, reset]);
 
 	const handleSearchFormSubmit = handleSubmit(async (formValues) => {
-		const { category, searchInput, recipeAuthor } = formValues;
+		const { categories, searchInput, recipeAuthor } = formValues;
+		const categoriesIds = pluck('value', categories);
 		await dispatchSearchRecipes({
 			limit: 10,
 			page: 1,
 			search: searchInput,
-			category: category && category !== '' ? category : undefined,
+			categories: categoriesIds ? categoriesIds.join() : undefined,
 			recipeAuthor: recipeAuthor && recipeAuthor !== '' ? recipeAuthor : undefined,
 		});
 	});
@@ -130,15 +132,15 @@ export const Search = () => {
 							}}
 						>
 							<Controller
-								name="category"
+								name="categories"
 								control={control}
 								render={({ field }) => (
-									<Select
-										label="Категорія"
-										placeholder="Оберіть категорію"
-										name="category"
-										onBlur={field.onBlur}
-										onChange={field.onChange}
+									<MultiSelect
+										isRequired
+										label="Категорії"
+										placeholder="Оберіть категорії"
+										name="categories"
+										onChange={(newValue) => field.onChange([...newValue])}
 										options={categoriesOptions}
 										value={field.value}
 									/>

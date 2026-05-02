@@ -3,7 +3,7 @@ export interface RecipeImage {
 	secureUrl: string;
 }
 export interface RecipeTableModel {
-	category: { id: string; name: string };
+	categories: [{ id: string; name: string }];
 	createdAt: Date;
 	description: string | null;
 	id: string;

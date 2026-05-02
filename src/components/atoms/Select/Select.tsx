@@ -15,10 +15,10 @@ import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { InputLabel } from '../InputLabel';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
-import { Typography } from '../Typography';
 import { Icon } from '../Icon';
 import { useCommonFieldStyles } from '../TextInput/hooks.ts';
-import { Option } from './types.ts';
+import { SelectOption } from './types.ts';
+import { HelperText } from '../HelperText';
 
 interface SelectProps {
 	customStyles?: CSSProperties;
@@ -31,7 +31,7 @@ interface SelectProps {
 	name: string;
 	onBlur?: () => void;
 	onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
-	options: Option[];
+	options: SelectOption[];
 	placeholder?: string;
 	value: string;
 }
@@ -125,11 +125,6 @@ export const Select = ({
 	}, [options.length]);
 
 	const { fieldStyles, errorStyles } = useCommonFieldStyles({ isFullWidth });
-
-	const helperTextStyles = {
-		color: theme.colors.text.caption,
-		marginTop: '4px',
-	};
 
 	const wrapperStyles = {
 		position: 'relative' as const,
@@ -340,15 +335,7 @@ export const Select = ({
 				)}
 			</div>
 			{(fieldErrors || helperText) && (
-				<legend>
-					{fieldErrors ? (
-						processFieldValidationErrors(fieldErrors)
-					) : (
-						<Typography variant="paragraphXs" customStyles={helperTextStyles} component="div">
-							{helperText}
-						</Typography>
-					)}
-				</legend>
+				<legend>{fieldErrors ? processFieldValidationErrors(fieldErrors) : <HelperText text={helperText} />}</legend>
 			)}
 		</div>
 	);

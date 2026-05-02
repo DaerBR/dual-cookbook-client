@@ -35,6 +35,13 @@ export const Search = () => {
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 
+	useEffect(
+		() => () => {
+			dispatch(resetSearchData());
+		},
+		[dispatch],
+	);
+
 	useEffect(() => {
 		if (!areCategoriesFetched) {
 			dispatchFetchCategories();
@@ -113,7 +120,15 @@ export const Search = () => {
 						>
 							Фільтри
 						</Typography>
-						<div css={{ display: 'flex', gap: '24px' }}>
+						<div
+							css={{
+								display: 'flex',
+								gap: '24px',
+								'@media (max-width: 768px)': {
+									flexDirection: 'column',
+								},
+							}}
+						>
 							<Controller
 								name="category"
 								control={control}
@@ -149,7 +164,7 @@ export const Search = () => {
 							/>
 						</div>
 					</div>
-					<div css={{ display: 'flex', gap: '24px', margin: '36px 0' }}>
+					<div css={{ display: 'flex', gap: '24px', margin: '36px 0', alignItems: 'center', justifyContent: 'center' }}>
 						<Button
 							isBusy={isSearching}
 							onClick={handleSearchFormSubmit}

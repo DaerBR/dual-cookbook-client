@@ -45,7 +45,18 @@ export const Categories = () => {
 						: undefined
 				}
 			/>
-			<div css={{ display: 'grid', gridTemplateRows: '1fr', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
+			<div
+				css={{
+					display: 'grid',
+					gridTemplateRows: '1fr',
+					gridTemplateColumns: 'repeat(2, 1fr)',
+					gap: '24px',
+					'@media (max-width: 768px)': {
+						gridTemplateColumns: 'repeat(1, 1fr)',
+						gap: '12px',
+					},
+				}}
+			>
 				{isFetchingCategories ? (
 					<LoadingIndicator />
 				) : (

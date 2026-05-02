@@ -11,7 +11,7 @@ import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchUser, signOut } from '../../store/thunks/auth.ts';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { Icon } from '../atoms/Icon';
-import { buttonsContainerStyles } from './styles.ts';
+import { buttonsContainerStyles, homepageLinkStyles, linkStyles } from './styles.ts';
 import { Typography } from '../atoms/Typography';
 import { CircularProgress } from '../atoms/CircularProgress';
 import { theme } from '../../styles/theme.ts';
@@ -56,40 +56,43 @@ export const Header = () => {
 		navigate('/');
 	};
 
-	const linkStyles = {
-		color: theme.colors.primary.main,
-		fontWeight: 700,
-		marginRight: '24px',
-		textDecoration: 'none',
-		fontSize: theme.typography.paragraphM.fontSize,
-		'&:hover': {
-			textDecoration: 'underline',
-		},
-	};
-
 	return (
 		<div css={headerStyles}>
 			<div css={logoContainerStyles} className="logo-container">
 				<Link to="/" aria-label="До головної сторінки">
-					<div
-						css={{
-							backgroundImage: 'url("/logo-images/squirrel.png")',
-							height: '64px',
-							width: '64px',
-							backgroundSize: 'contain',
-							backgroundRepeat: 'no-repeat',
-							backgroundPosition: 'center',
-							borderRadius: '50%',
-							border: '2px solid #fda477',
-							marginRight: '16px',
-						}}
-					/>
+					<div css={homepageLinkStyles} />
 				</Link>
-				<Link to="/categories" css={linkStyles}>
+				<Link
+					to="/categories"
+					css={{ ...linkStyles, color: theme.colors.primary.main, fontSize: theme.typography.paragraphM.fontSize }}
+				>
 					Всі категорії
 				</Link>
+				<Link
+					to="/search"
+					css={{
+						...linkStyles,
+						color: theme.colors.primary.main,
+						fontSize: theme.typography.paragraphM.fontSize,
+						'@media (min-width: 768px)': {
+							display: 'none',
+						},
+					}}
+				>
+					Пошук
+				</Link>
 				{location?.pathname !== '/search' && (
-					<div css={{ width: '300px' }}>
+					<div
+						css={{
+							width: '300px',
+							'@media (max-width: 1024px)': {
+								width: '230px',
+							},
+							'@media (max-width: 768px)': {
+								display: 'none',
+							},
+						}}
+					>
 						<SearchSuggestionsInputField />
 					</div>
 				)}

@@ -38,7 +38,16 @@ export const Pagination = ({ currentPage, totalPages, fetchDataMethod, fetchPara
 			>
 				<Icon icon={faArrowLeft} fontSize={10} customStyles={{ color: 'inherit' }} />
 			</Button>
-			<div css={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+			<div
+				css={{
+					display: 'flex',
+					alignItems: 'center',
+					gap: '12px',
+					'@media (max-width: 768px)': {
+						display: 'none',
+					},
+				}}
+			>
 				{pageItems.map((item, index) =>
 					item === 'ellipsis' ? (
 						<span

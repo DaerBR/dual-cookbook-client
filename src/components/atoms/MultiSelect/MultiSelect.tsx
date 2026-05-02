@@ -7,6 +7,7 @@ import { SelectOption } from '../Select/types.ts';
 import { InputLabel } from '../InputLabel';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { HelperText } from '../HelperText';
+import { useMultiSelectComponents, useMultiSelectStyles } from './hooks.tsx';
 
 export type MultiSelectOption = SelectOption;
 
@@ -33,22 +34,26 @@ export const MultiSelect = ({
 	onChange,
 	value,
 	id,
-	// customStyles,
+	customStyles,
 	placeholder,
 	isDisabled,
 	isRequired,
 	isFullWidth,
 	helperText,
 }: MultiSelectProps) => {
-	// const theme = useAppTheme();
 	const { formState } = useFormContext() ?? {};
 	const { errors } = formState ?? {};
 	const fieldErrors = errors ? errors[name] : undefined;
+	const baseSelectStyles = useMultiSelectStyles();
+	const selectComponents = useMultiSelectComponents();
 
 	return (
 		<div css={{ width: isFullWidth ? '100%' : 'auto' }}>
 			{label && <InputLabel id={id ?? name} label={label} isRequired={isRequired} />}
 			<Select<MultiSelectOption, true>
+				components={selectComponents}
+				styles={baseSelectStyles}
+				css={customStyles as any}
 				name={name}
 				isDisabled={isDisabled}
 				placeholder={placeholder}

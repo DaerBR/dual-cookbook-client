@@ -122,49 +122,40 @@ export const Search = () => {
 						>
 							Фільтри
 						</Typography>
-						<div
-							css={{
-								display: 'flex',
-								gap: '24px',
-								'@media (max-width: 768px)': {
-									flexDirection: 'column',
-								},
-							}}
-						>
-							<Controller
-								name="categories"
-								control={control}
-								render={({ field }) => (
-									<MultiSelect
-										isRequired
-										label="Категорії"
-										placeholder="Оберіть категорії"
-										name="categories"
-										onChange={(newValue) => field.onChange([...newValue])}
-										options={categoriesOptions}
-										value={field.value}
-									/>
-								)}
-							/>
-							<Controller
-								name="recipeAuthor"
-								control={control}
-								render={({ field }) => (
-									<Select
-										label="Користувач"
-										placeholder="Ким додано"
-										name="recipeAuthor"
-										onBlur={field.onBlur}
-										onChange={field.onChange}
-										options={[
-											{ label: 'Дуал', value: '69c3fd63b42b6ce465cfe18b' },
-											{ label: 'Дуалька', value: '69c3ffc4448a9114c2640cae' },
-										]}
-										value={field.value}
-									/>
-								)}
-							/>
-						</div>
+						<Controller
+							name="categories"
+							control={control}
+							render={({ field }) => (
+								<MultiSelect
+									isFullWidth
+									label="Категорії"
+									placeholder="Оберіть категорії"
+									name="categories"
+									onChange={(newValue) => field.onChange([...newValue])}
+									options={categoriesOptions}
+									value={field.value}
+									customStyles={{ marginBottom: '16px' }}
+								/>
+							)}
+						/>
+						<Controller
+							name="recipeAuthor"
+							control={control}
+							render={({ field }) => (
+								<Select
+									label="Користувач"
+									placeholder="Ким додано"
+									name="recipeAuthor"
+									onBlur={field.onBlur}
+									onChange={field.onChange}
+									options={[
+										{ label: 'Дуал', value: '69c3fd63b42b6ce465cfe18b' },
+										{ label: 'Дуалька', value: '69c3ffc4448a9114c2640cae' },
+									]}
+									value={field.value}
+								/>
+							)}
+						/>
 					</div>
 					<div css={{ display: 'flex', gap: '24px', margin: '36px 0', alignItems: 'center', justifyContent: 'center' }}>
 						<Button

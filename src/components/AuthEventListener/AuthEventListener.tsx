@@ -10,13 +10,10 @@ export const AuthEventListener = () => {
 
 		const handleMessage = (event: MessageEvent) => {
 			if (event.origin !== API_ORIGIN) {
-				console.warn('Ignored message from:', event.origin);
-
 				return;
 			}
 
 			if (event.data?.type === 'GOOGLE_AUTH_SUCCESS') {
-				console.info('Authentication data received:', event.data.payload);
 				dispatch(setUserData(event.data.payload));
 			}
 		};

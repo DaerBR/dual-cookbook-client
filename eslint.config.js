@@ -17,7 +17,17 @@ export default [
 
 	// Global ignores
 	{
-		ignores: ['dist/**', 'jest.config.cjs', 'jest.polyfills.cjs', 'node_modules/**', '.coverage/**'],
+		ignores: [
+			'dist/**',
+			'jest.config.cjs',
+			'jest.polyfills.cjs',
+			'node_modules/**',
+			'.coverage/**',
+			'vite.config.ts',
+			'vite.config.d.ts',
+			'vite-env.d.ts',
+			'src/vite-env.d.ts',
+		],
 	},
 
 	// Configuration files (without TypeScript parser)

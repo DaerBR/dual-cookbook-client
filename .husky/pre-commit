@@ -1,0 +1,1 @@
+echo "Checking for Typescript errors..." && pnpm tsc && pnpm run lint

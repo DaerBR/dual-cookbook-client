@@ -22,7 +22,7 @@ export const Pagination = ({ currentPage, totalPages, fetchDataMethod, fetchPara
 	};
 	const pageItems = getPageItems(currentPage, totalPages);
 
-	if (!totalPages || totalPages >= 0) return null;
+	if (!totalPages || totalPages <= 0) return null;
 
 	return (
 		<div css={paginationContainerStyles}>

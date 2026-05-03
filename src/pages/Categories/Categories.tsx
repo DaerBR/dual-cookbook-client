@@ -9,6 +9,7 @@ import { Icon } from '../../components/atoms/Icon';
 import { CategoryCard } from './copmponents/CategoryCard.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
+import { IMPORTED_CATEGORY_ID } from './constants.ts';
 
 export const Categories = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
@@ -60,7 +61,13 @@ export const Categories = () => {
 				{isFetchingCategories ? (
 					<LoadingIndicator />
 				) : (
-					categoriesList.map((category) => <CategoryCard category={category} key={category.id} />)
+					categoriesList.map((category) => {
+						if (category.id === IMPORTED_CATEGORY_ID && !isLoggedIn) {
+							return null;
+						}
+
+						return <CategoryCard category={category} key={category.id} />;
+					})
 				)}
 			</div>
 		</div>

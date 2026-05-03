@@ -49,7 +49,7 @@ export const searchRecipes = createAsyncThunk<RecipesPaginationModel, SearchReci
 	},
 );
 
-interface CreateRecipesParams {
+export interface CreateRecipeParams {
 	categories: string[];
 	description: string | null;
 	ingredients: RecipeIngredient[];
@@ -58,10 +58,11 @@ interface CreateRecipesParams {
 		base64Content: string;
 		nameWithExtension: string;
 	} | null;
+	sourceUrl?: string;
 	steps: RecipeStep[];
 }
 
-export const createRecipe = createAsyncThunk<RecipeDetailModel, CreateRecipesParams>(
+export const createRecipe = createAsyncThunk<RecipeDetailModel, CreateRecipeParams>(
 	'recipes/createRecipe',
 	async (params, { rejectWithValue }) => {
 		try {
@@ -100,7 +101,7 @@ export const fetchRecipeDetails = createAsyncThunk<RecipeDetailModel, FetchRecip
 	},
 );
 
-interface UpdateRecipeParams extends CreateRecipesParams {
+interface UpdateRecipeParams extends CreateRecipeParams {
 	recipeId: string;
 }
 

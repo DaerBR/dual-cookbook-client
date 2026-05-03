@@ -68,6 +68,23 @@ export const SingleCategory = () => {
 				withReturnButton
 				returnUrl={'/categories' as const}
 			/>
+			{selectedCategoryData?.categoryImage && (
+				<div css={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+					<img
+						src={selectedCategoryData?.categoryImage?.secureUrl ?? ''}
+						alt={selectedCategoryData?.name ?? ''}
+						css={{
+							width: '450px',
+							height: 'auto',
+							borderRadius: '12px',
+							marginBottom: '12px',
+							'@media (max-width: 768px)': {
+								width: '100%',
+							},
+						}}
+					/>
+				</div>
+			)}
 			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
 				{isFetchingRecipes ? (
 					<LoadingIndicator />

@@ -1,5 +1,6 @@
-import { CSSProperties, ChangeEvent, RefObject } from 'react';
+import { ChangeEvent, RefObject } from 'react';
 import { useFormContext } from 'react-hook-form';
+import type { CSSObject } from '@emotion/react';
 
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { InputLabel } from '../InputLabel';
@@ -7,7 +8,7 @@ import { useCommonFieldStyles } from './hooks.ts';
 import { HelperText } from '../HelperText';
 
 interface TextInputProps {
-	customStyles?: CSSProperties;
+	customStyles?: CSSObject;
 	helperText?: string;
 	id?: string;
 	inputRef?: RefObject<HTMLInputElement | null>;

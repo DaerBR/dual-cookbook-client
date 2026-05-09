@@ -1,11 +1,11 @@
-import { CSSProperties } from 'react';
+import type { CSSObject } from '@emotion/react';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { Icon } from '../atoms/Icon';
 
 interface BackIconButtonProps {
 	color?: 'primary' | 'success' | 'error' | 'white' | 'neutral';
-	customStyles?: CSSProperties;
+	customStyles?: CSSObject;
 	iconFontSize?: number;
 	onClick?: () => void;
 }

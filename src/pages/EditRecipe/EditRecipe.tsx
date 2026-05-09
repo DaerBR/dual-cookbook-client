@@ -20,6 +20,12 @@ import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
 import { fetchRecipeDetails, updateRecipe } from '../../store/thunks/recipes.ts';
 import { DeleteRecipeModal } from '../SingleRecipe/modals/DeleteRecipeModal.tsx';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
+import {
+	fieldBlockStyles,
+	fieldsWrapperStyles,
+	leftColumnWrapperStyles,
+	mainWrapperStyles,
+} from '../AddRecipe/styles.ts';
 
 export const EditRecipe = () => {
 	const { id: recipeId } = useParams();
@@ -119,12 +125,6 @@ export const EditRecipe = () => {
 		dispatchUpdateRecipe({ ...payload, recipeId });
 	});
 
-	const fieldBlockStyles = {
-		marginBottom: '24px',
-		display: 'flex',
-		flexDirection: 'column' as const,
-	};
-
 	const {
 		fields: stepsFields,
 		append: addStep,
@@ -146,7 +146,7 @@ export const EditRecipe = () => {
 	return (
 		<div>
 			<PageTitle
-				title={`Редагуванння рецепту ${recipeDetails?.name ?? ''}`}
+				title={`${recipeDetails?.name ?? ''}`}
 				withReturnButton
 				controlElements={[
 					<Button
@@ -161,8 +161,8 @@ export const EditRecipe = () => {
 			/>
 			<div>
 				<Form form={form} onSubmit={handleFormSubmit}>
-					<div css={{ display: 'flex', gap: '12px', flexBasis: '100%', wrap: 'nowrap' }}>
-						<div css={{ display: 'flex', flexBasis: '300px', flexDirection: 'column' }}>
+					<div css={mainWrapperStyles}>
+						<div css={leftColumnWrapperStyles}>
 							<ImageInput
 								name="recipeImage"
 								customHeight={350}
@@ -228,7 +228,7 @@ export const EditRecipe = () => {
 								/>
 							</div>
 						</div>
-						<div css={{ display: 'flex', flexDirection: 'column', marginLeft: '36px', width: '100%' }}>
+						<div css={fieldsWrapperStyles}>
 							<div css={fieldBlockStyles}>
 								<Controller
 									control={control}

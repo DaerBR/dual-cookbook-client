@@ -1,17 +1,7 @@
 import { useFormContext } from 'react-hook-form';
-import {
-	CSSProperties,
-	ChangeEvent,
-	FocusEvent,
-	KeyboardEvent,
-	useCallback,
-	useEffect,
-	useId,
-	useRef,
-	useState,
-} from 'react';
+import { ChangeEvent, FocusEvent, KeyboardEvent, useCallback, useEffect, useId, useRef, useState } from 'react';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-
+import type { CSSObject } from '@emotion/react';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { InputLabel } from '../InputLabel';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
@@ -21,7 +11,7 @@ import { SelectOption } from './types.ts';
 import { HelperText } from '../HelperText';
 
 interface SelectProps {
-	customStyles?: CSSProperties;
+	customStyles?: CSSObject;
 	helperText?: string;
 	id?: string;
 	isDisabled?: boolean;

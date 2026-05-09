@@ -1,9 +1,9 @@
-import { CSSProperties } from 'react';
+import type { CSSObject } from '@emotion/react';
 import { Typography } from '../atoms/Typography';
 
 interface FieldsGroupTitleProps {
 	captionText?: string;
-	customStyles?: CSSProperties;
+	customStyles?: CSSObject;
 	isRequired?: boolean;
 	title: string;
 }

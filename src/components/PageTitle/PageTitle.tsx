@@ -14,8 +14,18 @@ interface PageTitleProps {
 export const PageTitle = ({ controlElements, title, returnUrl, withReturnButton }: PageTitleProps) => {
 	const navigate = useNavigate();
 
+	const titleStyles = { '@media (max-width: 768px)': { fontSize: '18px' } };
+
 	return (
-		<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '36px', alignItems: 'center' }}>
+		<div
+			css={{
+				display: 'flex',
+				justifyContent: 'space-between',
+				marginBottom: '36px',
+				alignItems: 'center',
+				'@media (max-width: 768px)': { marginBottom: '16px' },
+			}}
+		>
 			<div css={{ display: 'flex', alignItems: 'center', gap: '4x' }}>
 				{withReturnButton && (
 					<BackIconButton
@@ -23,7 +33,7 @@ export const PageTitle = ({ controlElements, title, returnUrl, withReturnButton 
 						customStyles={{ marginRight: '4px' }}
 					/>
 				)}
-				<Typography variant="h5" weight={700} component="div">
+				<Typography variant="h5" weight={700} component="div" customStyles={titleStyles}>
 					{title}
 				</Typography>
 			</div>

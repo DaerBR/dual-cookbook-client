@@ -19,6 +19,7 @@ import { DeleteIconButton } from '../../components/DeleteIconButton';
 import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
 import { createRecipe } from '../../store/thunks/recipes.ts';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
+import { fieldBlockStyles, fieldsWrapperStyles, leftColumnWrapperStyles, mainWrapperStyles } from './styles.ts';
 
 export const AddRecipe = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
@@ -81,12 +82,6 @@ export const AddRecipe = () => {
 		dispatchCreateRecipe({ ...payload });
 	});
 
-	const fieldBlockStyles = {
-		marginBottom: '24px',
-		display: 'flex',
-		flexDirection: 'column' as const,
-	};
-
 	const {
 		fields: stepsFields,
 		append: addStep,
@@ -110,8 +105,8 @@ export const AddRecipe = () => {
 			<PageTitle title="Створити новий рецепт" withReturnButton />
 			<div>
 				<Form form={form} onSubmit={handleFormSubmit}>
-					<div css={{ display: 'flex', gap: '12px', flexBasis: '100%', wrap: 'nowrap' }}>
-						<div css={{ display: 'flex', flexBasis: '300px', flexDirection: 'column' }}>
+					<div css={mainWrapperStyles}>
+						<div css={leftColumnWrapperStyles}>
 							<ImageInput name="recipeImage" customHeight={350} customWidth={450} />
 							<div css={{ display: 'flex', flexDirection: 'column', marginTop: '24px' }}>
 								<FieldsGroupTitle title="Інгредієнти" />
@@ -171,7 +166,7 @@ export const AddRecipe = () => {
 								/>
 							</div>
 						</div>
-						<div css={{ display: 'flex', flexDirection: 'column', marginLeft: '36px', width: '100%' }}>
+						<div css={fieldsWrapperStyles}>
 							<div css={fieldBlockStyles}>
 								<Controller
 									control={control}

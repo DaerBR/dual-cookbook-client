@@ -6,6 +6,7 @@ import { useAppTheme } from '../../../styles/hooks.ts';
 import { Icon } from '../Icon';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { Button } from '../Button';
+import { imageFieldStaticStyles } from './styles.ts';
 
 interface ImageInputProps {
 	customHeight?: number;
@@ -31,23 +32,17 @@ export const ImageInput = ({ customHeight, customWidth, isEdit, initialImageUrl,
 	}, [isEdit, initialImageUrl]);
 
 	const imageFieldStyles = {
-		backgroundColor: '#fff',
-		backgroundSize: 'cover',
-		backgroundPosition: 'center',
-		backgroundImage: imagePreview ? `url(${imagePreview})` : 'none',
+		...imageFieldStaticStyles,
 		border: `2px solid ${theme.colors.primary.borderDefault}`,
-		borderRadius: '4px',
-		padding: '40px',
 		fontSize: theme.typography.paragraphS.fontSize,
 		lineHeight: theme.typography.paragraphS.lineHeight,
 		color: theme.colors.text.main,
 		width: customWidth ? `${customWidth}px` : '400px',
-		display: 'flex',
-		flexDirection: 'column' as const,
-		justifyContent: 'center',
-		alignItems: 'center',
 		height: customHeight ? `${customHeight}px` : '240px',
-		boxSizing: 'border-box' as const,
+		backgroundImage: imagePreview ? `url(${imagePreview})` : 'none',
+		'@media (max-width: 768px)': {
+			width: '100%',
+		},
 	};
 
 	return (

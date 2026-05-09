@@ -1,11 +1,11 @@
-import { CSSProperties } from 'react';
+import type { CSSObject } from '@emotion/react';
 import { faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { Icon } from '../atoms/Icon';
 import { useAppTheme } from '../../styles/hooks.ts';
 
 interface DeleteIconButtonProps {
-	customStyles?: CSSProperties;
+	customStyles?: CSSObject;
 	iconFontSize?: number;
 	onClick?: () => void;
 }

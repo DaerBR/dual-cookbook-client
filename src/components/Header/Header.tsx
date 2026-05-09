@@ -100,7 +100,14 @@ export const Header = () => {
 			<div css={buttonsContainerStyles}>
 				{userData ? (
 					<>
-						<Button onClick={() => navigate('/create-new-recipe')} startIcon={<Icon icon={faPlus} />} variant="primary">
+						<Button
+							onClick={() => navigate('/create-new-recipe')}
+							startIcon={<Icon icon={faPlus} />}
+							variant="primary"
+							customStyles={{
+								'@media (max-width: 768px)': { maxWidth: '170px', '& .start-icon-container': { display: 'none' } },
+							}}
+						>
 							Створити рецепт
 						</Button>
 						<Button

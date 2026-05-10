@@ -32,8 +32,18 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 				<div css={wrapperStyles}>
 					<div css={imageWrapperStyles}>
 						{recipe.recipeImage?.secureUrl ? (
-							<img src={recipe.recipeImage?.secureUrl} alt={recipe.name} css={{ height: '100%' }} />
+							<div
+								css={{
+									backgroundImage: `url(${recipe.recipeImage?.secureUrl})`,
+									backgroundSize: 'cover',
+									backgroundPosition: 'center',
+									height: '100%',
+									width: '100%',
+									borderRadius: '8px',
+								}}
+							/>
 						) : (
+							// <img src={recipe.recipeImage?.secureUrl} alt={recipe.name} css={{ height: '100%' }} />
 							<img src="/logo-images/bear-cooks.png" alt={recipe.name} css={{ height: '100%', opacity: 0.2 }} />
 						)}
 					</div>

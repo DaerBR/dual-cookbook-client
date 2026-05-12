@@ -57,11 +57,90 @@ export const Header = () => {
 	};
 
 	return (
-		<div css={headerStyles}>
-			<div css={logoContainerStyles} className="logo-container">
-				<Link to="/" aria-label="До головної сторінки">
-					<div css={homepageLinkStyles} />
-				</Link>
+		<div css={{ backgroundColor: '#fff', position: 'sticky', top: 0, zIndex: 5 }}>
+			<div css={headerStyles}>
+				<div css={logoContainerStyles} className="logo-container">
+					<Link to="/" aria-label="До головної сторінки">
+						<div css={homepageLinkStyles} />
+					</Link>
+					<Link
+						to="/categories"
+						css={{
+							...linkStyles,
+							color: theme.colors.primary.main,
+							fontSize: theme.typography.paragraphM.fontSize,
+							'@media (max-width: 768px)': { display: 'none' },
+						}}
+					>
+						Всі категорії
+					</Link>
+					{location?.pathname !== '/search' && (
+						<div
+							css={{
+								width: '300px',
+								'@media (max-width: 1024px)': {
+									width: '230px',
+								},
+								'@media (max-width: 768px)': {
+									display: 'none',
+								},
+							}}
+						>
+							<SearchSuggestionsInputField />
+						</div>
+					)}
+				</div>
+				<div css={buttonsContainerStyles}>
+					{userData ? (
+						<>
+							<Button
+								onClick={() => navigate('/create-new-recipe')}
+								startIcon={<Icon icon={faPlus} />}
+								variant="primary"
+								customStyles={{
+									'@media (max-width: 768px)': { maxWidth: '170px', '& .start-icon-container': { display: 'none' } },
+								}}
+							>
+								Створити рецепт
+							</Button>
+							<Button
+								variant="outlined-neutral"
+								onClick={handleLogoutClick}
+								css={{ border: 'none', boxShadow: 'none', minWidth: 0, padding: '10px 16px' }}
+							>
+								<Icon icon={faSignOut} color="primary" />
+							</Button>
+						</>
+					) : isFetchingUserData ? (
+						<>
+							<Typography variant="paragraphM" color="primary">
+								Зачекай-но...
+							</Typography>
+							<CircularProgress color="primary" sizePx={24} />
+						</>
+					) : (
+						<Button variant="secondary" onClick={handleLoginClick}>
+							Вхід
+						</Button>
+					)}
+				</div>
+				{!userData && <AuthEventListener />}
+			</div>
+			<div
+				css={{
+					backgroundColor: '#fff',
+					display: 'none',
+					position: 'fixed',
+					top: '95px',
+					left: '0',
+					transform: 'translateY(-50%)',
+					width: '100%',
+					justifyContent: 'space-around',
+					padding: '8px 0',
+					zIndex: 3,
+					'@media (max-width: 768px)': { display: 'flex' },
+				}}
+			>
 				<Link
 					to="/categories"
 					css={{ ...linkStyles, color: theme.colors.primary.main, fontSize: theme.typography.paragraphM.fontSize }}
@@ -74,64 +153,11 @@ export const Header = () => {
 						...linkStyles,
 						color: theme.colors.primary.main,
 						fontSize: theme.typography.paragraphM.fontSize,
-						'@media (min-width: 768px)': {
-							display: 'none',
-						},
 					}}
 				>
 					Пошук
 				</Link>
-				{location?.pathname !== '/search' && (
-					<div
-						css={{
-							width: '300px',
-							'@media (max-width: 1024px)': {
-								width: '230px',
-							},
-							'@media (max-width: 768px)': {
-								display: 'none',
-							},
-						}}
-					>
-						<SearchSuggestionsInputField />
-					</div>
-				)}
 			</div>
-			<div css={buttonsContainerStyles}>
-				{userData ? (
-					<>
-						<Button
-							onClick={() => navigate('/create-new-recipe')}
-							startIcon={<Icon icon={faPlus} />}
-							variant="primary"
-							customStyles={{
-								'@media (max-width: 768px)': { maxWidth: '170px', '& .start-icon-container': { display: 'none' } },
-							}}
-						>
-							Створити рецепт
-						</Button>
-						<Button
-							variant="outlined-neutral"
-							onClick={handleLogoutClick}
-							css={{ border: 'none', boxShadow: 'none', minWidth: 0, padding: '10px 16px' }}
-						>
-							<Icon icon={faSignOut} color="primary" />
-						</Button>
-					</>
-				) : isFetchingUserData ? (
-					<>
-						<Typography variant="paragraphM" color="primary">
-							Зачекай-но...
-						</Typography>
-						<CircularProgress color="primary" sizePx={24} />
-					</>
-				) : (
-					<Button variant="secondary" onClick={handleLoginClick}>
-						Вхід
-					</Button>
-				)}
-			</div>
-			{!userData && <AuthEventListener />}
 		</div>
 	);
 };

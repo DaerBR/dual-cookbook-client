@@ -43,7 +43,6 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 								}}
 							/>
 						) : (
-							// <img src={recipe.recipeImage?.secureUrl} alt={recipe.name} css={{ height: '100%' }} />
 							<img src="/logo-images/bear-cooks.png" alt={recipe.name} css={{ height: '100%', opacity: 0.2 }} />
 						)}
 					</div>

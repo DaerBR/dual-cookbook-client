@@ -12,6 +12,7 @@ export const PageWrapper = ({ children }: { children: ReactNode }) => {
 		position: 'relative' as const,
 		'@media (max-width: 768px)': {
 			padding: '8px 12px',
+			marginTop: '118px',
 		},
 	};
 

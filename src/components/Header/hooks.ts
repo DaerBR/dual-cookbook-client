@@ -7,7 +7,7 @@ export const useHeaderStyles = (): CSSObject => ({
 	position: 'fixed',
 	left: '50%',
 	transform: 'translateX(-50%)',
-	top: '4px',
+	top: 0,
 	width: '100%',
 	maxWidth: '1200px',
 	margin: '0 auto',

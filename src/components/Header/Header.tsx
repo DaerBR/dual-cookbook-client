@@ -138,6 +138,8 @@ export const Header = () => {
 					justifyContent: 'space-around',
 					padding: '8px 0',
 					zIndex: 3,
+					borderTop: `1px solid ${theme.colors.primary.borderDefault}`,
+					borderBottom: `1px solid ${theme.colors.primary.borderDefault}`,
 					'@media (max-width: 768px)': { display: 'flex' },
 				}}
 			>

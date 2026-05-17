@@ -25,6 +25,9 @@ export const useRecipeCardStyles = () => {
 				boxShadow: theme.boxShadows.lg,
 				color: theme.colors.primary.surfaceDarker,
 			},
+			'@media (max-width: 768px)': {
+				display: 'none',
+			},
 		},
 		wrapperStyles: {
 			border: '1px solid',
@@ -49,6 +52,9 @@ export const useRecipeCardStyles = () => {
 			minWidth: '200px',
 			padding: '4px',
 			borderRadius: '4px',
+			'@media (max-width: 768px)': {
+				minWidth: '33%',
+			},
 		},
 		descriptionWrapperStyles: {
 			overflow: 'hidden',

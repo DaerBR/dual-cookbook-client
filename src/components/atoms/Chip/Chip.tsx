@@ -32,6 +32,7 @@ export const Chip = ({ onClick, color = 'primary', size = 'md', isOutlined, text
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+		flexShrink: 0,
 		'&:hover': {
 			textDecoration: 'none',
 			backgroundColor: onClick ? theme.colors[color].surfaceLighter : theme.colors[color].surfaceDefault,

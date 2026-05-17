@@ -14,6 +14,10 @@ export const homepageLinkStyles = {
 	borderRadius: '50%',
 	border: '2px solid #fda477',
 	marginRight: '16px',
+	'@media (max-width: 768px)': {
+		height: '48px',
+		width: '48px',
+	},
 };
 
 export const linkStyles = {

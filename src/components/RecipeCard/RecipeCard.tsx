@@ -50,7 +50,18 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 						<Typography variant="paragraphM" weight={700}>
 							{recipe.name}
 						</Typography>
-						<div css={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+						<div
+							css={{
+								display: 'flex',
+								gap: '8px',
+								flexWrap: 'nowrap',
+								height: '24px',
+								overflowY: 'scroll',
+								'&::-webkit-scrollbar': {
+									display: 'none',
+								},
+							}}
+						>
 							{categories.map((category) => (
 								<Chip key={category.id} color="primary" size="sm" text={category?.name ?? ''} />
 							))}

@@ -233,6 +233,7 @@ export const AddRecipe = () => {
 											css={{ width: '100%', display: 'flex' }}
 											render={({ field }) => (
 												<TextInput
+													rows={6}
 													isFullWidth
 													isRequired={index === 0}
 													multiline

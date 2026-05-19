@@ -50,7 +50,7 @@ export const EditRecipe = () => {
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 	const [dispatchUpdateRecipe] = useThunk(updateRecipe, {
 		useGlobalLoader: true,
-		successMessage: 'Рецепт успішно додано!',
+		successMessage: 'Рецепт успішно оновлено!',
 		successRedirectRoute: recipeDetails?.categories ? `/category/${recipeDetails?.categories[0].id}` : '/categories',
 	});
 	const navigate = useNavigate();

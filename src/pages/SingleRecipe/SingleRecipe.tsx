@@ -13,6 +13,7 @@ import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { useAppTheme } from '../../styles/hooks.ts';
 import { Typography } from '../../components/atoms/Typography';
 import { Chip } from '../../components/atoms/Chip';
+import { editRecipeButtonStyles, mobileEditRecipeButtonStyles } from './styles.ts';
 
 export const SingleRecipe = () => {
 	const { id: recipeId } = useParams();
@@ -39,8 +40,18 @@ export const SingleRecipe = () => {
 					color="primary"
 					onClick={() => navigate(`/edit-recipe/${recipeId}`)}
 					startIcon={<Icon icon={faPencilAlt} />}
+					customStyles={editRecipeButtonStyles}
 				>
 					Редагувати
+				</Button>,
+				<Button
+					key="edit-recipe-mobile"
+					variant="outlined-primary"
+					color="primary"
+					onClick={() => navigate(`/edit-recipe/${recipeId}`)}
+					customStyles={mobileEditRecipeButtonStyles}
+				>
+					<Icon icon={faPencilAlt} color="primary" />
 				</Button>,
 			]
 		: [];

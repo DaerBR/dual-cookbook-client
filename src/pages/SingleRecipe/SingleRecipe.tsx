@@ -113,7 +113,7 @@ export const SingleRecipe = () => {
 						</div>
 						{ingredients && (
 							<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
-								<FieldsGroupTitle title="Інгрідієнти" />
+								<FieldsGroupTitle title="Інгредієнти" />
 								{ingredients.map((ingredient) => (
 									<div key={ingredient.id}>{ingredient.text}</div>
 								))}

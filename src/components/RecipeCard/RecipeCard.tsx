@@ -40,10 +40,17 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 									height: '100%',
 									width: '100%',
 									borderRadius: '8px',
+									minWidth: '100%',
 								}}
 							/>
 						) : (
-							<img src="/logo-images/bear-cooks.png" alt={recipe.name} css={{ height: '100%', opacity: 0.2 }} />
+							<div>
+								<img
+									src="/logo-images/bear-cooks.png"
+									alt={recipe.name}
+									css={{ height: '100%', opacity: 0.2, maxWidth: '100%' }}
+								/>
+							</div>
 						)}
 					</div>
 					<div css={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '16px', position: 'relative' }}>

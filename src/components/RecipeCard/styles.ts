@@ -37,6 +37,7 @@ export const useRecipeCardStyles = () => {
 			position: 'relative',
 			boxShadow: theme.boxShadows.xs,
 			overflow: 'hidden',
+			alignItems: 'center',
 			'&:hover': {
 				boxShadow: theme.boxShadows.md,
 			},

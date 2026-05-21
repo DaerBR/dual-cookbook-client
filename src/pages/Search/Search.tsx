@@ -50,7 +50,7 @@ export const Search = () => {
 	}, [dispatchFetchCategories, areCategoriesFetched]);
 
 	const form = useForm<SearchFormValues>({
-		mode: 'onChange',
+		mode: 'all',
 		defaultValues: {
 			searchInput: '',
 			recipeAuthor: '',

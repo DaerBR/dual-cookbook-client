@@ -62,7 +62,7 @@ export const EditRecipe = () => {
 	}, [dispatchFetchCategories, areCategoriesFetched]);
 
 	const form = useForm<EditRecipeFormValues>({
-		mode: 'onBlur',
+		mode: 'all',
 		reValidateMode: 'onChange',
 		defaultValues: {
 			name: '',

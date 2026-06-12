@@ -112,19 +112,27 @@ export const SingleRecipe = () => {
 							<div>{description}</div>
 						</div>
 						{ingredients && (
-							<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
+							<div css={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
 								<FieldsGroupTitle title="Інгредієнти" />
-								{ingredients.map((ingredient) => (
-									<div key={ingredient.id}>{ingredient.text}</div>
-								))}
+								<ul css={{ listStyleType: 'circle', paddingLeft: '12px' }}>
+									{ingredients.map((ingredient) => (
+										<li css={{ marginBottom: '12px' }} key={ingredient.id}>
+											{ingredient.text}
+										</li>
+									))}
+								</ul>
 							</div>
 						)}
 						{steps && (
 							<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
 								<FieldsGroupTitle title="Інструкція" />
-								{recipeDetails?.steps.map((step) => (
-									<div key={step.id}>{step.stepDescription}</div>
-								))}
+								<ol css={{ paddingLeft: '12px' }}>
+									{recipeDetails?.steps.map((step) => (
+										<li css={{ marginBottom: '12px' }} key={step.id}>
+											{step.stepDescription}
+										</li>
+									))}
+								</ol>
 							</div>
 						)}
 						{sourceUrl && (

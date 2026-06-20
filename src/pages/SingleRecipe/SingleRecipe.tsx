@@ -114,7 +114,7 @@ export const SingleRecipe = () => {
 						{ingredients && (
 							<div css={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
 								<FieldsGroupTitle title="Інгредієнти" />
-								<ul css={{ listStyleType: 'circle', paddingLeft: '12px' }}>
+								<ul css={{ listStyleType: 'circle', paddingLeft: '24px', listStylePosition: 'outside' }}>
 									{ingredients.map((ingredient) => (
 										<li css={{ marginBottom: '12px' }} key={ingredient.id}>
 											{ingredient.text}
@@ -128,7 +128,7 @@ export const SingleRecipe = () => {
 								<FieldsGroupTitle title="Інструкція" />
 								<ol css={{ paddingLeft: '12px' }}>
 									{recipeDetails?.steps.map((step) => (
-										<li css={{ marginBottom: '12px' }} key={step.id}>
+										<li css={{ marginBottom: '12px', textAlign: 'justify' }} key={step.id}>
 											{step.stepDescription}
 										</li>
 									))}
@@ -136,8 +136,16 @@ export const SingleRecipe = () => {
 							</div>
 						)}
 						{sourceUrl && (
-							<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
-								<Typography variant="paragraphS" weight={600}>
+							<div
+								css={{
+									overflow: 'hidden',
+									textOverflow: 'ellipsis',
+									display: '-webkit-box',
+									WebkitLineClamp: '2',
+									WebkitBoxOrient: 'vertical',
+								}}
+							>
+								<Typography variant="paragraphS" weight={600} component="div">
 									Посилання:
 									<span css={{ marginLeft: '4px' }} />
 									<a

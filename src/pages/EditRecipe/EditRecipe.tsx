@@ -109,7 +109,6 @@ export const EditRecipe = () => {
 		}
 
 		const { recipeImage, name, description, steps, categories, ingredients, sourceUrl } = formValues;
-		const imageBase64Data = recipeImage ? await getBase64OfFile(recipeImage) : null;
 		const categoriesIds = pluck('value', categories);
 
 		const payload = {
@@ -118,7 +117,7 @@ export const EditRecipe = () => {
 			ingredients,
 			steps,
 			recipeImage: recipeImage
-				? { base64Content: imageBase64Data as string, nameWithExtension: recipeImage.name }
+				? { base64Content: await getBase64OfFile(recipeImage), nameWithExtension: recipeImage.name }
 				: null,
 			description: description && description.length > 0 ? description : null,
 			sourceUrl,
@@ -183,8 +182,8 @@ export const EditRecipe = () => {
 							<div css={{ display: 'flex', flexDirection: 'column', marginTop: '24px' }}>
 								<FieldsGroupTitle title="Інгредієнти" />
 								<div>
-									{ingredientsFields.map((_, index) => (
-										<div key={index} css={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+									{ingredientsFields.map((ingredientField, index) => (
+										<div key={ingredientField.id} css={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
 											<Controller
 												control={control}
 												name={`ingredients.${index}.text`}

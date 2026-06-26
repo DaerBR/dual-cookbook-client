@@ -1,4 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { AxiosError } from 'axios';
+
 import { apiRequest } from '../../api/apiRequest.ts';
 import { CategoryModel, CategoryPaginationModel } from '../slices/categoriesSlice.ts';
 
@@ -19,8 +21,8 @@ export const fetchCategories = createAsyncThunk<CategoryPaginationModel, FetchCa
 			});
 
 			return response.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data);
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
 		}
 	},
 );
@@ -35,8 +37,8 @@ export const fetchAllCategories = createAsyncThunk<CategoryModel[]>(
 			});
 
 			return response.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data);
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
 		}
 	},
 );
@@ -62,8 +64,8 @@ export const createCategory = createAsyncThunk<CategoryModel, CreateCategoryPara
 			dispatch(fetchAllCategories());
 
 			return response.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data);
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
 		}
 	},
 );
@@ -92,8 +94,8 @@ export const updateCategory = createAsyncThunk<CategoryModel, UpdateCategoryPara
 			dispatch(fetchAllCategories());
 
 			return response.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data);
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
 		}
 	},
 );
@@ -116,8 +118,8 @@ export const deleteCategory = createAsyncThunk<any, DeleteCategoryParams>(
 			dispatch(fetchAllCategories());
 
 			return response.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data);
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
 		}
 	},
 );

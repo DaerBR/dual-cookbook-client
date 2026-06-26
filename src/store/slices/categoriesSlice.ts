@@ -1,26 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createCategory, fetchAllCategories, fetchCategories, updateCategory } from '../thunks/categories.ts';
+import { ImageDataModel, PaginationModel } from '../types.ts';
 
-export interface CategoryImage {
-	publicId: string;
-	secureUrl: string;
-}
 export interface CategoryModel {
-	categoryImage?: CategoryImage;
+	categoryImage?: ImageDataModel;
 	createdAt: Date;
 	id: string;
 	name: string;
 }
-interface Pagination {
-	limit: number;
-	page: number;
-	total: number;
-	totalPages: number;
-}
 
 export interface CategoryPaginationModel {
 	data: CategoryModel[];
-	pagination: Pagination;
+	pagination: PaginationModel;
 }
 
 interface CategoriesState {
@@ -31,7 +22,7 @@ interface CategoriesState {
 	isUpdating: boolean;
 	paginatedCategories: {
 		categoriesList: CategoryModel[];
-		pagination: Pagination | null;
+		pagination: PaginationModel | null;
 	};
 }
 

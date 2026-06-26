@@ -1,10 +1,13 @@
+import { type ReactElement } from 'react';
+
 import { Typography } from '../components/atoms/Typography';
 
-interface FieldError {
-	message: string;
+interface ValidationError {
+	[key: string]: unknown;
+	message?: string;
 }
 
-export const processFieldValidationErrors: any = (errors: undefined | FieldError | Record<string, FieldError>) => {
+export const processFieldValidationErrors = (errors: ValidationError | undefined): ReactElement | undefined => {
 	if (!errors) {
 		return undefined;
 	}
@@ -12,7 +15,7 @@ export const processFieldValidationErrors: any = (errors: undefined | FieldError
 	if (errors.message) {
 		return (
 			<Typography variant="paragraphXs" customStyles={{ color: '#ea3b28', marginTop: '4px' }} component="div">
-				{errors.message as string}
+				{errors.message}
 			</Typography>
 		);
 	}
@@ -21,7 +24,9 @@ export const processFieldValidationErrors: any = (errors: undefined | FieldError
 		return (
 			<span css={{ display: 'flex', flexDirection: 'column' }}>
 				{Object.values(errors).map((error, index) => {
-					if (error.message) {
+					const validationError = error as ValidationError;
+
+					if (validationError.message) {
 						return (
 							<Typography
 								variant="paragraphXs"
@@ -29,19 +34,19 @@ export const processFieldValidationErrors: any = (errors: undefined | FieldError
 								component="div"
 								key={`error-${index}`}
 							>
-								{error.message}
+								{validationError.message}
 							</Typography>
 						);
 					}
 
-					return Object.values(error).map((fieldError: any, deepIndex) => (
+					return Object.values(validationError).map((fieldError, deepIndex) => (
 						<Typography
 							variant="paragraphXs"
 							customStyles={{ color: '#ea3b28', marginTop: '4px' }}
 							component="div"
 							key={`error-${deepIndex}`}
 						>
-							{fieldError.message}
+							{(fieldError as ValidationError).message}
 						</Typography>
 					));
 				})}
@@ -52,8 +57,8 @@ export const processFieldValidationErrors: any = (errors: undefined | FieldError
 	return undefined;
 };
 
-export const getBase64OfFile = (file: File) =>
-	new Promise((resolve, reject) => {
+export const getBase64OfFile = (file: File): Promise<string> =>
+	new Promise<string>((resolve, reject) => {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
 		reader.onload = () => resolve((reader.result as string).split('base64,')[1]);
@@ -67,12 +72,7 @@ export const getQueryParameter = (parameterName: string) => {
 	return urlParams.get(parameterName);
 };
 
-export const pluck = (parameter: string, valuesArray: Record<string, any>) => {
-	if (!parameter || !valuesArray) {
-		return [];
-	}
-
-	return valuesArray
-		.map((item: Record<string, any>) => item[parameter])
-		.filter((value: any) => value !== undefined && value !== null);
-};
+export const pluck = <TObj, TKey extends keyof TObj>(key: TKey, arr: TObj[]): Array<NonNullable<TObj[TKey]>> =>
+	arr
+		.map((item) => item[key])
+		.filter((value): value is NonNullable<TObj[TKey]> => value !== undefined && value !== null);

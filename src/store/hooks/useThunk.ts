@@ -53,6 +53,7 @@ export const useThunk = <TThunkArgs>(
 	// Primitive deps only — inline `options` objects must not recreate the callback every render.
 	const successMessage = options?.successMessage;
 	const successRedirectRoute = options?.successRedirectRoute;
+
 	const useGlobalLoader = options?.useGlobalLoader ?? false;
 	const { handleShowLoadingIndicator } = useContext(GlobalLoadingIndicatorContext);
 
@@ -83,15 +84,7 @@ export const useThunk = <TThunkArgs>(
 				}
 			}
 		},
-		[
-			dispatch,
-			thunk,
-			successMessage,
-			successRedirectRoute,
-			useGlobalLoader,
-			handleShowLoadingIndicator,
-			navigate,
-		],
+		[dispatch, thunk, successMessage, successRedirectRoute, useGlobalLoader, handleShowLoadingIndicator, navigate],
 	);
 
 	return [dispatchThunk, error];

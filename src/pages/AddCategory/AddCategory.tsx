@@ -41,12 +41,11 @@ export const AddCategory = () => {
 
 	const handleFormSubmit = handleSubmit(async (formValues) => {
 		const { categoryImage, categoryName } = formValues;
-		const imageBase64Data = categoryImage ? await getBase64OfFile(categoryImage) : null;
 
 		const payload = {
 			name: categoryName,
 			categoryImage: categoryImage
-				? { base64Content: imageBase64Data as string, nameWithExtension: categoryImage.name }
+				? { base64Content: await getBase64OfFile(categoryImage), nameWithExtension: categoryImage.name }
 				: null,
 		};
 

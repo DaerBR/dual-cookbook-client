@@ -18,12 +18,12 @@ export const useApiInterceptors = () => {
 				console.info('Unauthorized access, redirecting to sign-in page');
 			}
 
-			if (error.response.status === 403) {
+			if (error.response?.status === 403) {
 				navigate('/');
 				console.info('Unauthorized access, redirecting to sign-in page');
 			}
 
-			if (error.response.status === 404) {
+			if (error.response?.status === 404) {
 				navigate('/not-found');
 			}
 

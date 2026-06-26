@@ -1,4 +1,4 @@
-import { createAction, createSlice } from '@reduxjs/toolkit';
+import { type SerializedError, createSlice } from '@reduxjs/toolkit';
 import { fetchUser, signOut } from '../thunks/auth';
 
 export interface UserData {
@@ -8,7 +8,7 @@ export interface UserData {
 }
 interface AuthState {
 	areUserDataFetched: boolean;
-	authorizationError: any;
+	authorizationError: SerializedError | null;
 	isLoading: boolean;
 	isLoggedIn: boolean;
 	userData: UserData | null;
@@ -21,9 +21,6 @@ const initialState: AuthState = {
 	userData: null,
 	areUserDataFetched: false,
 };
-
-export const setUserData = createAction('auth/setUserData');
-export const resetUserData = createAction('auth/resetUserData');
 
 const authSlice = createSlice({
 	name: 'auth',
@@ -69,3 +66,4 @@ const authSlice = createSlice({
 });
 
 export const authReducer = authSlice.reducer;
+export const { setUserData, resetUserData } = authSlice.actions;

@@ -1,4 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { AxiosError } from 'axios';
+
 import { apiRequest } from '../../api/apiRequest.ts';
 import { RecipeDetailModel, RecipeIngredient, RecipeStep, RecipesPaginationModel } from '../types.ts';
 
@@ -22,8 +24,8 @@ export const fetchRecipes = createAsyncThunk<RecipesPaginationModel, FetchRecipe
 			});
 
 			return response.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data);
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
 		}
 	},
 );
@@ -43,8 +45,8 @@ export const searchRecipes = createAsyncThunk<RecipesPaginationModel, SearchReci
 			});
 
 			return response.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data);
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
 		}
 	},
 );
@@ -73,8 +75,8 @@ export const createRecipe = createAsyncThunk<RecipeDetailModel, CreateRecipePara
 			});
 
 			return response.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data);
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
 		}
 	},
 );
@@ -95,8 +97,8 @@ export const fetchRecipeDetails = createAsyncThunk<RecipeDetailModel, FetchRecip
 			});
 
 			return response.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data);
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
 		}
 	},
 );
@@ -118,8 +120,8 @@ export const updateRecipe = createAsyncThunk<RecipeDetailModel, UpdateRecipePara
 			});
 
 			return response.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data);
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
 		}
 	},
 );
@@ -140,8 +142,8 @@ export const deleteRecipe = createAsyncThunk<any, DeleteRecipeParams>(
 			});
 
 			return response.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data);
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
 		}
 	},
 );

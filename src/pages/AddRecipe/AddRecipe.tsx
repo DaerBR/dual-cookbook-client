@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -29,11 +29,7 @@ export const AddRecipe = () => {
 	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
-	const [dispatchCreateRecipe] = useThunk(createRecipe, {
-		useGlobalLoader: true,
-		successMessage: 'Рецепт успішно додано!',
-		successRedirectRoute: '/',
-	});
+
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -62,6 +58,14 @@ export const AddRecipe = () => {
 		control,
 		formState: { isValid },
 	} = form;
+
+	const selectedCategories = useWatch({ control, name: 'categories' });
+
+	const [dispatchCreateRecipe] = useThunk(createRecipe, {
+		useGlobalLoader: true,
+		successMessage: 'Рецепт успішно додано!',
+		successRedirectRoute: selectedCategories.length > 0 ? `/category/${selectedCategories[0].value}` : '/',
+	});
 
 	const handleFormSubmit = handleSubmit(async (formValues) => {
 		const { recipeImage, name, description, steps, categories, ingredients, sourceUrl } = formValues;

@@ -96,7 +96,7 @@ export const SingleCategory = () => {
 				<Pagination
 					currentPage={categoryRecipesPagination.page}
 					fetchDataMethod={dispatchFetchRecipes}
-					fetchParams={{ limit: 10, category: categoryId }}
+					fetchParams={{ limit: 10, categories: categoryId }}
 					totalPages={categoryRecipesPagination.totalPages}
 				/>
 			)}

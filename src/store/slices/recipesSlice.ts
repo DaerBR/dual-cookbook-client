@@ -18,6 +18,7 @@ interface RecipesState {
 		isSearching: boolean;
 		pagination: PaginationModel | null;
 		recipesList: RecipeTableModel[];
+		wasSearchInitiated: boolean;
 	};
 }
 
@@ -37,6 +38,7 @@ const initialState: RecipesState = {
 		isSearching: false,
 		recipesList: [],
 		pagination: null,
+		wasSearchInitiated: false,
 	},
 };
 
@@ -47,6 +49,7 @@ const recipesSlice = createSlice({
 		resetSearchData(state) {
 			state.search.recipesList = [];
 			state.search.pagination = null;
+			state.search.wasSearchInitiated = false;
 		},
 	},
 	extraReducers(builder) {
@@ -72,6 +75,7 @@ const recipesSlice = createSlice({
 			if (!action.meta.arg.asSuggestions) {
 				state.search.recipesList = action.payload.data;
 				state.search.pagination = action.payload.pagination;
+				state.search.wasSearchInitiated = true;
 			}
 		});
 		builder.addCase(searchRecipes.rejected, (state) => {

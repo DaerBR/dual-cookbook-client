@@ -21,11 +21,13 @@ import { Select } from '../../components/atoms/Select';
 import { SearchFormValues, searchValidationSchema } from './validations.ts';
 import { fetchAllCategories } from '../../store/thunks/categories.ts';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
+import { mobileSearchButtonStyles } from './styles.ts';
 
 export const Search = () => {
 	const [dispatchSearchRecipes] = useThunk(searchRecipes);
 	const dispatch = useAppDispatch();
 	const isSearching = useAppSelector((state) => state.recipes.search.isSearching);
+	const wasSearchInitiated = useAppSelector((state) => state.recipes.search.wasSearchInitiated);
 	const searchResults = useAppSelector((state) => state.recipes.search.recipesList);
 	const initialSearchTerm = getQueryParameter('searchTerm');
 	const searchResultsPagination = useAppSelector((state) => state.recipes.search.pagination);
@@ -101,19 +103,24 @@ export const Search = () => {
 			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
 				<Form form={form}>
 					<div css={{ marginBottom: '24px', maxWidth: '450px' }}>
-						<Controller
-							control={control}
-							name="searchInput"
-							render={({ field }) => (
-								<TextInput
-									isFullWidth
-									name="searchInput"
-									placeholder="Ведіть назву страви"
-									value={field.value}
-									onChange={field.onChange}
-								/>
-							)}
-						/>
+						<div css={{ display: 'flex' }}>
+							<Controller
+								control={control}
+								name="searchInput"
+								render={({ field }) => (
+									<TextInput
+										isFullWidth
+										name="searchInput"
+										placeholder="Ведіть назву страви"
+										value={field.value}
+										onChange={field.onChange}
+									/>
+								)}
+							/>
+							<Button isBusy={isSearching} onClick={handleSearchFormSubmit} css={mobileSearchButtonStyles}>
+								<Icon icon={faSearch} fontSize={14} customStyles={{ color: '#fff' }} />
+							</Button>
+						</div>
 						<Typography
 							variant="paragraphM"
 							weight={600}
@@ -179,6 +186,12 @@ export const Search = () => {
 						{searchResults.map((recipe) => (
 							<RecipeCard key={recipe.id} recipe={recipe} />
 						))}
+					</div>
+				) : wasSearchInitiated ? (
+					<div css={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+						<Typography variant="paragraphL" color="primary">
+							Нічого не знайдено...
+						</Typography>
 					</div>
 				) : null}
 				{searchResultsPagination && (

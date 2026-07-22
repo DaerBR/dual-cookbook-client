@@ -1,6 +1,7 @@
 import { ChangeEvent, createRef, useEffect, useState } from 'react';
 import { faPizzaSlice } from '@fortawesome/free-solid-svg-icons';
 import { Controller, useFormContext } from 'react-hook-form';
+import { CSSObject } from '@emotion/react';
 
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { Icon } from '../Icon';
@@ -11,12 +12,20 @@ import { imageFieldStaticStyles } from './styles.ts';
 interface ImageInputProps {
 	customHeight?: number;
 	customWidth?: number;
+	customWrapperStyles?: CSSObject;
 	initialImageUrl?: string;
 	isEdit?: boolean;
 	name: string;
 }
 
-export const ImageInput = ({ customHeight, customWidth, isEdit, initialImageUrl, name }: ImageInputProps) => {
+export const ImageInput = ({
+	customHeight,
+	customWidth,
+	customWrapperStyles,
+	isEdit,
+	initialImageUrl,
+	name,
+}: ImageInputProps) => {
 	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const imageInputRef = createRef<HTMLInputElement>();
 
@@ -46,7 +55,7 @@ export const ImageInput = ({ customHeight, customWidth, isEdit, initialImageUrl,
 	};
 
 	return (
-		<div css={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+		<div css={{ display: 'flex', flexDirection: 'column', width: '100%', ...customWrapperStyles }}>
 			<div css={imageFieldStyles}>
 				{!imagePreview && (
 					<Icon icon={faPizzaSlice} fontSize={48} customStyles={{ color: theme.colors.primary.borderDarker }} />

@@ -1,8 +1,6 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchAllCategories } from '../../store/thunks/categories.ts';
+import { useFetchAllCategoriesQuery } from '../../features/categories';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { Button } from '../../components/atoms/Button';
 import { Icon } from '../../components/atoms/Icon';
@@ -11,20 +9,10 @@ import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 
 export const Categories = () => {
-	const categoriesList = useAppSelector((state) => state.categories.categories);
+	const { data: categoriesList = [], isLoading: isFetchingCategories } = useFetchAllCategoriesQuery();
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
-	const isFetchingCategories = useAppSelector((state) => state.categories.isLoading);
 
 	const navigate = useNavigate();
-
-	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
-
-	useEffect(() => {
-		if (!areCategoriesFetched) {
-			dispatchFetchCategories();
-		}
-	}, [dispatchFetchCategories, areCategoriesFetched]);
 
 	return (
 		<div>

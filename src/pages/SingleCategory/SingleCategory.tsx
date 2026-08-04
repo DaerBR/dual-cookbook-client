@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from 'react-router';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchAllCategories } from '../../store/thunks/categories.ts';
+import { makeSelectCategoryById, useFetchAllCategoriesQuery } from '../../features/categories';
 import { Button } from '../../components/atoms/Button';
 import { Icon } from '../../components/atoms/Icon';
 import { fetchRecipes } from '../../store/thunks/recipes.ts';
@@ -15,15 +15,12 @@ import { Pagination } from '../../components/atoms/Pagination/Pagination.tsx';
 
 export const SingleCategory = () => {
 	const { id: categoryId } = useParams();
-	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
-	const categoriesData = useAppSelector((state) => state.categories.categories);
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 	const categoryRecipes = useAppSelector((state) => state.recipes.paginatedRecipes.recipesList);
 	const navigate = useNavigate();
 	const isFetchingRecipes = useAppSelector((state) => state.recipes.isLoading);
 	const categoryRecipesPagination = useAppSelector((state) => state.recipes.paginatedRecipes.pagination);
 
-	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 	const [dispatchFetchRecipes] = useThunk(fetchRecipes);
 
 	useEffect(() => {
@@ -36,13 +33,9 @@ export const SingleCategory = () => {
 		}
 	}, [categoryId, dispatchFetchRecipes]);
 
-	useEffect(() => {
-		if (!areCategoriesFetched) {
-			dispatchFetchCategories();
-		}
-	}, [areCategoriesFetched, dispatchFetchCategories]);
-
-	const selectedCategoryData = categoriesData.find((category) => category.id === categoryId);
+	useFetchAllCategoriesQuery();
+	const selectCategoryById = useMemo(() => makeSelectCategoryById(categoryId), [categoryId]);
+	const selectedCategoryData = useAppSelector(selectCategoryById);
 
 	const categoryButtons = isLoggedIn
 		? [

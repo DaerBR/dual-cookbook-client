@@ -8,19 +8,15 @@ import { AddCategoryFormValues } from './types';
 import { Button } from '../../components/atoms/Button';
 import { ImageInput } from '../../components/atoms/ImageInput';
 import { addCategoryValidationSchema } from './validations';
-import { useThunk } from '../../store/hooks/useThunk.ts';
-import { createCategory } from '../../store/thunks/categories.ts';
-import { useAppSelector } from '../../store/hooks/hooks.ts';
+import { useCreateCategoryMutation } from '../../features/categories';
 import { getBase64OfFile } from '../../utils/utils.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
+import { useGlobalLoadingIndicator } from '../../hooks/useGlobalLoadingIndicator.ts';
 
 export const AddCategory = () => {
-	const [dispatchCreateCategory] = useThunk(createCategory, {
-		useGlobalLoader: true,
-		successMessage: 'Нову категорію успішно створено!',
-		successRedirectRoute: '/categories',
-	});
-	const isCreatingCategory = useAppSelector((state) => state.categories.isCreating);
+	const [createCategory, { isLoading: isCreatingCategory }] = useCreateCategoryMutation();
+
+	useGlobalLoadingIndicator(isCreatingCategory);
 
 	const navigate = useNavigate();
 	const form = useForm<AddCategoryFormValues>({
@@ -47,9 +43,11 @@ export const AddCategory = () => {
 			categoryImage: categoryImage
 				? { base64Content: await getBase64OfFile(categoryImage), nameWithExtension: categoryImage.name }
 				: null,
+			successMessage: 'Нову категорію успішно створено!',
+			successRedirectRoute: '/categories',
 		};
 
-		await dispatchCreateCategory(payload);
+		createCategory(payload);
 	});
 
 	return (

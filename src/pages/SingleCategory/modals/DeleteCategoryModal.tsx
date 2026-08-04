@@ -3,8 +3,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ModalControls } from '../../../components/atoms/Modal/types.ts';
 import { Modal } from '../../../components/atoms/Modal/Modal.tsx';
 import { Button } from '../../../components/atoms/Button';
-import { useThunk } from '../../../store/hooks/useThunk.ts';
-import { deleteCategory } from '../../../store/thunks/categories.ts';
+import { useDeleteCategoryMutation } from '../../../features/categories';
+import { useGlobalLoadingIndicator } from '../../../hooks/useGlobalLoadingIndicator.ts';
 
 interface DeleteCategoryModalProps extends ModalControls {
 	categoryId: string;
@@ -17,17 +17,17 @@ export const DeleteCategoryModal = ({
 	isModalOpen,
 	closeModalHandler,
 }: DeleteCategoryModalProps) => {
-	const [dispatchDeleteCategory] = useThunk(deleteCategory, {
-		useGlobalLoader: true,
-		successRedirectRoute: '/categories',
-		successMessage: `Категорія видалена`,
-	});
+	const [deleteCategory, { isLoading: isDeletingCategory }] = useDeleteCategoryMutation();
+
+	useGlobalLoadingIndicator(isDeletingCategory);
 
 	const handleCloseModal = () => closeModalHandler(false);
 
 	const handleDeleteCategory = () => {
-		dispatchDeleteCategory({
+		deleteCategory({
 			categoryId,
+			successRedirectRoute: '/categories',
+			successMessage: 'Категорія видалена',
 		});
 		closeModalHandler(false);
 	};

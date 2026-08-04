@@ -21,10 +21,12 @@ import { PageWrapper } from './components/PageWrapper';
 import { MainWrapper } from './components/MainWrapper';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { StyledToaster } from './components/atoms/StyledToaster';
+import { NavigationBridge } from './components/NavigationBridge';
 
 export const App = () => (
 	<BrowserRouter>
 		<ThemeProvider theme={theme}>
+			<NavigationBridge />
 			<Header />
 			<MainWrapper>
 				<StyledToaster />

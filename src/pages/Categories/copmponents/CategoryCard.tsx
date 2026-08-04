@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { CategoryModel } from '../../../store/slices/categoriesSlice.ts';
+import { CategoryModel } from '../../../features/categories';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { Typography } from '../../../components/atoms/Typography';
 import { categoryImageSectionStyles } from '../styles.ts';

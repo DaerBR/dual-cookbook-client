@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router';
@@ -11,7 +10,7 @@ import { ImageInput } from '../../components/atoms/ImageInput';
 import { TextInput } from '../../components/atoms/TextInput';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchAllCategories } from '../../store/thunks/categories.ts';
+import { selectCategoryOptions, useFetchAllCategoriesQuery } from '../../features/categories';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
@@ -22,21 +21,11 @@ import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { fieldBlockStyles, fieldsWrapperStyles, leftColumnWrapperStyles, mainWrapperStyles } from './styles.ts';
 
 export const AddRecipe = () => {
-	const categoriesList = useAppSelector((state) => state.categories.categories);
-	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
+	const { data: categoriesList = [] } = useFetchAllCategoriesQuery();
+	const categoriesOptions = useAppSelector(selectCategoryOptions);
 	const isCreatingRecipe = useAppSelector((state) => state.recipes.isCreating);
 
-	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
-
-	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
-
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (!areCategoriesFetched) {
-			dispatchFetchCategories();
-		}
-	}, [dispatchFetchCategories, areCategoriesFetched]);
 
 	const form = useForm<AddRecipeFormValues>({
 		mode: 'all',

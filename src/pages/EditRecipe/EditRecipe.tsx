@@ -11,7 +11,7 @@ import { ImageInput } from '../../components/atoms/ImageInput';
 import { TextInput } from '../../components/atoms/TextInput';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchAllCategories } from '../../store/thunks/categories.ts';
+import { selectCategoryOptions, useFetchAllCategoriesQuery } from '../../features/categories';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
@@ -43,24 +43,15 @@ export const EditRecipe = () => {
 		}
 	}, [dispatchFetchRecipeDetails, recipeId]);
 
-	const categoriesList = useAppSelector((state) => state.categories.categories);
-	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
+	const { data: categoriesList = [] } = useFetchAllCategoriesQuery();
+	const categoriesOptions = useAppSelector(selectCategoryOptions);
 
-	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
-
-	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 	const [dispatchUpdateRecipe] = useThunk(updateRecipe, {
 		useGlobalLoader: true,
 		successMessage: 'Рецепт успішно оновлено!',
 		successRedirectRoute: recipeDetails?.categories ? `/category/${recipeDetails?.categories[0].id}` : '/categories',
 	});
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (!areCategoriesFetched) {
-			dispatchFetchCategories();
-		}
-	}, [dispatchFetchCategories, areCategoriesFetched]);
 
 	const form = useForm<EditRecipeFormValues>({
 		mode: 'all',

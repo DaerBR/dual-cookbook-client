@@ -21,7 +21,7 @@ import { createRecipe } from '../../store/thunks/recipes.ts';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { fieldBlockStyles, fieldsWrapperStyles, leftColumnWrapperStyles, mainWrapperStyles } from './styles.ts';
 
-export const AddRecipe = () => {
+export const CreateRecipe = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
 	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
 	const isCreatingRecipe = useAppSelector((state) => state.recipes.isCreating);

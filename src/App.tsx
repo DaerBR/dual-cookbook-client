@@ -3,9 +3,9 @@ import { Route, Routes } from 'react-router';
 import { ThemeProvider } from '@emotion/react';
 
 import {
-	AddCategory,
-	AddRecipe,
-	Categories,
+	AllCategories,
+	CreateCategory,
+	CreateRecipe,
 	EditCategory,
 	EditRecipe,
 	ErrorPage,
@@ -35,7 +35,7 @@ export const App = () => (
 							path="/create-new-category"
 							element={
 								<ProtectedRoute>
-									<AddCategory />
+									<CreateCategory />
 								</ProtectedRoute>
 							}
 						/>
@@ -51,7 +51,7 @@ export const App = () => (
 							path="/create-new-recipe"
 							element={
 								<ProtectedRoute>
-									<AddRecipe />
+									<CreateRecipe />
 								</ProtectedRoute>
 							}
 						/>
@@ -63,7 +63,7 @@ export const App = () => (
 								</ProtectedRoute>
 							}
 						/>
-						<Route path="/categories" element={<Categories />} />
+						<Route path="/categories" element={<AllCategories />} />
 						<Route path="/search" element={<Search />} />
 						<Route path="/category/:id" element={<SingleCategory />} />
 						<Route path="/recipe/:id" element={<SingleRecipe />} />

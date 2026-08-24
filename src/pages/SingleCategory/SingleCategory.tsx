@@ -12,6 +12,7 @@ import { fetchRecipes } from '../../store/thunks/recipes.ts';
 import { RecipeCard } from '../../components/RecipeCard';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { Pagination } from '../../components/atoms/Pagination/Pagination.tsx';
+import { categoryImageStyles } from './styles.ts';
 
 export const SingleCategory = () => {
 	const { id: categoryId } = useParams();
@@ -73,15 +74,7 @@ export const SingleCategory = () => {
 					<img
 						src={selectedCategoryData?.categoryImage?.secureUrl ?? ''}
 						alt={selectedCategoryData?.name ?? ''}
-						css={{
-							width: '450px',
-							height: 'auto',
-							borderRadius: '12px',
-							marginBottom: '12px',
-							'@media (max-width: 768px)': {
-								width: '100%',
-							},
-						}}
+						css={categoryImageStyles}
 					/>
 				</div>
 			)}

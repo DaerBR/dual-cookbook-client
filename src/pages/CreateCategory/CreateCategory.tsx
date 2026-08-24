@@ -14,7 +14,7 @@ import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { getBase64OfFile } from '../../utils/utils.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 
-export const AddCategory = () => {
+export const CreateCategory = () => {
 	const [dispatchCreateCategory] = useThunk(createCategory, {
 		useGlobalLoader: true,
 		successMessage: 'Нову категорію успішно створено!',

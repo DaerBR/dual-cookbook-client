@@ -42,7 +42,7 @@ const categoriesSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers(builder) {
-		// Fetch paginated Categories
+		// Fetch paginated AllCategories
 		builder.addCase(fetchCategories.pending, (state) => {
 			state.isLoading = true;
 		});

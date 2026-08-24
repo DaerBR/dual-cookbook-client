@@ -25,7 +25,7 @@ import {
 	fieldsWrapperStyles,
 	leftColumnWrapperStyles,
 	mainWrapperStyles,
-} from '../AddRecipe/styles.ts';
+} from '../CreateRecipe/styles.ts';
 import { deleteRecipeButtonStyles, mobileDeleteRecipeButtonStyles } from './styles.ts';
 
 export const EditRecipe = () => {

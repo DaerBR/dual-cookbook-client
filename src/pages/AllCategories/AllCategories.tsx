@@ -9,8 +9,9 @@ import { Icon } from '../../components/atoms/Icon';
 import { CategoryCard } from './copmponents/CategoryCard.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
+import { categoriesContainerStyles } from './styles.ts';
 
-export const Categories = () => {
+export const AllCategories = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
@@ -45,18 +46,7 @@ export const Categories = () => {
 						: undefined
 				}
 			/>
-			<div
-				css={{
-					display: 'grid',
-					gridTemplateRows: '1fr',
-					gridTemplateColumns: 'repeat(2, 1fr)',
-					gap: '24px',
-					'@media (max-width: 768px)': {
-						gridTemplateColumns: 'repeat(1, 1fr)',
-						gap: '12px',
-					},
-				}}
-			>
+			<div css={categoriesContainerStyles}>
 				{isFetchingCategories ? (
 					<LoadingIndicator />
 				) : (

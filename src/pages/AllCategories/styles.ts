@@ -11,3 +11,14 @@ export const categoryImageSectionStyles = {
 		opacity: 0.6,
 	},
 };
+
+export const categoriesContainerStyles = {
+	display: 'grid',
+	gridTemplateRows: '1fr',
+	gridTemplateColumns: 'repeat(2, 1fr)',
+	gap: '24px',
+	'@media (max-width: 768px)': {
+		gridTemplateColumns: 'repeat(1, 1fr)',
+		gap: '12px',
+	},
+};

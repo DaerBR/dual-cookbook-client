@@ -13,7 +13,13 @@ import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { useAppTheme } from '../../styles/hooks.ts';
 import { Typography } from '../../components/atoms/Typography';
 import { Chip } from '../../components/atoms/Chip';
-import { editRecipeButtonStyles, mobileEditRecipeButtonStyles } from './styles.ts';
+import {
+	editRecipeButtonStyles,
+	mobileEditRecipeButtonStyles,
+	recipeImageStyles,
+	recipeNoImageContainerStyles,
+	sourceContainerStyles,
+} from './styles.ts';
 
 export const SingleRecipe = () => {
 	const { id: recipeId } = useParams();
@@ -69,27 +75,11 @@ export const SingleRecipe = () => {
 					<>
 						<div css={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
 							{recipeImage?.secureUrl ? (
-								<img
-									src={recipeImage?.secureUrl ?? ''}
-									alt={recipeDetails?.name ?? ''}
-									css={{
-										width: '100%',
-										height: 'auto',
-										borderRadius: '12px',
-										marginBottom: '12px',
-										maxWidth: '500px',
-									}}
-								/>
+								<img src={recipeImage?.secureUrl ?? ''} alt={recipeDetails?.name ?? ''} css={recipeImageStyles} />
 							) : (
 								<div
 									css={{
-										height: '200px',
-										width: '420px',
-										border: '1px solid',
-										borderRadius: '12px',
-										display: 'flex',
-										justifyContent: 'center',
-										alignItems: 'center',
+										...recipeNoImageContainerStyles,
 										borderColor: theme.colors.primary.borderDarker,
 									}}
 								>
@@ -136,15 +126,7 @@ export const SingleRecipe = () => {
 							</div>
 						)}
 						{sourceUrl && (
-							<div
-								css={{
-									overflow: 'hidden',
-									textOverflow: 'ellipsis',
-									display: '-webkit-box',
-									WebkitLineClamp: '2',
-									WebkitBoxOrient: 'vertical',
-								}}
-							>
+							<div css={sourceContainerStyles}>
 								<Typography variant="paragraphS" weight={600} component="div">
 									Посилання:
 									<span css={{ marginLeft: '4px' }} />

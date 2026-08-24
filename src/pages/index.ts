@@ -1,6 +1,6 @@
-export { AddCategory } from './AddCategory';
-export { AddRecipe } from './AddRecipe';
-export { Categories } from './Categories';
+export { CreateCategory } from './CreateCategory';
+export { CreateRecipe } from './CreateRecipe';
+export { AllCategories } from './AllCategories';
 export { ErrorPage } from './ErrorPage';
 export { Homepage } from './Homepage';
 export { Search } from './Search';

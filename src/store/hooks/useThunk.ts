@@ -29,7 +29,10 @@ const getErrorText = (error: ServerError) => {
 	if (typeof error !== 'object') {
 		return 'Unknown error occurred.';
 	}
-	if (error.message) return error.message;
+
+	if (error.message) {
+		return error.message;
+	}
 
 	if ('status' in error && error.status && error.statusText) {
 		return `Server rejected with error status ${error.status} - ${error.statusText}`;

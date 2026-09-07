@@ -19,20 +19,33 @@ export const Homepage = () => {
 		});
 	}, [dispatchFetchRecipes]);
 
+	const totalRecipesNumber = useAppSelector((state) => state.recipes?.paginatedRecipes?.pagination?.total);
+
 	return (
-		<div>
-			<Typography variant="paragraphL" weight={500} color="textSubtitle" component="div">
-				Нещодавні рецепти:
-			</Typography>
-			{isFetchingRecipes ? (
-				<LoadingIndicator />
-			) : (
-				<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
-					{recipes.map((recipe) => (
-						<RecipeCard key={recipe.id} recipe={recipe} />
-					))}
-				</div>
-			)}
-		</div>
+		<>
+			<div css={{ marginBottom: '12px' }}>
+				{totalRecipesNumber && (
+					<Typography
+						variant="paragraphL"
+						weight={500}
+						color="primary"
+					>{`Всього рецептів: ${totalRecipesNumber}`}</Typography>
+				)}
+			</div>
+			<div>
+				<Typography variant="paragraphL" weight={500} color="textSubtitle" component="div">
+					Нещодавні рецепти:
+				</Typography>
+				{isFetchingRecipes ? (
+					<LoadingIndicator />
+				) : (
+					<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
+						{recipes.map((recipe) => (
+							<RecipeCard key={recipe.id} recipe={recipe} />
+						))}
+					</div>
+				)}
+			</div>
+		</>
 	);
 };

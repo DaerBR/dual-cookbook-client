@@ -28,6 +28,8 @@ const authSlice = createSlice({
 	reducers: {
 		setUserData(state, payload) {
 			state.userData = payload.payload;
+			state.isLoggedIn = Boolean(payload.payload);
+			state.areUserDataFetched = Boolean(payload.payload);
 		},
 		resetUserData(state) {
 			state.userData = null;

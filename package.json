@@ -2,7 +2,7 @@
   "name": "dual-cookbook-client",
   "private": true,
   "version": "0.0.1",
-  "packageManager": "pnpm@8.15.9",
+  "packageManager": "pnpm@12.4.1",
   "type": "module",
   "scripts": {
     "dev": "vite",

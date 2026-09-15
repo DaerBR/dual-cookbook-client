@@ -1,4 +1,4 @@
-import type { CSSObject } from '@emotion/react';
+import { defineStyles } from '../../../styles/defineStyles.ts';
 import { dash, rotate, strokeColorByVariant } from './constants.ts';
 
 export type CircularProgressColor = 'primary' | 'error' | 'success' | 'neutral' | 'white';
@@ -9,29 +9,29 @@ export interface CircularProgressProps {
 }
 
 export const CircularProgress = ({ sizePx = 24, color = 'primary' }: CircularProgressProps) => {
-	const rootCss: CSSObject = {
+	const rootCss = defineStyles({
 		display: 'inline-block',
 		lineHeight: 0,
 		width: `${sizePx}px`,
 		height: `${sizePx}px`,
 		color: strokeColorByVariant[color],
-	};
+	});
 
-	const svgCss: CSSObject = {
+	const svgCss = defineStyles({
 		display: 'block',
 		width: '100%',
 		height: '100%',
 		animation: `${rotate} 1.4s linear infinite`,
-	};
+	});
 
-	const circleCss: CSSObject = {
+	const circleCss = defineStyles({
 		display: 'block',
 		animation: `${dash} 1.4s ease-in-out infinite`,
 		fill: 'none',
 		stroke: 'currentColor',
 		strokeWidth: 3.6,
 		strokeLinecap: 'round',
-	};
+	});
 
 	return (
 		<span css={rootCss} role="progressbar" aria-busy="true" aria-label="Loading">

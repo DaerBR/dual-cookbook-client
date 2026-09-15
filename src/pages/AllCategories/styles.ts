@@ -1,7 +1,9 @@
-export const categoryImageSectionStyles = {
+import { defineStyles } from '../../styles/defineStyles.ts';
+
+export const categoryImageSectionStyles = defineStyles({
 	height: '200px',
 	width: '100%',
-	position: 'relative' as const,
+	position: 'relative',
 	backgroundSize: 'cover',
 	backgroundPosition: 'center',
 	display: 'flex',
@@ -10,9 +12,9 @@ export const categoryImageSectionStyles = {
 	'&:hover': {
 		opacity: 0.6,
 	},
-};
+});
 
-export const categoriesContainerStyles = {
+export const categoriesContainerStyles = defineStyles({
 	display: 'grid',
 	gridTemplateRows: '1fr',
 	gridTemplateColumns: 'repeat(2, 1fr)',
@@ -21,4 +23,4 @@ export const categoriesContainerStyles = {
 		gridTemplateColumns: 'repeat(1, 1fr)',
 		gap: '12px',
 	},
-};
+});

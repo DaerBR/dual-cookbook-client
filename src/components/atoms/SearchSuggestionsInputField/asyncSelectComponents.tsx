@@ -42,7 +42,7 @@ export const useSearchAsyncSelectStyles = (): StylesConfig<RecipeOption, false, 
 	const { fieldStyles } = useCommonFieldStyles({ isFullWidth: true });
 
 	return useMemo(() => {
-		const fieldBase = { ...fieldStyles } as CSSObject;
+		const fieldBase: CSSObject = { ...fieldStyles };
 		delete fieldBase['&:focus'];
 		delete fieldBase['&:disabled'];
 
@@ -82,7 +82,7 @@ export const useSearchAsyncSelectComponents = (): Config => {
 			padding: '8px 12px',
 			fontSize: theme.typography.paragraphS.fontSize,
 			lineHeight: theme.typography.paragraphS.lineHeight,
-			cursor: 'pointer' as const,
+			cursor: 'pointer',
 			color: theme.colors.text.main,
 			backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
 		});

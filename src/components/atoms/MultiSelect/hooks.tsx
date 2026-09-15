@@ -1,6 +1,6 @@
 import { faChevronDown, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { type ReactElement, useMemo } from 'react';
-import { CSSObject } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 import {
 	type ClearIndicatorProps,
 	type DropdownIndicatorProps,
@@ -17,6 +17,7 @@ import {
 	components,
 } from 'react-select';
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { defineStyles } from '../../../styles/defineStyles.ts';
 import { Icon } from '../Icon';
 import { SelectOption } from '../Select/types.ts';
 
@@ -28,7 +29,7 @@ export const useCommonFieldStyles = ({ isFullWidth }: UseCommonFieldStylesProps)
 	const theme = useAppTheme();
 
 	return {
-		fieldStyles: {
+		fieldStyles: defineStyles({
 			minHeight: '38px',
 			backgroundColor: '#fff',
 			boxShadow: theme.boxShadows.xs,
@@ -38,7 +39,7 @@ export const useCommonFieldStyles = ({ isFullWidth }: UseCommonFieldStylesProps)
 			fontSize: theme.typography.paragraphS.fontSize,
 			lineHeight: theme.typography.paragraphS.lineHeight,
 			color: theme.colors.text.main,
-			boxSizing: 'border-box' as const,
+			boxSizing: 'border-box',
 			width: isFullWidth ? '100%' : '300px',
 			maxWidth: isFullWidth ? '100%' : '300px',
 			'&:focus': {
@@ -51,11 +52,11 @@ export const useCommonFieldStyles = ({ isFullWidth }: UseCommonFieldStylesProps)
 				backgroundColor: theme.colors.neutral.surfaceSubtle,
 				color: theme.colors.text.disabled,
 			},
-		},
-		errorStyles: {
+		}),
+		errorStyles: defineStyles({
 			borderColor: theme.colors.error.borderDarker,
 			boxShadow: '0 0 0 3px rgba(236, 95, 81, 0.20)',
-		},
+		}),
 	};
 };
 
@@ -64,7 +65,7 @@ export const useMultiSelectStyles = (): StylesConfig<any> => {
 	const { fieldStyles } = useCommonFieldStyles({ isFullWidth: true });
 
 	return useMemo(() => {
-		const fieldBase = { ...fieldStyles } as CSSObject;
+		const fieldBase: CSSObject = { ...fieldStyles };
 		delete fieldBase['&:disabled'];
 
 		return {
@@ -114,7 +115,7 @@ export const useMultiSelectComponents = (): any => {
 			padding: '8px 12px',
 			fontSize: theme.typography.paragraphS.fontSize,
 			lineHeight: theme.typography.paragraphS.lineHeight,
-			cursor: 'pointer' as const,
+			cursor: 'pointer',
 			color: theme.colors.text.main,
 			backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
 		});

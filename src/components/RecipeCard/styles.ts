@@ -1,15 +1,16 @@
 import { useAppTheme } from '../../styles/hooks.ts';
+import { defineStyles } from '../../styles/defineStyles.ts';
 
 export const useRecipeCardStyles = () => {
 	const theme = useAppTheme();
 
 	return {
-		editButtonStyles: {
+		editButtonStyles: defineStyles({
 			padding: '6px',
-			boxSizing: 'border-box' as const,
+			boxSizing: 'border-box',
 			borderColor: 'transparent',
 			backgroundColor: 'transparent',
-			position: 'absolute' as const,
+			position: 'absolute',
 			right: '12px',
 			top: '12px',
 			cursor: 'pointer',
@@ -28,8 +29,8 @@ export const useRecipeCardStyles = () => {
 			'@media (max-width: 768px)': {
 				display: 'none',
 			},
-		},
-		wrapperStyles: {
+		}),
+		wrapperStyles: defineStyles({
 			border: '1px solid',
 			borderColor: theme.colors.neutral.borderLighter,
 			borderRadius: '8px',
@@ -41,8 +42,8 @@ export const useRecipeCardStyles = () => {
 			'&:hover': {
 				boxShadow: theme.boxShadows.md,
 			},
-		},
-		imageWrapperStyles: {
+		}),
+		imageWrapperStyles: defineStyles({
 			display: 'flex',
 			justifyContent: 'center',
 			backgroundSize: 'contain',
@@ -56,14 +57,14 @@ export const useRecipeCardStyles = () => {
 			'@media (max-width: 768px)': {
 				minWidth: '33%',
 			},
-		},
-		descriptionWrapperStyles: {
+		}),
+		descriptionWrapperStyles: defineStyles({
 			overflow: 'hidden',
 			textOverflow: 'ellipsis',
 			display: '-webkit-box',
 			WebkitLineClamp: '2',
 			WebkitBoxOrient: 'vertical',
 			minHeight: '40px',
-		},
-	} as const;
+		}),
+	};
 };

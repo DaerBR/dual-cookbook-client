@@ -1,12 +1,14 @@
-export const imageFieldStaticStyles = {
+import { defineStyles } from '../../../styles/defineStyles.ts';
+
+export const imageFieldStaticStyles = defineStyles({
 	backgroundColor: '#fff',
 	backgroundSize: 'cover',
 	backgroundPosition: 'center',
 	borderRadius: '4px',
 	padding: '40px',
 	display: 'flex',
-	flexDirection: 'column' as const,
+	flexDirection: 'column',
 	justifyContent: 'center',
 	alignItems: 'center',
-	boxSizing: 'border-box' as const,
-};
+	boxSizing: 'border-box',
+});

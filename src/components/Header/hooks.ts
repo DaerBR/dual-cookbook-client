@@ -1,23 +1,24 @@
-import type { CSSObject } from '@emotion/react';
+import { defineStyles } from '../../styles/defineStyles.ts';
 
-export const useHeaderStyles = (): CSSObject => ({
-	boxSizing: 'border-box',
-	padding: '12px 36px',
-	height: '80px',
-	position: 'fixed',
-	left: '50%',
-	transform: 'translateX(-50%)',
-	top: 0,
-	width: '100%',
-	maxWidth: '1200px',
-	margin: '0 auto',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'space-between',
-	backgroundColor: '#fff',
-	borderRadius: '4px',
-	zIndex: 3,
-	'@media (max-width: 768px)': {
-		padding: '10px 12px',
-	},
-});
+export const useHeaderStyles = () =>
+	defineStyles({
+		boxSizing: 'border-box',
+		padding: '12px 36px',
+		height: '80px',
+		position: 'fixed',
+		left: '50%',
+		transform: 'translateX(-50%)',
+		top: 0,
+		width: '100%',
+		maxWidth: '1200px',
+		margin: '0 auto',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		backgroundColor: '#fff',
+		borderRadius: '4px',
+		zIndex: 3,
+		'@media (max-width: 768px)': {
+			padding: '10px 12px',
+		},
+	});

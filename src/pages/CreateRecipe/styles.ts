@@ -1,41 +1,43 @@
-export const mainWrapperStyles = {
+import { defineStyles } from '../../styles/defineStyles.ts';
+
+export const mainWrapperStyles = defineStyles({
 	display: 'flex',
 	gap: '12px',
 	flexBasis: '100%',
 	wrap: 'nowrap',
 	'@media (max-width: 768px)': { flexDirection: 'column', alignItems: 'center' },
-} as const;
+});
 
-export const fieldsWrapperStyles = {
+export const fieldsWrapperStyles = defineStyles({
 	display: 'flex',
 	flexDirection: 'column',
 	marginLeft: '36px',
 	width: '100%',
 	'@media (max-width: 768px)': { marginLeft: 0, order: 1 },
-} as const;
+});
 
-export const fieldBlockStyles = {
+export const fieldBlockStyles = defineStyles({
 	marginBottom: '24px',
 	display: 'flex',
-	flexDirection: 'column' as const,
-};
+	flexDirection: 'column',
+});
 
-export const leftColumnWrapperStyles = {
+export const leftColumnWrapperStyles = defineStyles({
 	display: 'flex',
 	flexBasis: '300px',
 	flexDirection: 'column',
 	'@media (max-width: 768px)': { width: '100%', order: 2 },
-} as const;
+});
 
-export const ingredientsFieldStyles = {
+export const ingredientsFieldStyles = defineStyles({
 	display: 'flex',
 	alignItems: 'center',
 	position: 'relative',
 	marginBottom: '20px',
 	borderRadius: '8px',
-} as const;
+});
 
-export const fieldDragButtonStyles = {
+export const fieldDragButtonStyles = defineStyles({
 	marginRight: '4px',
 	maxHeight: '38px',
 	padding: '10px 12px',
@@ -43,4 +45,4 @@ export const fieldDragButtonStyles = {
 	cursor: 'grab',
 	boxShadow: 'none',
 	border: 'none',
-};
+});

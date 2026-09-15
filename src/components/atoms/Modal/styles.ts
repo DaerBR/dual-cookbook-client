@@ -1,39 +1,41 @@
-export const modalBodyStyles = {
+import { defineStyles } from '../../../styles/defineStyles.ts';
+
+export const modalBodyStyles = defineStyles({
 	backgroundColor: '#fff',
 	width: '450px',
 	display: 'flex',
 	alignItems: 'center',
 	padding: '32px 0',
-	position: 'relative' as const,
+	position: 'relative',
 	borderRadius: '4px',
-};
+});
 
-export const closeButtonStyles = {
+export const closeButtonStyles = defineStyles({
 	border: 'none',
 	cursor: 'pointer',
-	position: 'absolute' as const,
+	position: 'absolute',
 	top: '16px',
 	right: '16px',
 	backgroundColor: 'transparent',
-};
+});
 
-export const modalWrapperStyles = {
+export const modalWrapperStyles = defineStyles({
 	display: 'flex',
-	flexDirection: 'column' as const,
-};
+	flexDirection: 'column',
+});
 
-export const iconWrapperStyles = {
+export const iconWrapperStyles = defineStyles({
 	borderRadius: '50%',
 	width: '48px',
 	height: '48px',
 	display: 'flex',
 	justifyContent: 'center',
 	alignItems: 'center',
-};
+});
 
-export const contentWrapperStyles = { padding: '32px 32px 0' };
+export const contentWrapperStyles = defineStyles({ padding: '32px 32px 0' });
 
-export const buttonsContainerStyles = {
+export const buttonsContainerStyles = defineStyles({
 	paddingTop: '20px',
 	paddingLeft: '32px',
 	paddingRight: '32px',
@@ -42,4 +44,4 @@ export const buttonsContainerStyles = {
 	'& :not(:last-child)': {
 		marginRight: '20px',
 	},
-};
+});

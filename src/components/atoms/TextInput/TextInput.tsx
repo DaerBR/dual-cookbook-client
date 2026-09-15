@@ -54,7 +54,7 @@ export const TextInput = ({
 			{multiline ? (
 				<textarea
 					disabled={isDisabled}
-					css={{ ...fieldStyles, resize: 'none', ...(fieldErrors ? errorStyles : {}), ...customStyles } as const}
+					css={{ ...fieldStyles, resize: 'none', ...(fieldErrors ? errorStyles : {}), ...customStyles }}
 					id={id ?? name}
 					name={name}
 					placeholder={placeholder}
@@ -67,7 +67,7 @@ export const TextInput = ({
 				<input
 					ref={inputRef}
 					disabled={isDisabled}
-					css={{ ...fieldStyles, ...(fieldErrors ? errorStyles : {}), ...customStyles } as const}
+					css={{ ...fieldStyles, ...(fieldErrors ? errorStyles : {}), ...customStyles }}
 					type="text"
 					id={id ?? name}
 					name={name}

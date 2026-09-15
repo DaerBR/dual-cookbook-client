@@ -3,6 +3,7 @@ import { ReactNode, SyntheticEvent } from 'react';
 
 import { Colors, Variants } from './types';
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { defineStyles } from '../../../styles/defineStyles.ts';
 import { useButtonColors } from './hooks.ts';
 import { buttonStyles } from './styles.ts';
 import { CircularProgress } from '../CircularProgress';
@@ -77,7 +78,7 @@ export const Button = ({
 						? 'error'
 						: null;
 
-	const configurableButtonStyles: CSSObject = {
+	const configurableButtonStyles = defineStyles({
 		fontSize: theme.typography.paragraphS.fontSize,
 		lineHeight: theme.typography.paragraphS.lineHeight,
 		padding: '10px 28px',
@@ -107,7 +108,7 @@ export const Button = ({
 			cursor: 'default',
 			'& .start-icon-container svg, & .end-icon-container svg': { color: buttonColors.disabledTextColor },
 		},
-	};
+	});
 
 	return (
 		<button

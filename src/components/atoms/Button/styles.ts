@@ -1,6 +1,6 @@
-import type { CSSObject } from '@emotion/react';
+import { defineStyles } from '../../../styles/defineStyles.ts';
 
-export const buttonStyles: CSSObject = {
+export const buttonStyles = defineStyles({
 	cursor: 'pointer',
 	textTransform: 'none',
 	padding: '6px 24px',
@@ -21,4 +21,4 @@ export const buttonStyles: CSSObject = {
 		marginRight: '-4px',
 		marginLeft: '8px',
 	},
-};
+});

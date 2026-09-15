@@ -1,8 +1,19 @@
 import { useFormContext } from 'react-hook-form';
-import { ChangeEvent, FocusEvent, KeyboardEvent, useCallback, useEffect, useId, useRef, useState } from 'react';
+import {
+	type CSSProperties,
+	ChangeEvent,
+	FocusEvent,
+	KeyboardEvent,
+	useCallback,
+	useEffect,
+	useId,
+	useRef,
+	useState,
+} from 'react';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import type { CSSObject } from '@emotion/react';
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { defineStyles } from '../../../styles/defineStyles.ts';
 import { InputLabel } from '../InputLabel';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { Icon } from '../Icon';
@@ -116,17 +127,17 @@ export const Select = ({
 
 	const { fieldStyles, errorStyles } = useCommonFieldStyles({ isFullWidth });
 
-	const wrapperStyles = {
-		position: 'relative' as const,
+	const wrapperStyles = defineStyles({
+		position: 'relative',
 		width: fieldStyles.width,
 		maxWidth: fieldStyles.maxWidth,
 		...customStyles,
-	};
+	});
 
-	const selectInputStyles = {
+	const selectInputStyles = defineStyles({
 		...fieldStyles,
-		cursor: isDisabled ? ('not-allowed' as const) : ('pointer' as const),
-		textAlign: 'left' as const,
+		cursor: isDisabled ? 'not-allowed' : 'pointer',
+		textAlign: 'left',
 		'&:focus': {
 			outline: 'none',
 			borderColor: theme.colors.primary.borderLighter,
@@ -137,43 +148,44 @@ export const Select = ({
 			backgroundColor: theme.colors.neutral.surfaceSubtle,
 			color: theme.colors.text.disabled,
 		},
-	};
+	});
 
-	const listStyles = {
-		position: 'absolute' as const,
+	const listStyles = defineStyles({
+		position: 'absolute',
 		top: '100%',
 		left: 0,
 		right: 0,
 		marginTop: '4px',
 		padding: 0,
 		margin: '4px 0 0',
-		listStyle: 'none' as const,
+		listStyle: 'none',
 		backgroundColor: '#fff',
 		border: `1px solid ${theme.colors.neutral.borderDefault}`,
 		borderRadius: '4px',
 		boxShadow: theme.boxShadows.xs,
 		maxHeight: '240px',
 		minWidth: '300px',
-		overflowY: 'auto' as const,
+		overflowY: 'auto',
 		zIndex: 10,
-	};
-
-	const getOptionStyles = (isHighlighted: boolean, isSelected: boolean) => ({
-		minHeight: '20px',
-		padding: '8px 12px',
-		fontSize: '14px',
-		lineHeight: 1.4,
-		color: '#000',
-		cursor: 'pointer' as const,
-		backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
 	});
 
-	const chevronStyles = {
-		position: 'absolute' as const,
+	const getOptionStyles = (isHighlighted: boolean, isSelected: boolean) =>
+		defineStyles({
+			minHeight: '20px',
+			padding: '8px 12px',
+			fontSize: '14px',
+			lineHeight: 1.4,
+			color: '#000',
+			cursor: 'pointer',
+			backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
+		});
+
+	const chevronStyles: CSSProperties = {
+		position: 'absolute',
 		top: '50%',
 		right: '10px',
 		transform: 'translateY(-50%)',
-		pointerEvents: 'none' as const,
+		pointerEvents: 'none',
 		color: isDisabled ? theme.colors.text.disabled : theme.colors.text.subtitle,
 	};
 
@@ -187,11 +199,11 @@ export const Select = ({
 
 	const fieldErrors = errors ? errors[name] : undefined;
 
-	const mergedTriggerStyles = {
+	const mergedTriggerStyles = defineStyles({
 		...selectInputStyles,
 		...(fieldErrors ? errorStyles : {}),
 		color: placeholder && value === '' ? theme.colors.text.disabled : '#000',
-	} as const;
+	});
 
 	// Label shown on the trigger: current option, placeholder when empty, or blank.
 	const displayLabel =

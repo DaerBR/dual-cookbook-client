@@ -1,18 +1,20 @@
 import { createPortal } from 'react-dom';
 import { ReactNode } from 'react';
 
+import { defineStyles } from '../../../../styles/defineStyles.ts';
+
 interface ModelPresentationProps {
 	children: ReactNode;
 }
 
 export const ModelPresentation = ({ children }: ModelPresentationProps) => {
-	const outerStyles = { position: 'fixed' as const, zIndex: 1300, right: 0, bottom: 0, top: 0, left: 0 };
-	const backdropStyles = {
+	const outerStyles = defineStyles({ position: 'fixed', zIndex: 1300, right: 0, bottom: 0, top: 0, left: 0 });
+	const backdropStyles = defineStyles({
 		opacity: 1,
 		backgroundColor: 'rgba(112, 117, 125, 0.4)',
 		backdropFilter: 'blur(8px)',
 		transition: 'opacity 225ms cubic-bezier(0.4, 0, 0.2, 1)',
-		position: 'fixed' as const,
+		position: 'fixed',
 		top: 0,
 		right: 0,
 		left: 0,
@@ -21,7 +23,7 @@ export const ModelPresentation = ({ children }: ModelPresentationProps) => {
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-	};
+	});
 
 	return createPortal(
 		<div css={outerStyles}>

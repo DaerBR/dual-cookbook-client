@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { CategoryModel } from '../../../store/slices/categoriesSlice.ts';
 import { useAppTheme } from '../../../styles/hooks.ts';

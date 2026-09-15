@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 import { Typography } from '../atoms/Typography';
 import { RecipeTableModel } from '../../store/types.ts';

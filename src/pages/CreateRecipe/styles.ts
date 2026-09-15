@@ -26,3 +26,21 @@ export const leftColumnWrapperStyles = {
 	flexDirection: 'column',
 	'@media (max-width: 768px)': { width: '100%', order: 2 },
 } as const;
+
+export const ingredientsFieldStyles = {
+	display: 'flex',
+	alignItems: 'center',
+	position: 'relative',
+	marginBottom: '20px',
+	borderRadius: '8px',
+} as const;
+
+export const fieldDragButtonStyles = {
+	marginRight: '4px',
+	maxHeight: '38px',
+	padding: '10px 12px',
+	minWidth: '38px',
+	cursor: 'grab',
+	boxShadow: 'none',
+	border: 'none',
+};

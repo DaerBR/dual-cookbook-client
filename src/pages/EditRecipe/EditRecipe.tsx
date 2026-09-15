@@ -3,6 +3,7 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useParams } from 'react-router';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { DragDropProvider, type DragOverEvent } from '@dnd-kit/react';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { EditRecipeFormValues, editRecipeValidationSchema } from './validations.ts';
@@ -20,6 +21,7 @@ import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
 import { fetchRecipeDetails, updateRecipe } from '../../store/thunks/recipes.ts';
 import { DeleteRecipeModal } from '../SingleRecipe/modals/DeleteRecipeModal.tsx';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
+import { IngredientField } from './components/IngredientField.tsx';
 import {
 	fieldBlockStyles,
 	fieldsWrapperStyles,
@@ -138,10 +140,26 @@ export const EditRecipe = () => {
 		fields: ingredientsFields,
 		append: addIngredient,
 		remove: removeIngredient,
+		move: moveIngredient,
 	} = useFieldArray({
 		control,
 		name: 'ingredients',
 	});
+
+	const handleDragOver = (event: DragOverEvent) => {
+		const { source, target } = event.operation;
+
+		if (!source || !target || source.id === target.id) {
+			return;
+		}
+
+		const activeIndex = ingredientsFields.findIndex((ingredient) => ingredient.id === source.id);
+		const overIndex = ingredientsFields.findIndex((ingredient) => ingredient.id === target.id);
+
+		if (activeIndex !== -1 && overIndex !== -1) {
+			moveIngredient(activeIndex, overIndex);
+		}
+	};
 
 	return (
 		<div>
@@ -181,33 +199,19 @@ export const EditRecipe = () => {
 							/>
 							<div css={{ display: 'flex', flexDirection: 'column', marginTop: '24px' }}>
 								<FieldsGroupTitle title="Інгредієнти" />
-								<div>
-									{ingredientsFields.map((ingredientField, index) => (
-										<div key={ingredientField.id} css={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-											<Controller
-												control={control}
-												name={`ingredients.${index}.text`}
-												css={{ width: '100%', display: 'flex' }}
-												render={({ field }) => (
-													<TextInput
-														isFullWidth
-														name={`ingredients.${index}.text`}
-														value={field.value}
-														onChange={field.onChange}
-														customStyles={{ marginBottom: '20px' }}
-														placeholder='Опис (напр. "300 гр пшеничного борошна")'
-													/>
-												)}
+								<DragDropProvider onDragOver={handleDragOver}>
+									<div>
+										{ingredientsFields.map((ingredientField, index) => (
+											<IngredientField
+												key={ingredientField.id}
+												index={index}
+												ingredientField={ingredientField}
+												ingredientsCount={ingredientsFields.length}
+												removeIngredient={removeIngredient}
 											/>
-											{ingredientsFields.length > 1 && (
-												<DeleteIconButton
-													onClick={() => removeIngredient(index)}
-													customStyles={{ position: 'absolute', right: '-20px', top: '-20px' }}
-												/>
-											)}
-										</div>
-									))}
-								</div>
+										))}
+									</div>
+								</DragDropProvider>
 								<Button
 									startIcon={<Icon icon={faPlus} />}
 									variant="secondary"

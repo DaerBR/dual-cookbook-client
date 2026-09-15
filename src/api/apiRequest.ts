@@ -1,8 +1,8 @@
-import axios from 'axios';
+import { create } from 'axios';
 import { useNavigate } from 'react-router';
 import { API_URL } from './constants';
 
-export const apiRequest = axios.create({
+export const apiRequest = create({
 	baseURL: API_URL,
 	withCredentials: true,
 });

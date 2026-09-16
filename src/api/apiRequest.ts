@@ -9,6 +9,7 @@ export const apiRequest = create({
 
 export const useApiInterceptors = () => {
 	const navigate = useNavigate();
+
 	apiRequest.interceptors.response.use(
 		(response) => response,
 		async (error) => {

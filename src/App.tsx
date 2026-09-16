@@ -20,10 +20,13 @@ import { PageWrapper } from './components/PageWrapper';
 import { MainWrapper } from './components/MainWrapper';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { StyledToaster } from './components/atoms/StyledToaster';
+import { useApiInterceptors } from './api/apiRequest.ts';
 
-export const App = () => (
-	<BrowserRouter>
-		<ThemeProvider theme={theme}>
+const AppRoutes = () => {
+	useApiInterceptors();
+
+	return (
+		<>
 			<Header />
 			<MainWrapper>
 				<StyledToaster />
@@ -70,6 +73,14 @@ export const App = () => (
 					</Routes>
 				</PageWrapper>
 			</MainWrapper>
+		</>
+	);
+};
+
+export const App = () => (
+	<BrowserRouter>
+		<ThemeProvider theme={theme}>
+			<AppRoutes />
 		</ThemeProvider>
 	</BrowserRouter>
 );

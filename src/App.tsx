@@ -20,10 +20,10 @@ import { PageWrapper } from './components/PageWrapper';
 import { MainWrapper } from './components/MainWrapper';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { StyledToaster } from './components/atoms/StyledToaster';
-import { useApiInterceptors } from './api/apiRequest.ts';
+import { useApiNavigate } from './api/apiRequest.ts';
 
 const AppRoutes = () => {
-	useApiInterceptors();
+	useApiNavigate();
 
 	return (
 		<>
@@ -69,6 +69,8 @@ const AppRoutes = () => {
 						<Route path="/search" element={<Search />} />
 						<Route path="/category/:id" element={<SingleCategory />} />
 						<Route path="/recipe/:id" element={<SingleRecipe />} />
+						<Route path="/not-found" element={<ErrorPage code={404} />} />
+						<Route path="/forbidden" element={<ErrorPage code={403} />} />
 						<Route path="*" element={<ErrorPage code={404} />} />
 					</Routes>
 				</PageWrapper>

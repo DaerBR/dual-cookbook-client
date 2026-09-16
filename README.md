@@ -49,7 +49,7 @@ There are no automated tests. A pre-commit hook (husky + lint-staged) runs ESLin
 
 ## Architecture
 
-**API layer** (`src/api/apiRequest.ts`): a shared Axios instance with `withCredentials: true` for cookie-based sessions. `useApiInterceptors` (wired inside `ProtectedRoute`, not globally) redirects to `/` on `401`/`403` and to `/not-found` on `404`.
+**API layer** (`src/api/apiRequest.ts`): a shared Axios instance with `withCredentials: true` for cookie-based sessions. The response interceptor that redirects to `/` on `401`/`403` and to `/not-found` on `404` is registered at module scope (not inside a component) so it's guaranteed to be attached before any page's on-mount fetch can fire. `useApiNavigate` (called once, in `App.tsx`) just keeps the interceptor's `navigate` reference pointed at the live router instance.
 
 **Auth flow**: `AuthEventListener` (rendered in `Header` when logged out) opens the Google OAuth flow in a popup and listens for the `GOOGLE_AUTH_SUCCESS` message, dispatching `setUserData` to the store. `ProtectedRoute` reads auth state and redirects unauthenticated users away from protected routes (create/edit recipe, create/edit category).
 

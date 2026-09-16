@@ -13,6 +13,7 @@ import { RecipeCard } from '../../components/RecipeCard';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { Pagination } from '../../components/atoms/Pagination/Pagination.tsx';
 import { categoryImageStyles } from './styles.ts';
+import { Typography } from '../../components/atoms/Typography';
 
 export const SingleCategory = () => {
 	const { id: categoryId } = useParams();
@@ -64,19 +65,28 @@ export const SingleCategory = () => {
 	return (
 		<div>
 			<PageTitle
-				title={`Рецепти категорії ${selectedCategoryData?.name ?? ''}`}
+				title={`Рецепти категорії "${selectedCategoryData?.name ?? ''}"`}
 				controlElements={categoryButtons}
 				withReturnButton
 				returnUrl={'/categories' as const}
 			/>
 			{selectedCategoryData?.categoryImage && (
-				<div css={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-					<img
-						src={selectedCategoryData?.categoryImage?.secureUrl ?? ''}
-						alt={selectedCategoryData?.name ?? ''}
-						css={categoryImageStyles}
-					/>
-				</div>
+				<>
+					<div css={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+						<img
+							src={selectedCategoryData?.categoryImage?.secureUrl ?? ''}
+							alt={selectedCategoryData?.name ?? ''}
+							css={categoryImageStyles}
+						/>
+					</div>
+					<Typography
+						variant="paragraphS"
+						weight={500}
+						color="textSubtitle"
+						component="div"
+						customStyles={{ textAlign: 'center', marginTop: '4px', marginBottom: '12px' }}
+					>{`Всього рецептів в категорії: ${categoryRecipesPagination?.total ?? 0}`}</Typography>
+				</>
 			)}
 			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
 				{isFetchingRecipes ? (

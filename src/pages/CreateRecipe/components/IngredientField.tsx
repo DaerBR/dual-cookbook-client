@@ -8,7 +8,7 @@ import { Icon } from '../../../components/atoms/Icon';
 import { TextInput } from '../../../components/atoms/TextInput';
 import { DeleteIconButton } from '../../../components/DeleteIconButton';
 import { AddRecipeFormValues } from '../validations.ts';
-import { fieldDragButtonStyles, ingredientsFieldStyles } from '../styles.ts';
+import { fieldDragButtonStyles, ingredientDeleteButtonStyles, ingredientsFieldStyles } from '../styles.ts';
 
 interface IngredientFieldProps {
 	index: number;
@@ -55,7 +55,7 @@ export const IngredientField = ({
 			{ingredientsCount > 1 && (
 				<DeleteIconButton
 					onClick={() => removeIngredient(index)}
-					customStyles={{ position: 'absolute', right: '-20px', top: '-20px' }}
+					customStyles={ingredientDeleteButtonStyles}
 				/>
 			)}
 		</div>

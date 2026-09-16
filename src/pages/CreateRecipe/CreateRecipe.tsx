@@ -21,7 +21,16 @@ import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
 import { createRecipe } from '../../store/thunks/recipes.ts';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { IngredientField } from './components/IngredientField.tsx';
-import { fieldBlockStyles, fieldsWrapperStyles, leftColumnWrapperStyles, mainWrapperStyles } from './styles.ts';
+import {
+	descriptionFieldStyles,
+	fieldBlockStyles,
+	fieldsWrapperStyles,
+	leftColumnWrapperStyles,
+	mainWrapperStyles,
+	recipeTitleFieldStyles,
+	sourceUrlFieldStyles,
+	stepDeleteButtonStyles,
+} from './styles.ts';
 
 export const CreateRecipe = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
@@ -167,7 +176,7 @@ export const CreateRecipe = () => {
 											placeholder="Вставте посилання на джерело (відео, пост і т.д.)"
 											value={field.value}
 											onChange={field.onChange}
-											customStyles={{ minWidth: '400px' }}
+											customStyles={sourceUrlFieldStyles}
 										/>
 									)}
 								/>
@@ -189,7 +198,7 @@ export const CreateRecipe = () => {
 											placeholder="Введіть назву рецепту"
 											value={field.value}
 											onChange={field.onChange}
-											customStyles={{ minWidth: '400px' }}
+											customStyles={recipeTitleFieldStyles}
 										/>
 									)}
 								/>
@@ -225,7 +234,7 @@ export const CreateRecipe = () => {
 											placeholder="Введіть короткий опис рецепту"
 											value={field.value}
 											onChange={field.onChange}
-											customStyles={{ minWidth: '400px' }}
+											customStyles={descriptionFieldStyles}
 										/>
 									)}
 								/>
@@ -255,7 +264,7 @@ export const CreateRecipe = () => {
 										{index !== 0 && (
 											<DeleteIconButton
 												onClick={() => removeStep(index)}
-												customStyles={{ position: 'absolute', right: '-20px', top: '0' }}
+												customStyles={stepDeleteButtonStyles}
 											/>
 										)}
 									</div>

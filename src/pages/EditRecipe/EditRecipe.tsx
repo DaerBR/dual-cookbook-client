@@ -23,10 +23,14 @@ import { DeleteRecipeModal } from '../SingleRecipe/modals/DeleteRecipeModal.tsx'
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { IngredientField } from './components/IngredientField.tsx';
 import {
+	descriptionFieldStyles,
 	fieldBlockStyles,
 	fieldsWrapperStyles,
 	leftColumnWrapperStyles,
 	mainWrapperStyles,
+	recipeTitleFieldStyles,
+	sourceUrlFieldStyles,
+	stepDeleteButtonStyles,
 } from '../CreateRecipe/styles.ts';
 import { deleteRecipeButtonStyles, mobileDeleteRecipeButtonStyles } from './styles.ts';
 
@@ -235,7 +239,7 @@ export const EditRecipe = () => {
 											placeholder="Вставте посилання на джерело (відео, пост і т.д.)"
 											value={field.value}
 											onChange={field.onChange}
-											customStyles={{ minWidth: '400px' }}
+											customStyles={sourceUrlFieldStyles}
 										/>
 									)}
 								/>
@@ -257,7 +261,7 @@ export const EditRecipe = () => {
 											placeholder="Введіть назву рецепту"
 											value={field.value}
 											onChange={field.onChange}
-											customStyles={{ minWidth: '400px' }}
+											customStyles={recipeTitleFieldStyles}
 										/>
 									)}
 								/>
@@ -293,7 +297,7 @@ export const EditRecipe = () => {
 											placeholder="Введіть короткий опис рецепту"
 											value={field.value}
 											onChange={field.onChange}
-											customStyles={{ minWidth: '400px' }}
+											customStyles={descriptionFieldStyles}
 										/>
 									)}
 								/>
@@ -322,7 +326,7 @@ export const EditRecipe = () => {
 										{index !== 0 && (
 											<DeleteIconButton
 												onClick={() => removeStep(index)}
-												customStyles={{ position: 'absolute', right: '-20px', top: '0' }}
+												customStyles={stepDeleteButtonStyles}
 											/>
 										)}
 									</div>

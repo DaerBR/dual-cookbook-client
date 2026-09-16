@@ -1,9 +1,12 @@
-export const deleteRecipeButtonStyles = {
+import { defineStyles } from '../../styles/defineStyles.ts';
+
+export const deleteRecipeButtonStyles = defineStyles({
 	'@media (max-width: 768px)': {
 		display: 'none',
 	},
-};
-export const mobileDeleteRecipeButtonStyles = {
+});
+
+export const mobileDeleteRecipeButtonStyles = defineStyles({
 	display: 'none',
 	border: 'none',
 	boxShadow: 'none',
@@ -13,4 +16,4 @@ export const mobileDeleteRecipeButtonStyles = {
 	'@media (max-width: 768px)': {
 		display: 'block',
 	},
-};
+});

@@ -46,3 +46,44 @@ export const fieldDragButtonStyles = defineStyles({
 	boxShadow: 'none',
 	border: 'none',
 });
+
+export const recipeTitleFieldStyles = defineStyles({
+	minWidth: '400px',
+	'@media (max-width: 768px)': {
+		minWidth: 'auto',
+	},
+});
+
+export const sourceUrlFieldStyles = defineStyles({
+	minWidth: '400px',
+	'@media (max-width: 768px)': {
+		minWidth: 'auto',
+	},
+});
+
+export const descriptionFieldStyles = defineStyles({
+	minWidth: '400px',
+	'@media (max-width: 768px)': {
+		minWidth: 'auto',
+	},
+});
+
+export const ingredientDeleteButtonStyles = defineStyles({
+	position: 'absolute',
+	right: '-20px',
+	top: '-20px',
+	'@media (max-width: 768px)': {
+		right: '-8px',
+		paddingRight: 0,
+	},
+});
+
+export const stepDeleteButtonStyles = defineStyles({
+	position: 'absolute',
+	right: '-20px',
+	top: '0',
+	'@media (max-width: 768px)': {
+		right: '-8px',
+		paddingRight: 0,
+	},
+});

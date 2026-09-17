@@ -97,11 +97,13 @@ export const SingleRecipe = () => {
 								))}
 							</div>
 						)}
-						<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
-							<FieldsGroupTitle title="Опис" />
-							<div>{description}</div>
-						</div>
-						{ingredients && (
+						{description && description !== '' && (
+							<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
+								<FieldsGroupTitle title="Опис" />
+								<div>{description}</div>
+							</div>
+						)}
+						{ingredients && ingredients.length > 0 && (
 							<div css={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
 								<FieldsGroupTitle title="Інгредієнти" />
 								<ul css={{ listStyleType: 'circle', paddingLeft: '24px', listStylePosition: 'outside' }}>

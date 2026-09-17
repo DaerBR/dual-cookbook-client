@@ -26,7 +26,7 @@ export const ImageInput = ({
 	initialImageUrl,
 	name,
 }: ImageInputProps) => {
-	const [imagePreview, setImagePreview] = useState<string | null>(null);
+	const [imagePreview, setImagePreview] = useState<string | undefined>(undefined);
 	const imageInputRef = createRef<HTMLInputElement>();
 
 	const theme = useAppTheme();
@@ -35,8 +35,8 @@ export const ImageInput = ({
 	const fieldErrors = errors ? errors[name] : undefined;
 
 	useEffect(() => {
-		if (isEdit && initialImageUrl) {
-			setImagePreview(initialImageUrl);
+		if (isEdit) {
+			setImagePreview(initialImageUrl ?? undefined);
 		}
 	}, [isEdit, initialImageUrl]);
 

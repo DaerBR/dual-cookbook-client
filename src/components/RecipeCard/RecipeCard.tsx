@@ -46,7 +46,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 							<div>
 								<img
 									src="/logo-images/bear-cooks.png"
-									alt={recipe.name}
+									alt={recipe.recipeTitle}
 									css={{ height: '100%', opacity: 0.2, maxWidth: '100%' }}
 								/>
 							</div>
@@ -54,7 +54,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 					</div>
 					<div css={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '16px', position: 'relative' }}>
 						<Typography variant="paragraphM" weight={700}>
-							{recipe.name}
+							{recipe.recipeTitle}
 						</Typography>
 						<div
 							css={{

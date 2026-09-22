@@ -55,11 +55,11 @@ export interface CreateRecipeParams {
 	categories: string[];
 	description: string | null;
 	ingredients: RecipeIngredient[];
-	name: string;
 	recipeImage?: {
 		base64Content: string;
 		nameWithExtension: string;
 	} | null;
+	recipeTitle: string;
 	sourceUrl?: string;
 	steps: RecipeStep[];
 }

@@ -50,7 +50,7 @@ export const createDebouncedRecipeSearch = (
 								recipes.map((recipe) => ({
 									// value: recipe.id,
 									value: recipe.id,
-									label: recipe.name,
+									label: recipe.recipeTitle,
 								})),
 							);
 						}

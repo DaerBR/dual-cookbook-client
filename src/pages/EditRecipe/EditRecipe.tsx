@@ -72,7 +72,7 @@ export const EditRecipe = () => {
 		mode: 'all',
 		reValidateMode: 'onChange',
 		defaultValues: {
-			name: '',
+			recipeTitle: '',
 			categories: [],
 			description: '',
 			ingredients: [{ text: '' }],
@@ -97,7 +97,7 @@ export const EditRecipe = () => {
 				label: category.name,
 			}));
 			reset({
-				name: recipeDetails.name,
+				recipeTitle: recipeDetails.recipeTitle,
 				categories: categoriesValues,
 				description: recipeDetails.description,
 				ingredients: recipeDetails.ingredients.map((ingredient) => ({ text: ingredient.text })),
@@ -109,18 +109,18 @@ export const EditRecipe = () => {
 		}
 	}, [dispatchFetchRecipeDetails, recipeDetails, recipeId, reset]);
 
-	const recipeTitleValue = useWatch({ control, name: 'name' });
+	const recipeTitleValue = useWatch({ control, name: 'recipeTitle' });
 
 	const handleFormSubmit = handleSubmit(async (formValues) => {
 		if (!recipeId) {
 			return;
 		}
 
-		const { recipeImage, name, description, steps, categories, ingredients, sourceUrl } = formValues;
+		const { recipeImage, recipeTitle, description, steps, categories, ingredients, sourceUrl } = formValues;
 		const categoriesIds = pluck('value', categories);
 
 		const payload = {
-			name,
+			recipeTitle,
 			categories: categoriesIds,
 			ingredients,
 			steps,
@@ -251,14 +251,14 @@ export const EditRecipe = () => {
 							<div css={fieldBlockStyles}>
 								<Controller
 									control={control}
-									name="name"
+									name="recipeTitle"
 									css={{ width: '100%' }}
 									render={({ field }) => (
 										<TextInput
 											isFullWidth
 											isRequired
-											id="name"
-											name="name"
+											id="recipeTitle"
+											name="recipeTitle"
 											label="Назва рецепту"
 											placeholder="Введіть назву рецепту"
 											value={field.value}

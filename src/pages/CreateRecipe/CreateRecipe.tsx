@@ -53,7 +53,7 @@ export const CreateRecipe = () => {
 		mode: 'all',
 		reValidateMode: 'onChange',
 		defaultValues: {
-			name: '',
+			recipeTitle: '',
 			categories: [],
 			description: '',
 			ingredients: [{ text: '' }],
@@ -71,7 +71,7 @@ export const CreateRecipe = () => {
 	} = form;
 
 	const selectedCategories = useWatch({ control, name: 'categories' });
-	const recipeTitleValue = useWatch({ control, name: 'name' });
+	const recipeTitleValue = useWatch({ control, name: 'recipeTitle' });
 
 	const [dispatchCreateRecipe] = useThunk(createRecipe, {
 		useGlobalLoader: true,
@@ -80,11 +80,11 @@ export const CreateRecipe = () => {
 	});
 
 	const handleFormSubmit = handleSubmit(async (formValues) => {
-		const { recipeImage, name, description, steps, categories, ingredients, sourceUrl } = formValues;
+		const { recipeImage, recipeTitle, description, steps, categories, ingredients, sourceUrl } = formValues;
 		const categoriesIds = pluck('value', categories);
 
 		const payload = {
-			name,
+			recipeTitle,
 			categories: categoriesIds,
 			ingredients,
 			steps,
@@ -187,14 +187,14 @@ export const CreateRecipe = () => {
 							<div css={fieldBlockStyles}>
 								<Controller
 									control={control}
-									name="name"
+									name="recipeTitle"
 									css={{ width: '100%' }}
 									render={({ field }) => (
 										<TextInput
 											isFullWidth
 											isRequired
-											id="name"
-											name="name"
+											id="recipeTitle"
+											name="recipeTitle"
 											label="Назва рецепту"
 											placeholder="Введіть назву рецепту"
 											value={field.value}

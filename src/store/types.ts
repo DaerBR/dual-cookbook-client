@@ -8,8 +8,8 @@ export interface RecipeTableModel {
 	createdAt: Date;
 	description: string | null;
 	id: string;
-	name: string;
 	recipeImage?: ImageDataModel;
+	recipeTitle: string;
 	updatedAt: Date;
 }
 

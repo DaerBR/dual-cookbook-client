@@ -67,7 +67,11 @@ export const SingleRecipe = () => {
 
 	return (
 		<div>
-			<PageTitle title={`${recipeDetails?.name ?? ''}`} controlElements={recipeControlButtons} withReturnButton />
+			<PageTitle
+				title={`${recipeDetails?.recipeTitle ?? ''}`}
+				controlElements={recipeControlButtons}
+				withReturnButton
+			/>
 			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
 				{isFetchingRecipeDetails ? (
 					<LoadingIndicator />
@@ -75,7 +79,11 @@ export const SingleRecipe = () => {
 					<>
 						<div css={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
 							{recipeImage?.secureUrl ? (
-								<img src={recipeImage?.secureUrl ?? ''} alt={recipeDetails?.name ?? ''} css={recipeImageStyles} />
+								<img
+									src={recipeImage?.secureUrl ?? ''}
+									alt={recipeDetails?.recipeTitle ?? ''}
+									css={recipeImageStyles}
+								/>
 							) : (
 								<div
 									css={{

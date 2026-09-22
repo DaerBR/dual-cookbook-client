@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { TextInput } from '../../components/atoms/TextInput';
@@ -39,6 +39,8 @@ export const CreateCategory = () => {
 		formState: { isValid },
 	} = form;
 
+	const categoryTitleValue = useWatch({ control, name: 'categoryName' });
+
 	const handleFormSubmit = handleSubmit(async (formValues) => {
 		const { categoryImage, categoryName } = formValues;
 
@@ -54,7 +56,7 @@ export const CreateCategory = () => {
 
 	return (
 		<div>
-			<PageTitle title="Створити нову категорію" />
+			<PageTitle title={categoryTitleValue || 'Створити нову категорію'} />
 			<div>
 				<Form form={form} onSubmit={handleFormSubmit}>
 					<div css={{ display: 'flex', gap: '12px', flexBasis: '100%', wrap: 'nowrap' }}>

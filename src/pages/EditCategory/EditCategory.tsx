@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -59,6 +59,8 @@ export const EditCategory = () => {
 		reset,
 	} = form;
 
+	const categoryTitleValue = useWatch({ control, name: 'categoryName' });
+
 	const handleFormSubmit = handleSubmit(async (formValues) => {
 		if (!categoryId) {
 			return;
@@ -95,7 +97,7 @@ export const EditCategory = () => {
 	return (
 		<div>
 			<PageTitle
-				title="Редагувати категорію"
+				title={categoryTitleValue}
 				controlElements={[
 					<Button
 						onClick={() => setIsDeleteModalOpen(true)}

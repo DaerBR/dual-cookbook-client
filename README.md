@@ -2,7 +2,7 @@
 
 A React + TypeScript SPA for a small family cookbook app: browse, search, and manage recipes organized into categories, with Google sign-in gating create/edit actions. The UI is in Ukrainian.
 
-Pairs with the [`dual-cookbook-server`](../dual-cookbook-server) Express/MongoDB API.
+Pairs with the [`dual-cookbook-server`](https://github.com/DaerBR/dual-cookbook-server) Express/MongoDB API.
 
 ## Stack
 

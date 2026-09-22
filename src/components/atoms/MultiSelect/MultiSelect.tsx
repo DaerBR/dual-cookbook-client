@@ -43,7 +43,7 @@ export const MultiSelect = ({
 	const { formState } = useFormContext() ?? {};
 	const { errors } = formState ?? {};
 	const fieldErrors = errors ? errors[name] : undefined;
-	const baseSelectStyles = useMultiSelectStyles();
+	const baseSelectStyles = useMultiSelectStyles({ hasError: Boolean(fieldErrors) });
 	const selectComponents = useMultiSelectComponents();
 
 	return (

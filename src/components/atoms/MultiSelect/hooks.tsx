@@ -60,9 +60,13 @@ export const useCommonFieldStyles = ({ isFullWidth }: UseCommonFieldStylesProps)
 	};
 };
 
-export const useMultiSelectStyles = (): StylesConfig<any> => {
+interface UseMultiSelectStylesProps {
+	hasError?: boolean;
+}
+
+export const useMultiSelectStyles = ({ hasError }: UseMultiSelectStylesProps = {}): StylesConfig<any> => {
 	const theme = useAppTheme();
-	const { fieldStyles } = useCommonFieldStyles({ isFullWidth: true });
+	const { errorStyles, fieldStyles } = useCommonFieldStyles({ isFullWidth: true });
 
 	return useMemo(() => {
 		const fieldBase: CSSObject = { ...fieldStyles };
@@ -75,6 +79,7 @@ export const useMultiSelectStyles = (): StylesConfig<any> => {
 				padding: '4px 8px 4px 16px',
 				outline: 'none',
 				cursor: state.isDisabled ? 'not-allowed' : 'pointer',
+				...(hasError ? errorStyles : {}),
 				'&:hover': {
 					borderColor: theme.colors.neutral.borderDefault,
 				},
@@ -92,7 +97,7 @@ export const useMultiSelectStyles = (): StylesConfig<any> => {
 					: {}),
 			}),
 		};
-	}, [fieldStyles, theme]);
+	}, [fieldStyles, errorStyles, hasError, theme]);
 };
 
 export const useMultiSelectComponents = (): any => {

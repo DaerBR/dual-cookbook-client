@@ -2,7 +2,7 @@ import { ChangeEvent, RefObject } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { CSSObject } from '@emotion/react';
 
-import { processFieldValidationErrors } from '../../../utils/utils.tsx';
+import { getFieldError, processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { InputLabel } from '../InputLabel';
 import { useCommonFieldStyles } from './hooks.ts';
 import { HelperText } from '../HelperText';
@@ -44,8 +44,7 @@ export const TextInput = ({
 }: TextInputProps) => {
 	const { formState } = useFormContext() ?? {};
 	const { errors } = formState ?? [];
-	const fieldErrors = errors ? errors[name] : undefined;
-
+	const fieldErrors = getFieldError(errors, name);
 	const { fieldStyles, errorStyles } = useCommonFieldStyles({ isFullWidth });
 
 	return (

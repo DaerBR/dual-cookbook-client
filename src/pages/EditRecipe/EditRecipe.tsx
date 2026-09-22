@@ -21,7 +21,7 @@ import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
 import { fetchRecipeDetails, updateRecipe } from '../../store/thunks/recipes.ts';
 import { DeleteRecipeModal } from '../SingleRecipe/modals/DeleteRecipeModal.tsx';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
-import { IngredientField } from './components/IngredientField.tsx';
+import { IngredientField } from '../CreateRecipe/components/IngredientField.tsx';
 import {
 	descriptionFieldStyles,
 	fieldBlockStyles,
@@ -319,15 +319,11 @@ export const EditRecipe = () => {
 													label={`Крок ${index + 1}`}
 													value={field.value}
 													onChange={field.onChange}
-													customStyles={{ marginBottom: '20px' }}
 												/>
 											)}
 										/>
 										{index !== 0 && (
-											<DeleteIconButton
-												onClick={() => removeStep(index)}
-												customStyles={stepDeleteButtonStyles}
-											/>
+											<DeleteIconButton onClick={() => removeStep(index)} customStyles={stepDeleteButtonStyles} />
 										)}
 									</div>
 								))}
@@ -335,7 +331,7 @@ export const EditRecipe = () => {
 									startIcon={<Icon icon={faPlus} />}
 									variant="secondary"
 									onClick={() => addStep({ stepDescription: '' })}
-									customStyles={{ maxWidth: '250px' }}
+									customStyles={{ maxWidth: '250px', marginTop: '20px' }}
 								>
 									Додати наступний крок
 								</Button>

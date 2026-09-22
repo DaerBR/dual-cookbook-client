@@ -1,4 +1,5 @@
 import { type ReactElement } from 'react';
+import type { FieldErrors } from 'react-hook-form';
 
 import { Typography } from '../components/atoms/Typography';
 
@@ -6,6 +7,21 @@ interface ValidationError {
 	[key: string]: unknown;
 	message?: string;
 }
+
+// Resolves a react-hook-form error for a dot/bracket field-array path (e.g. "steps[0].stepDescription"),
+// since react-hook-form nests errors by actual field structure rather than a flat string key.
+export const getFieldError = (errors: FieldErrors | undefined, name: string): ValidationError | undefined => {
+	if (!errors) {
+		return undefined;
+	}
+
+	const path = name.split('.').flatMap((segment) => segment.split(/\[(\d+)\]/).filter(Boolean));
+
+	return path.reduce<unknown>(
+		(acc, key) => (acc && typeof acc === 'object' ? (acc as Record<string, unknown>)[key] : undefined),
+		errors,
+	) as ValidationError | undefined;
+};
 
 export const processFieldValidationErrors = (errors: ValidationError | undefined): ReactElement | undefined => {
 	if (!errors) {

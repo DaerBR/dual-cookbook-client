@@ -31,7 +31,7 @@ export const leftColumnWrapperStyles = defineStyles({
 
 export const ingredientsFieldStyles = defineStyles({
 	display: 'flex',
-	alignItems: 'center',
+	alignItems: 'self-start',
 	position: 'relative',
 	marginBottom: '20px',
 	borderRadius: '8px',

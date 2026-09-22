@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useParams } from 'react-router';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -109,6 +109,8 @@ export const EditRecipe = () => {
 		}
 	}, [dispatchFetchRecipeDetails, recipeDetails, recipeId, reset]);
 
+	const recipeTitleValue = useWatch({ control, name: 'name' });
+
 	const handleFormSubmit = handleSubmit(async (formValues) => {
 		if (!recipeId) {
 			return;
@@ -168,7 +170,7 @@ export const EditRecipe = () => {
 	return (
 		<div>
 			<PageTitle
-				title={`${recipeDetails?.name ?? ''}`}
+				title={recipeTitleValue}
 				withReturnButton
 				controlElements={[
 					<Button

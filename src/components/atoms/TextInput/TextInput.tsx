@@ -47,13 +47,26 @@ export const TextInput = ({
 	const fieldErrors = getFieldError(errors, name);
 	const { fieldStyles, errorStyles } = useCommonFieldStyles({ isFullWidth });
 
+	// Merges the error border/shadow into the focus state too, so it stays visible while the field is focused
+	// instead of being overridden by fieldStyles' own `&:focus` rule.
+	const errorAwareFieldStyles = fieldErrors
+		? {
+				...fieldStyles,
+				...errorStyles,
+				'&:focus': {
+					...fieldStyles['&:focus'],
+					...errorStyles,
+				},
+			}
+		: fieldStyles;
+
 	return (
 		<div css={{ width: isFullWidth ? '100%' : 'auto' }}>
 			{label && <InputLabel id={id ?? name} label={label} isRequired={isRequired} />}
 			{multiline ? (
 				<textarea
 					disabled={isDisabled}
-					css={{ ...fieldStyles, resize: 'none', ...(fieldErrors ? errorStyles : {}), ...customStyles }}
+					css={{ ...errorAwareFieldStyles, resize: 'none', ...customStyles }}
 					id={id ?? name}
 					name={name}
 					placeholder={placeholder}
@@ -66,7 +79,7 @@ export const TextInput = ({
 				<input
 					ref={inputRef}
 					disabled={isDisabled}
-					css={{ ...fieldStyles, ...(fieldErrors ? errorStyles : {}), ...customStyles }}
+					css={{ ...errorAwareFieldStyles, ...customStyles }}
 					type="text"
 					id={id ?? name}
 					name={name}

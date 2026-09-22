@@ -71,6 +71,7 @@ export const CreateRecipe = () => {
 	} = form;
 
 	const selectedCategories = useWatch({ control, name: 'categories' });
+	const recipeTitleValue = useWatch({ control, name: 'name' });
 
 	const [dispatchCreateRecipe] = useThunk(createRecipe, {
 		useGlobalLoader: true,
@@ -132,7 +133,7 @@ export const CreateRecipe = () => {
 
 	return (
 		<div>
-			<PageTitle title="Створити новий рецепт" withReturnButton />
+			<PageTitle title={recipeTitleValue || 'Створити новий рецепт'} withReturnButton />
 			<div>
 				<Form form={form} onSubmit={handleFormSubmit}>
 					<div css={mainWrapperStyles}>
@@ -262,10 +263,7 @@ export const CreateRecipe = () => {
 											)}
 										/>
 										{index !== 0 && (
-											<DeleteIconButton
-												onClick={() => removeStep(index)}
-												customStyles={stepDeleteButtonStyles}
-											/>
+											<DeleteIconButton onClick={() => removeStep(index)} customStyles={stepDeleteButtonStyles} />
 										)}
 									</div>
 								))}

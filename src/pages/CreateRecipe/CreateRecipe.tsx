@@ -22,14 +22,17 @@ import { createRecipe } from '../../store/thunks/recipes.ts';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { IngredientField } from './components/IngredientField.tsx';
 import {
+	addStepButtonStyles,
 	descriptionFieldStyles,
 	fieldBlockStyles,
 	fieldsWrapperStyles,
+	formActionButtonsContainerStyles,
 	leftColumnWrapperStyles,
 	mainWrapperStyles,
 	recipeTitleFieldStyles,
 	sourceUrlFieldStyles,
 	stepDeleteButtonStyles,
+	stepWrapperStyles,
 } from './styles.ts';
 
 export const CreateRecipe = () => {
@@ -243,7 +246,7 @@ export const CreateRecipe = () => {
 							<div css={fieldBlockStyles}>
 								<FieldsGroupTitle title="Покрокова інструкія" />
 								{stepsFields.map((_, index) => (
-									<div key={index} css={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+									<div key={index} css={stepWrapperStyles}>
 										<Controller
 											control={control}
 											name={`steps.${index}.stepDescription`}
@@ -258,7 +261,6 @@ export const CreateRecipe = () => {
 													label={`Крок ${index + 1}`}
 													value={field.value}
 													onChange={field.onChange}
-													customStyles={{ marginBottom: '20px' }}
 												/>
 											)}
 										/>
@@ -271,14 +273,14 @@ export const CreateRecipe = () => {
 									startIcon={<Icon icon={faPlus} />}
 									variant="secondary"
 									onClick={() => addStep({ stepDescription: '' })}
-									customStyles={{ maxWidth: '250px' }}
+									customStyles={addStepButtonStyles}
 								>
 									Додати наступний крок
 								</Button>
 							</div>
 						</div>
 					</div>
-					<div css={{ display: 'flex', gap: '24px', justifyContent: 'center', marginTop: '12px' }}>
+					<div css={formActionButtonsContainerStyles}>
 						<Button
 							type="submit"
 							variant="primary"

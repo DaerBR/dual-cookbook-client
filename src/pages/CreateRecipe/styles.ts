@@ -87,3 +87,18 @@ export const stepDeleteButtonStyles = defineStyles({
 		paddingRight: 0,
 	},
 });
+
+export const stepWrapperStyles = defineStyles({
+	display: 'flex',
+	alignItems: 'center',
+	position: 'relative',
+	marginBottom: '16px',
+});
+
+export const addStepButtonStyles = { maxWidth: '250px', marginTop: '16px' };
+export const formActionButtonsContainerStyles = defineStyles({
+	display: 'flex',
+	gap: '24px',
+	justifyContent: 'center',
+	marginTop: '12px',
+});

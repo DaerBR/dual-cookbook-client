@@ -23,14 +23,17 @@ import { DeleteRecipeModal } from '../SingleRecipe/modals/DeleteRecipeModal.tsx'
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { IngredientField } from '../CreateRecipe/components/IngredientField.tsx';
 import {
+	addStepButtonStyles,
 	descriptionFieldStyles,
 	fieldBlockStyles,
 	fieldsWrapperStyles,
+	formActionButtonsContainerStyles,
 	leftColumnWrapperStyles,
 	mainWrapperStyles,
 	recipeTitleFieldStyles,
 	sourceUrlFieldStyles,
 	stepDeleteButtonStyles,
+	stepWrapperStyles,
 } from '../CreateRecipe/styles.ts';
 import { deleteRecipeButtonStyles, mobileDeleteRecipeButtonStyles } from './styles.ts';
 
@@ -307,7 +310,7 @@ export const EditRecipe = () => {
 							<div css={fieldBlockStyles}>
 								<FieldsGroupTitle title="Покрокова інструкія" />
 								{stepsFields.map((_, index) => (
-									<div key={index} css={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+									<div key={index} css={stepWrapperStyles}>
 										<Controller
 											control={control}
 											name={`steps.${index}.stepDescription`}
@@ -333,14 +336,14 @@ export const EditRecipe = () => {
 									startIcon={<Icon icon={faPlus} />}
 									variant="secondary"
 									onClick={() => addStep({ stepDescription: '' })}
-									customStyles={{ maxWidth: '250px', marginTop: '20px' }}
+									customStyles={addStepButtonStyles}
 								>
 									Додати наступний крок
 								</Button>
 							</div>
 						</div>
 					</div>
-					<div css={{ display: 'flex', gap: '24px', justifyContent: 'center', marginTop: '12px' }}>
+					<div css={formActionButtonsContainerStyles}>
 						<Button
 							type="submit"
 							variant="primary"

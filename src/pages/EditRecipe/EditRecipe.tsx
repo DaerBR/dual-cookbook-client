@@ -16,12 +16,12 @@ import { fetchAllCategories } from '../../store/thunks/categories.ts';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
-import { DeleteIconButton } from '../../components/DeleteIconButton';
 import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
 import { fetchRecipeDetails, updateRecipe } from '../../store/thunks/recipes.ts';
 import { DeleteRecipeModal } from '../SingleRecipe/modals/DeleteRecipeModal.tsx';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { IngredientField } from '../CreateRecipe/components/IngredientField.tsx';
+import { StepField } from '../CreateRecipe/components/StepField.tsx';
 import {
 	addStepButtonStyles,
 	descriptionFieldStyles,
@@ -32,8 +32,6 @@ import {
 	mainWrapperStyles,
 	recipeTitleFieldStyles,
 	sourceUrlFieldStyles,
-	stepDeleteButtonStyles,
-	stepWrapperStyles,
 } from '../CreateRecipe/styles.ts';
 import { deleteRecipeButtonStyles, mobileDeleteRecipeButtonStyles } from './styles.ts';
 
@@ -309,28 +307,14 @@ export const EditRecipe = () => {
 							</div>
 							<div css={fieldBlockStyles}>
 								<FieldsGroupTitle title="Покрокова інструкія" />
-								{stepsFields.map((_, index) => (
-									<div key={index} css={stepWrapperStyles}>
-										<Controller
-											control={control}
-											name={`steps.${index}.stepDescription`}
-											css={{ width: '100%', display: 'flex' }}
-											render={({ field }) => (
-												<TextInput
-													rows={6}
-													isFullWidth
-													multiline
-													name={`steps.${index}.stepDescription`}
-													label={`Крок ${index + 1}`}
-													value={field.value}
-													onChange={field.onChange}
-												/>
-											)}
-										/>
-										{index !== 0 && (
-											<DeleteIconButton onClick={() => removeStep(index)} customStyles={stepDeleteButtonStyles} />
-										)}
-									</div>
+								{stepsFields.map((stepField, index) => (
+									<StepField
+										key={stepField.id}
+										index={index}
+										stepField={stepField}
+										stepsCount={stepsFields.length}
+										removeStep={removeStep}
+									/>
 								))}
 								<Button
 									startIcon={<Icon icon={faPlus} />}

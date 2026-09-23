@@ -8,7 +8,7 @@ export const editRecipeValidationSchema = z.object({
 	recipeImage: z.union([z.instanceof(File), z.null()]),
 	sourceUrl: z.string(),
 	steps: z
-		.array(z.object({ stepDescription: z.string().min(3, 'Занадто короткий текст') }))
+		.array(z.object({ stepDescription: z.string().min(3, 'Опис кроку занадто короткий') }))
 		.nonempty('Додайте принаймні один крок'),
 });
 

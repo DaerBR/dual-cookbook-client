@@ -7,7 +7,9 @@ export const addRecipeValidationSchema = z.object({
 	recipeTitle: z.string().min(3, 'Введіть назву рецепту, принаймні 3 символи'),
 	recipeImage: z.union([z.instanceof(File), z.null()]),
 	sourceUrl: z.string(),
-	steps: z.array(z.object({ stepDescription: z.string().min(3) })).nonempty('Додайте принаймні один крок'),
+	steps: z
+		.array(z.object({ stepDescription: z.string().min(3, 'Опис кроку занадто короткий') }))
+		.nonempty('Додайте принаймні один крок'),
 });
 
 export type AddRecipeFormValues = z.infer<typeof addRecipeValidationSchema>;

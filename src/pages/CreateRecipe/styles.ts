@@ -92,7 +92,7 @@ export const stepWrapperStyles = defineStyles({
 	display: 'flex',
 	alignItems: 'center',
 	position: 'relative',
-	marginBottom: '16px',
+	marginBottom: '12px',
 });
 
 export const addStepButtonStyles = { maxWidth: '250px', marginTop: '16px' };

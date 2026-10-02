@@ -122,9 +122,15 @@ export const SingleCategory = () => {
 			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
 				{isFetchingRecipes ? (
 					<LoadingIndicator />
-				) : (
+				) : categoryRecipes.length > 0 ? (
 					categoryRecipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
-				)}
+				) : categoryRecipesPagination ? (
+					<div css={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+						<Typography variant="paragraphL" color="primary" weight={500}>
+							Нічого не знайдено...
+						</Typography>
+					</div>
+				) : null}
 			</div>
 			{categoryRecipesPagination && (
 				<Pagination

@@ -195,7 +195,7 @@ export const Search = () => {
 					</div>
 				) : wasSearchInitiated ? (
 					<div css={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-						<Typography variant="paragraphL" color="primary">
+						<Typography variant="paragraphL" color="primary" weight={500}>
 							Нічого не знайдено...
 						</Typography>
 					</div>

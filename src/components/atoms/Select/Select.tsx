@@ -203,6 +203,7 @@ export const Select = ({
 		...selectInputStyles,
 		...(fieldErrors ? errorStyles : {}),
 		color: placeholder && value === '' ? theme.colors.text.disabled : '#000',
+		...customStyles,
 	});
 
 	// Label shown on the trigger: current option, placeholder when empty, or blank.

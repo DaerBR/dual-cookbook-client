@@ -107,6 +107,12 @@ export const SingleCategory = () => {
 						}}
 						options={recipeAuthorOptions}
 						value={recipeAuthorFilterValue}
+						customStyles={{
+							'@media (max-width: 768px)': {
+								width: '200px',
+								minWidth: '200px',
+							},
+						}}
 					/>
 					{recipeAuthorFilterValue ? (
 						<Chip

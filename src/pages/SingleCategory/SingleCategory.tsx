@@ -12,7 +12,7 @@ import { fetchRecipes } from '../../store/thunks/recipes.ts';
 import { RecipeCard } from '../../components/RecipeCard';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { Pagination } from '../../components/atoms/Pagination/Pagination.tsx';
-import { categoryImageStyles } from './styles.ts';
+import { categoryImageStyles, emptyStateStyles, filterRowStyles, recipesListStyles } from './styles.ts';
 import { Typography } from '../../components/atoms/Typography';
 import { Select } from '../../components/atoms/Select';
 import { Chip } from '../../components/atoms/Chip';
@@ -98,7 +98,7 @@ export const SingleCategory = () => {
 				<Typography variant="paragraphS" weight={500}>
 					Фільтрувати по:
 				</Typography>
-				<div css={{ display: 'flex', width: '100%', paddingTop: '12px', alignItems: 'center' }}>
+				<div css={filterRowStyles}>
 					<Select
 						placeholder="Автор рецепту"
 						name="recipeAuthor"
@@ -125,13 +125,13 @@ export const SingleCategory = () => {
 					) : null}
 				</div>
 			</div>
-			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
+			<div css={recipesListStyles}>
 				{isFetchingRecipes ? (
 					<LoadingIndicator />
 				) : categoryRecipes.length > 0 ? (
 					categoryRecipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
 				) : categoryRecipesPagination ? (
-					<div css={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+					<div css={emptyStateStyles}>
 						<Typography variant="paragraphL" color="primary" weight={500}>
 							Нічого не знайдено...
 						</Typography>

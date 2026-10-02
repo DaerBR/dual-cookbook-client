@@ -1,17 +1,31 @@
+import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import type { CSSObject } from '@emotion/react';
+
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { Typography } from '../Typography';
 import { TypographyVariant } from '../Typography/types.ts';
-import { chipHeight, chipPadding } from './constants.ts';
+import { Icon } from '../Icon';
+import { chipHeight, chipIconSize, chipPadding } from './constants.ts';
 
 interface ChipProps {
 	color?: 'primary' | 'neutral' | 'success' | 'error';
+	customStyles?: CSSObject;
+	endIcon?: IconDefinition;
 	isOutlined?: boolean;
 	onClick?: () => void;
 	size?: 'lg' | 'md' | 'sm' | 'xs';
 	text: string;
 }
 
-export const Chip = ({ onClick, color = 'primary', size = 'md', isOutlined, text }: ChipProps) => {
+export const Chip = ({
+	endIcon,
+	customStyles,
+	onClick,
+	color = 'primary',
+	size = 'md',
+	isOutlined,
+	text,
+}: ChipProps) => {
 	const theme = useAppTheme();
 	const typographySize: Record<string, TypographyVariant> = {
 		lg: 'paragraphS',
@@ -40,13 +54,24 @@ export const Chip = ({ onClick, color = 'primary', size = 'md', isOutlined, text
 	};
 
 	const typographyContent = (
-		<Typography weight={600} variant={typographySize[size]} customStyles={chipStyles}>
+		<Typography
+			weight={600}
+			variant={typographySize[size]}
+			customStyles={onClick ? chipStyles : { ...chipStyles, ...customStyles }}
+		>
 			{text}
+			{endIcon && (
+				<Icon
+					icon={endIcon}
+					fontSize={chipIconSize[size]}
+					customStyles={{ color: chipStyles.color, marginLeft: '4px', marginTop: '2px' }}
+				/>
+			)}
 		</Typography>
 	);
 
 	return onClick ? (
-		<button type="button" onClick={onClick} css={{ border: 'none', backgroundColor: 'transparent' }}>
+		<button type="button" onClick={onClick} css={{ ...customStyles, border: 'none', backgroundColor: 'transparent' }}>
 			{typographyContent}
 		</button>
 	) : (

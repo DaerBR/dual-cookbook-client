@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
@@ -14,6 +14,9 @@ import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { Pagination } from '../../components/atoms/Pagination/Pagination.tsx';
 import { categoryImageStyles } from './styles.ts';
 import { Typography } from '../../components/atoms/Typography';
+import { Select } from '../../components/atoms/Select';
+import { Chip } from '../../components/atoms/Chip';
+import { recipeAuthorOptions } from '../../constants/recipeAuthors.ts';
 
 export const SingleCategory = () => {
 	const { id: categoryId } = useParams();
@@ -25,6 +28,8 @@ export const SingleCategory = () => {
 	const isFetchingRecipes = useAppSelector((state) => state.recipes.isLoading);
 	const categoryRecipesPagination = useAppSelector((state) => state.recipes.paginatedRecipes.pagination);
 
+	const [recipeAuthorFilterValue, setRecipeAuthorFilterValue] = useState('');
+
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 	const [dispatchFetchRecipes] = useThunk(fetchRecipes);
 
@@ -34,9 +39,10 @@ export const SingleCategory = () => {
 				categories: categoryId,
 				limit: 10,
 				page: 1,
+				recipeAuthor: recipeAuthorFilterValue || undefined,
 			});
 		}
-	}, [categoryId, dispatchFetchRecipes]);
+	}, [categoryId, recipeAuthorFilterValue, dispatchFetchRecipes]);
 
 	useEffect(() => {
 		if (!areCategoriesFetched) {
@@ -88,6 +94,31 @@ export const SingleCategory = () => {
 					>{`Всього рецептів в категорії: ${categoryRecipesPagination?.total ?? 0}`}</Typography>
 				</>
 			)}
+			<div css={{ paddingTop: '12px', paddingBottom: '12px' }}>
+				<Typography variant="paragraphS" weight={500}>
+					Фільтрувати по:
+				</Typography>
+				<div css={{ display: 'flex', width: '100%', paddingTop: '12px', alignItems: 'center' }}>
+					<Select
+						placeholder="Автор рецепту"
+						name="recipeAuthor"
+						onChange={(e) => {
+							setRecipeAuthorFilterValue(e.target.value);
+						}}
+						options={recipeAuthorOptions}
+						value={recipeAuthorFilterValue}
+					/>
+					{recipeAuthorFilterValue ? (
+						<Chip
+							color="neutral"
+							text="Скинути"
+							onClick={() => setRecipeAuthorFilterValue('')}
+							customStyles={{ marginLeft: '12px' }}
+							isOutlined
+						/>
+					) : null}
+				</div>
+			</div>
 			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
 				{isFetchingRecipes ? (
 					<LoadingIndicator />
@@ -99,7 +130,7 @@ export const SingleCategory = () => {
 				<Pagination
 					currentPage={categoryRecipesPagination.page}
 					fetchDataMethod={dispatchFetchRecipes}
-					fetchParams={{ limit: 10, categories: categoryId }}
+					fetchParams={{ limit: 10, categories: categoryId, recipeAuthor: recipeAuthorFilterValue || undefined }}
 					totalPages={categoryRecipesPagination.totalPages}
 				/>
 			)}

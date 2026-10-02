@@ -13,3 +13,11 @@ export const chipHeight = {
 	lg: '32px',
 	xl: '36px',
 };
+
+export const chipIconSize = {
+	xs: 10,
+	sm: 10,
+	md: 12,
+	lg: 14,
+	xl: 14,
+};

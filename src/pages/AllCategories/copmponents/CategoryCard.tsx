@@ -29,12 +29,13 @@ export const CategoryCard = ({ category }: CategoryCardProps) => {
 		},
 	});
 
-	const titleStyles = {
+	const titleStyles = defineStyles({
 		fontSize: '36px',
 		color: categoryImage ? '#fff' : theme.colors.primary.main,
 		zIndex: 2,
+		textAlign: 'center',
 		textShadow: categoryImage ? '1px 1px 4px #df8150' : 'none',
-	};
+	});
 
 	return (
 		<Link to={`/category/${id}`} css={linkStyles} key={id}>

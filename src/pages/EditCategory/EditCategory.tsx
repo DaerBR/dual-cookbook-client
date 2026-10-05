@@ -17,6 +17,13 @@ import { getBase64OfFile } from '../../utils/utils.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { DeleteCategoryModal } from '../SingleCategory/modals/DeleteCategoryModal.tsx';
 import { Icon } from '../../components/atoms/Icon';
+import {
+	categoryFormActionsStyles,
+	categoryFormRowStyles,
+	categoryImageWrapperStyles,
+	categoryNameInputStyles,
+	categoryNameWrapperStyles,
+} from '../CreateCategory/styles.ts';
 
 export const EditCategory = () => {
 	const { id: categoryId } = useParams();
@@ -112,11 +119,11 @@ export const EditCategory = () => {
 			/>
 			<div>
 				<Form form={form} onSubmit={handleFormSubmit}>
-					<div css={{ display: 'flex', gap: '12px', flexBasis: '100%', wrap: 'nowrap' }}>
-						<div css={{ display: 'flex', flexBasis: '300px' }}>
+					<div css={categoryFormRowStyles}>
+						<div css={categoryImageWrapperStyles}>
 							<ImageInput name="categoryImage" isEdit initialImageUrl={initialImageUrl} />
 						</div>
-						<div css={{ display: 'flex', marginLeft: '36px' }}>
+						<div css={categoryNameWrapperStyles}>
 							<Controller
 								render={({ field }) => (
 									<TextInput
@@ -128,7 +135,7 @@ export const EditCategory = () => {
 										placeholder="Введіть назву категорії"
 										value={field.value}
 										onChange={field.onChange}
-										customStyles={{ minWidth: '350px' }}
+										customStyles={categoryNameInputStyles}
 									/>
 								)}
 								name="categoryName"
@@ -137,7 +144,7 @@ export const EditCategory = () => {
 							/>
 						</div>
 					</div>
-					<div css={{ display: 'flex', gap: '24px', justifyContent: 'center', marginTop: '12px' }}>
+					<div css={categoryFormActionsStyles}>
 						<Button
 							type="submit"
 							variant="primary"

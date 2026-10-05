@@ -13,6 +13,13 @@ import { createCategory } from '../../store/thunks/categories.ts';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { getBase64OfFile } from '../../utils/utils.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
+import {
+	categoryFormActionsStyles,
+	categoryFormRowStyles,
+	categoryImageWrapperStyles,
+	categoryNameInputStyles,
+	categoryNameWrapperStyles,
+} from './styles.ts';
 
 export const CreateCategory = () => {
 	const [dispatchCreateCategory] = useThunk(createCategory, {
@@ -59,11 +66,11 @@ export const CreateCategory = () => {
 			<PageTitle title={categoryTitleValue || 'Створити нову категорію'} />
 			<div>
 				<Form form={form} onSubmit={handleFormSubmit}>
-					<div css={{ display: 'flex', gap: '12px', flexBasis: '100%', wrap: 'nowrap' }}>
-						<div css={{ display: 'flex', flexBasis: '300px' }}>
+					<div css={categoryFormRowStyles}>
+						<div css={categoryImageWrapperStyles}>
 							<ImageInput name="categoryImage" />
 						</div>
-						<div css={{ display: 'flex', marginLeft: '36px' }}>
+						<div css={categoryNameWrapperStyles}>
 							<Controller
 								render={({ field }) => (
 									<TextInput
@@ -75,7 +82,7 @@ export const CreateCategory = () => {
 										placeholder="Введіть назву категорії"
 										value={field.value}
 										onChange={field.onChange}
-										customStyles={{ minWidth: '350px' }}
+										customStyles={categoryNameInputStyles}
 									/>
 								)}
 								name="categoryName"
@@ -84,7 +91,7 @@ export const CreateCategory = () => {
 							/>
 						</div>
 					</div>
-					<div css={{ display: 'flex', gap: '24px', justifyContent: 'center', marginTop: '12px' }}>
+					<div css={categoryFormActionsStyles}>
 						<Button
 							type="submit"
 							variant="primary"

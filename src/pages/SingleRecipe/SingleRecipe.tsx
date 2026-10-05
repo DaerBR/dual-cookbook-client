@@ -101,7 +101,13 @@ export const SingleRecipe = () => {
 									Категорії:{' '}
 								</Typography>
 								{categories.map((category) => (
-									<Chip key={category.id} color="primary" size="md" text={category?.name ?? ''} />
+									<Chip
+										key={category.id}
+										color="primary"
+										size="md"
+										text={category?.name ?? ''}
+										onClick={() => navigate(`/category/${category.id}`)}
+									/>
 								))}
 							</div>
 						)}

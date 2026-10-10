@@ -8,13 +8,22 @@ import { API_URL } from '../../api/constants.ts';
 import { AuthEventListener } from '../AuthEventListener';
 import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchUser, signOut } from '../../store/thunks/auth.ts';
-import { useAppSelector } from '../../store/hooks/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks.ts';
 import { Icon } from '../atoms/Icon';
-import { buttonsContainerStyles, homepageLinkStyles, linkStyles } from './styles.ts';
+import {
+	buttonsContainerStyles,
+	createRecipeButtonStyles,
+	homepageLinkStyles,
+	linkStyles,
+	navigationContainerStyles,
+	searchWrapperStyles,
+	signOutButtonStyles,
+} from './styles.ts';
 import { Typography } from '../atoms/Typography';
 import { CircularProgress } from '../atoms/CircularProgress';
 import { theme } from '../../styles/theme.ts';
 import { SearchSuggestionsInputField } from '../atoms/SearchSuggestionsInputField';
+import { resetSearch } from '../../store/slices/recipesSlice.ts';
 
 export const Header = () => {
 	const userData = useAppSelector((state) => state.auth.userData);
@@ -23,6 +32,7 @@ export const Header = () => {
 	const location = useLocation();
 
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
 	const headerStyles = useHeaderStyles();
 
 	const logoContainerStyles = {
@@ -74,17 +84,7 @@ export const Header = () => {
 						Всі категорії
 					</Link>
 					{location?.pathname !== '/search' && (
-						<div
-							css={{
-								width: '300px',
-								'@media (max-width: 1024px)': {
-									width: '230px',
-								},
-								'@media (max-width: 768px)': {
-									display: 'none',
-								},
-							}}
-						>
+						<div css={searchWrapperStyles}>
 							<SearchSuggestionsInputField />
 						</div>
 					)}
@@ -96,24 +96,18 @@ export const Header = () => {
 								onClick={() => navigate('/create-new-recipe')}
 								startIcon={<Icon icon={faPlus} />}
 								variant="primary"
-								customStyles={{
-									'@media (max-width: 768px)': { maxWidth: '170px', '& .start-icon-container': { display: 'none' } },
-								}}
+								customStyles={createRecipeButtonStyles}
 							>
 								Створити рецепт
 							</Button>
-							<Button
-								variant="outlined-neutral"
-								onClick={handleLogoutClick}
-								css={{ border: 'none', boxShadow: 'none', minWidth: 0, padding: '10px 16px' }}
-							>
+							<Button variant="outlined-neutral" onClick={handleLogoutClick} css={signOutButtonStyles}>
 								<Icon icon={faSignOut} color="primary" />
 							</Button>
 						</>
 					) : isFetchingUserData ? (
 						<>
-							<Typography variant="paragraphM" color="primary">
-								Зачекай-но...
+							<Typography variant="paragraphM" color="primary" weight={600}>
+								Зачекай - воно прокидається...
 							</Typography>
 							<CircularProgress color="primary" sizePx={24} />
 						</>
@@ -127,19 +121,9 @@ export const Header = () => {
 			</div>
 			<div
 				css={{
-					backgroundColor: '#fff',
-					display: 'none',
-					position: 'fixed',
-					top: '95px',
-					left: '0',
-					transform: 'translateY(-50%)',
-					width: '100%',
-					justifyContent: 'space-around',
-					padding: '8px 0',
-					zIndex: 3,
+					...navigationContainerStyles,
 					borderTop: `1px solid ${theme.colors.primary.borderDefault}`,
 					borderBottom: `1px solid ${theme.colors.primary.borderDefault}`,
-					'@media (max-width: 768px)': { display: 'flex' },
 				}}
 			>
 				<Link
@@ -150,6 +134,7 @@ export const Header = () => {
 				</Link>
 				<Link
 					to="/search"
+					onClick={() => dispatch(resetSearch())}
 					css={{
 						...linkStyles,
 						color: theme.colors.primary.main,

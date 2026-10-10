@@ -1,2 +1,7 @@
-export const MIN_QUERY_LENGTH = 3;
-export const DEBOUNCE_MS = 400;
+import { SearchFormValues } from './validations.ts';
+
+export const emptySearchFormValues: SearchFormValues = {
+	searchInput: '',
+	recipeAuthor: '',
+	categories: [],
+};

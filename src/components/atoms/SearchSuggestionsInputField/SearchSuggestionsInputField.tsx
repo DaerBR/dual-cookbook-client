@@ -13,6 +13,7 @@ import { createDebouncedRecipeSearch } from './utils.ts';
 import { SelectOption } from '../Select/types.ts';
 import { Button } from '../Button';
 import { searchContainerStyles } from './styles.ts';
+import { resetSearch } from '../../../store/slices/recipesSlice.ts';
 
 export const SearchSuggestionsInputField = () => {
 	const [searchTerm, setSearchTerm] = useState('');
@@ -68,10 +69,12 @@ export const SearchSuggestionsInputField = () => {
 
 	const handleNavigateToSearch = () => {
 		if (searchTerm === '') {
-			navigate('/search');
+			dispatch(resetSearch());
 		} else {
-			navigate(`/search?searchTerm=${searchTerm}`);
+			dispatch(resetSearch(searchTerm));
+			dispatch(searchRecipes({ limit: 10, page: 1, search: searchTerm }));
 		}
+		navigate('/search');
 	};
 
 	return (

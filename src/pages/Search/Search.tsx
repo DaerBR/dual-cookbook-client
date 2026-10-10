@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,25 +10,20 @@ import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { RecipeCard } from '../../components/RecipeCard';
 import { useThunk } from '../../store/hooks/useThunk.ts';
 import { searchRecipes } from '../../store/thunks/recipes.ts';
-import { getQueryParameter, pluck } from '../../utils/utils.tsx';
 import { Pagination } from '../../components/atoms/Pagination/Pagination.tsx';
 import { Form } from '../../components/Form';
 import { Button } from '../../components/atoms/Button';
 import { Icon } from '../../components/atoms/Icon';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
-import { resetSearchData } from '../../store/slices/recipesSlice.ts';
+import { resetSearch, setSearchQuery } from '../../store/slices/recipesSlice.ts';
 import { Select } from '../../components/atoms/Select';
 import { SearchFormValues, searchValidationSchema } from './validations.ts';
 import { fetchAllCategories } from '../../store/thunks/categories.ts';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { mobileSearchButtonStyles } from './styles.ts';
 import { recipeAuthorOptions } from '../../constants/recipeAuthors.ts';
-
-interface SubmittedSearchParams {
-	categories?: string;
-	recipeAuthor?: string;
-	search: string;
-}
+import { toSearchRequestParams } from './utils.ts';
+import { emptySearchFormValues } from './constants.ts';
 
 export const Search = () => {
 	const [dispatchSearchRecipes] = useThunk(searchRecipes);
@@ -36,7 +31,7 @@ export const Search = () => {
 	const isSearching = useAppSelector((state) => state.recipes.search.isSearching);
 	const wasSearchInitiated = useAppSelector((state) => state.recipes.search.wasSearchInitiated);
 	const searchResults = useAppSelector((state) => state.recipes.search.recipesList);
-	const initialSearchTerm = getQueryParameter('searchTerm');
+	const searchQuery = useAppSelector((state) => state.recipes.search.query);
 	const searchResultsPagination = useAppSelector((state) => state.recipes.search.pagination);
 	const categoriesList = useAppSelector((state) => state.categories.categories);
 	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
@@ -44,14 +39,6 @@ export const Search = () => {
 	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
-	const [submittedSearchParams, setSubmittedSearchParams] = useState<SubmittedSearchParams>({ search: '' });
-
-	useEffect(
-		() => () => {
-			dispatch(resetSearchData());
-		},
-		[dispatch],
-	);
 
 	useEffect(() => {
 		if (!areCategoriesFetched) {
@@ -61,46 +48,26 @@ export const Search = () => {
 
 	const form = useForm<SearchFormValues>({
 		mode: 'all',
-		defaultValues: {
-			searchInput: '',
-			recipeAuthor: '',
-			categories: [],
-		},
+		defaultValues: searchQuery ?? emptySearchFormValues,
 		resolver: zodResolver(searchValidationSchema),
 	});
 
 	const { control, handleSubmit, reset } = form;
 
+	useEffect(() => {
+		if (!searchQuery) {
+			reset(emptySearchFormValues);
+		}
+	}, [searchQuery, reset]);
+
 	const handleResetForm = () => {
-		reset();
-		setSubmittedSearchParams({ search: '' });
-		dispatch(resetSearchData());
+		reset(emptySearchFormValues);
+		dispatch(resetSearch());
 	};
 
-	useEffect(() => {
-		if (initialSearchTerm) {
-			reset({
-				searchInput: initialSearchTerm,
-			});
-			setSubmittedSearchParams({ search: initialSearchTerm });
-			dispatchSearchRecipes({
-				limit: 10,
-				page: 1,
-				search: initialSearchTerm,
-			});
-		}
-	}, [dispatchSearchRecipes, initialSearchTerm, reset]);
-
 	const handleSearchFormSubmit = handleSubmit(async (formValues) => {
-		const { categories, searchInput, recipeAuthor } = formValues;
-		const categoriesIds = pluck('value', categories);
-		const searchParams = {
-			search: searchInput,
-			categories: categoriesIds ? categoriesIds.join() : undefined,
-			recipeAuthor: recipeAuthor || undefined,
-		};
-		setSubmittedSearchParams(searchParams);
-		await dispatchSearchRecipes({ limit: 10, page: 1, ...searchParams });
+		dispatch(setSearchQuery(formValues));
+		await dispatchSearchRecipes({ limit: 10, page: 1, ...toSearchRequestParams(formValues) });
 	});
 
 	return (
@@ -200,11 +167,11 @@ export const Search = () => {
 						</Typography>
 					</div>
 				) : null}
-				{searchResultsPagination && (
+				{searchResultsPagination && searchQuery && (
 					<Pagination
 						currentPage={searchResultsPagination.page}
 						fetchDataMethod={dispatchSearchRecipes}
-						fetchParams={{ limit: 10, ...submittedSearchParams }}
+						fetchParams={{ limit: 10, ...toSearchRequestParams(searchQuery) }}
 						totalPages={searchResultsPagination.totalPages}
 					/>
 				)}

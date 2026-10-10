@@ -1,6 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { createRecipe, fetchRecipeDetails, fetchRecipes, searchRecipes, updateRecipe } from '../thunks/recipes.ts';
 import { PaginationModel, RecipeDetailModel, RecipeTableModel } from '../types.ts';
+
+export interface SearchQuery {
+	categories: Array<{ label: string; value: string }>;
+	recipeAuthor: string;
+	searchInput: string;
+}
 
 interface RecipesState {
 	isCreating: boolean;
@@ -17,6 +23,7 @@ interface RecipesState {
 	search: {
 		isSearching: boolean;
 		pagination: PaginationModel | null;
+		query: SearchQuery | null;
 		recipesList: RecipeTableModel[];
 		wasSearchInitiated: boolean;
 	};
@@ -38,6 +45,7 @@ const initialState: RecipesState = {
 		isSearching: false,
 		recipesList: [],
 		pagination: null,
+		query: null,
 		wasSearchInitiated: false,
 	},
 };
@@ -46,10 +54,16 @@ const recipesSlice = createSlice({
 	name: 'recipes',
 	initialState,
 	reducers: {
-		resetSearchData(state) {
+		// Reset search query state (with saved query or clean)
+		resetSearch(state, action: PayloadAction<string | undefined>) {
 			state.search.recipesList = [];
 			state.search.pagination = null;
 			state.search.wasSearchInitiated = false;
+			state.search.query = action.payload ? { searchInput: action.payload, categories: [], recipeAuthor: '' } : null;
+		},
+		// Save search query parameters (i.e. for "return to search page" case)
+		setSearchQuery(state, action: PayloadAction<SearchQuery>) {
+			state.search.query = action.payload;
 		},
 	},
 	extraReducers(builder) {
@@ -116,4 +130,4 @@ const recipesSlice = createSlice({
 });
 
 export const recipesReducer = recipesSlice.reducer;
-export const { resetSearchData } = recipesSlice.actions;
+export const { resetSearch, setSearchQuery } = recipesSlice.actions;

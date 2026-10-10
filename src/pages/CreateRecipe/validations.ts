@@ -3,7 +3,7 @@ import * as z from 'zod';
 export const addRecipeValidationSchema = z.object({
 	description: z.string(),
 	categories: z.array(z.object({ value: z.string(), label: z.string() })).min(1, 'Оберіть категорії'),
-	ingredients: z.array(z.object({ text: z.string() })),
+	ingredients: z.array(z.object({ text: z.string().min(3, 'Опис інгредієнту занадто короткий') })),
 	recipeTitle: z.string().min(3, 'Введіть назву рецепту, принаймні 3 символи'),
 	recipeImage: z.union([z.instanceof(File), z.null()]),
 	sourceUrl: z.string(),

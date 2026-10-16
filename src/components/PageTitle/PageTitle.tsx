@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 
 import { Typography } from '../atoms/Typography';
 import { BackIconButton } from '../BackIconButton/BackIconButton.tsx';
+import { pageTitleWrapperStyles } from './styles.ts';
 
 interface PageTitleProps {
 	controlElements?: ReactNode[];
@@ -17,16 +18,8 @@ export const PageTitle = ({ controlElements, title, returnUrl, withReturnButton 
 	const titleStyles = { '@media (max-width: 768px)': { fontSize: '18px' } };
 
 	return (
-		<div
-			css={{
-				display: 'flex',
-				justifyContent: 'space-between',
-				marginBottom: '36px',
-				alignItems: 'center',
-				'@media (max-width: 768px)': { marginBottom: '16px' },
-			}}
-		>
-			<div css={{ display: 'flex', alignItems: 'center', gap: '4x' }}>
+		<div css={pageTitleWrapperStyles}>
+			<div css={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
 				{withReturnButton && (
 					<BackIconButton
 						onClick={() => (returnUrl ? navigate(returnUrl) : navigate(-1))}
@@ -37,7 +30,7 @@ export const PageTitle = ({ controlElements, title, returnUrl, withReturnButton 
 					{title}
 				</Typography>
 			</div>
-			{controlElements && <div css={{ display: 'flex', gap: '12px' }}>{controlElements}</div>}
+			{controlElements && <div css={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>{controlElements}</div>}
 		</div>
 	);
 };

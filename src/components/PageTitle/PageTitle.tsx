@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 
 import { Typography } from '../atoms/Typography';
 import { BackIconButton } from '../BackIconButton/BackIconButton.tsx';
-import { pageTitleWrapperStyles } from './styles.ts';
+import { controlElementsContainerStyles, pageTitleWrapperStyles } from './styles.ts';
 
 interface PageTitleProps {
 	controlElements?: ReactNode[];
@@ -30,7 +30,7 @@ export const PageTitle = ({ controlElements, title, returnUrl, withReturnButton 
 					{title}
 				</Typography>
 			</div>
-			{controlElements && <div css={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>{controlElements}</div>}
+			{controlElements && <div css={controlElementsContainerStyles}>{controlElements}</div>}
 		</div>
 	);
 };

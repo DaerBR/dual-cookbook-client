@@ -33,7 +33,6 @@ import {
 	recipeTitleFieldStyles,
 	sourceUrlFieldStyles,
 } from '../CreateRecipe/styles.ts';
-import { deleteRecipeButtonStyles, mobileDeleteRecipeButtonStyles } from './styles.ts';
 
 export const EditRecipe = () => {
 	const { id: recipeId } = useParams();
@@ -179,17 +178,8 @@ export const EditRecipe = () => {
 						onClick={() => setIsDeleteRecipeModalOpen(true)}
 						color="error"
 						startIcon={<Icon icon={faTrash} />}
-						customStyles={deleteRecipeButtonStyles}
 					>
 						Видалити рецепт
-					</Button>,
-					<Button
-						key="delete-recipe-mobile"
-						onClick={() => setIsDeleteRecipeModalOpen(true)}
-						color="error"
-						customStyles={mobileDeleteRecipeButtonStyles}
-					>
-						<Icon icon={faTrash} color="error" />
 					</Button>,
 				]}
 			/>

@@ -12,3 +12,10 @@ export const pageTitleWrapperStyles = defineStyles({
 		marginBottom: '16px',
 	},
 });
+
+export const controlElementsContainerStyles = defineStyles({
+	display: 'flex',
+	gap: '12px',
+	flexWrap: 'wrap',
+	'@media (max-width: 768px)': { justifyContent: 'flex-end', width: '100%' },
+});

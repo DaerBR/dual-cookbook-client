@@ -1,10 +1,5 @@
 import { defineStyles } from '../../styles/defineStyles.ts';
 
-export const editRecipeButtonStyles = defineStyles({
-	'@media (max-width: 768px)': {
-		display: 'none',
-	},
-});
 export const mobileEditRecipeButtonStyles = defineStyles({
 	display: 'none',
 	border: 'none',

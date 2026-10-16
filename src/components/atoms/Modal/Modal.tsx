@@ -14,6 +14,7 @@ import {
 	modalBodyStyles,
 	modalWrapperStyles,
 } from './styles.ts';
+import { LoadingIndicator } from '../../LoadingIndicator';
 
 interface ModalProps {
 	buttons: ReactNode[];
@@ -36,6 +37,7 @@ export const Modal = ({
 	title,
 	titleIcon,
 	titleIconColor = 'primary',
+	isLoading,
 }: ModalProps) => {
 	const modalRef = useRef<HTMLDivElement>(null);
 	const theme = useAppTheme();
@@ -68,6 +70,7 @@ export const Modal = ({
 		<ModelPresentation>
 			<div ref={modalRef} css={modalBodyStyles}>
 				<div css={modalWrapperStyles}>
+					{isLoading && <LoadingIndicator sizePx={42} />}
 					{showCloseIcon && (
 						<button css={closeButtonStyles} onClick={onClose}>
 							<Icon icon={faXmark} fontSize={16} />

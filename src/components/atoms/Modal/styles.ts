@@ -22,6 +22,8 @@ export const closeButtonStyles = defineStyles({
 export const modalWrapperStyles = defineStyles({
 	display: 'flex',
 	flexDirection: 'column',
+	position: 'relative',
+	width: '100%',
 });
 
 export const iconWrapperStyles = defineStyles({
@@ -41,7 +43,5 @@ export const buttonsContainerStyles = defineStyles({
 	paddingRight: '32px',
 	display: 'flex',
 	justifyContent: 'center',
-	'& :not(:last-child)': {
-		marginRight: '20px',
-	},
+	gap: '20px',
 });

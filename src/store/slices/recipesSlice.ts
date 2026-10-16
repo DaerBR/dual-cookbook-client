@@ -1,5 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { createRecipe, fetchRecipeDetails, fetchRecipes, searchRecipes, updateRecipe } from '../thunks/recipes.ts';
+import {
+	createRecipe,
+	fetchRecipeDetails,
+	fetchRecipes,
+	importRecipeDraft,
+	searchRecipes,
+	updateRecipe,
+} from '../thunks/recipes.ts';
 import { PaginationModel, RecipeDetailModel, RecipeTableModel } from '../types.ts';
 
 export interface SearchQuery {
@@ -10,6 +17,7 @@ export interface SearchQuery {
 
 interface RecipesState {
 	isCreating: boolean;
+	isFetchingDraft: boolean;
 	isLoading: boolean;
 	isUpdating: boolean;
 	paginatedRecipes: {
@@ -31,6 +39,7 @@ interface RecipesState {
 
 const initialState: RecipesState = {
 	isCreating: false,
+	isFetchingDraft: false,
 	isLoading: false,
 	isUpdating: false,
 	paginatedRecipes: {
@@ -41,6 +50,7 @@ const initialState: RecipesState = {
 		isLoading: false,
 		recipeData: null,
 	},
+
 	search: {
 		isSearching: false,
 		recipesList: [],
@@ -125,6 +135,16 @@ const recipesSlice = createSlice({
 		});
 		builder.addCase(updateRecipe.rejected, (state) => {
 			state.isUpdating = false;
+		});
+		// Import Recipe
+		builder.addCase(importRecipeDraft.pending, (state) => {
+			state.isFetchingDraft = true;
+		});
+		builder.addCase(importRecipeDraft.fulfilled, (state) => {
+			state.isFetchingDraft = false;
+		});
+		builder.addCase(importRecipeDraft.rejected, (state) => {
+			state.isFetchingDraft = false;
 		});
 	},
 });

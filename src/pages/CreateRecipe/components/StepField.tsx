@@ -20,7 +20,6 @@ export const StepField = ({ index, stepField, stepsCount, removeStep }: StepFiel
 			<Controller
 				control={control}
 				name={`steps.${index}.stepDescription`}
-				css={{ width: '100%', display: 'flex' }}
 				render={({ field }) => (
 					<TextInput
 						rows={6}

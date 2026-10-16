@@ -41,7 +41,6 @@ export const IngredientField = ({
 			<Controller
 				control={control}
 				name={`ingredients.${index}.text`}
-				css={{ width: '100%', display: 'flex' }}
 				render={({ field }) => (
 					<TextInput
 						isFullWidth
@@ -53,10 +52,7 @@ export const IngredientField = ({
 				)}
 			/>
 			{ingredientsCount > 1 && (
-				<DeleteIconButton
-					onClick={() => removeIngredient(index)}
-					customStyles={ingredientDeleteButtonStyles}
-				/>
+				<DeleteIconButton onClick={() => removeIngredient(index)} customStyles={ingredientDeleteButtonStyles} />
 			)}
 		</div>
 	);

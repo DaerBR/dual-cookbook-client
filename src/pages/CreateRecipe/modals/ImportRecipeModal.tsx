@@ -93,15 +93,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 	);
 
 	const buttons = [
-		<Button
-			onClick={handleParseUrl}
-			variant="primary"
-			color="primary"
-			key="confirm"
-			fullWidth
-			isDisabled={!isValid}
-			type="submit"
-		>
+		<Button variant="primary" color="primary" key="confirm" fullWidth isDisabled={!isValid} type="submit">
 			Аналізувати
 		</Button>,
 		<Button onClick={handleCloseModal} variant="outlined-neutral" key="cancel" fullWidth isDisabled>

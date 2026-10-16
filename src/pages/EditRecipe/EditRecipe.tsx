@@ -232,7 +232,6 @@ export const EditRecipe = () => {
 								<Controller
 									control={control}
 									name="sourceUrl"
-									css={{ width: '100%' }}
 									render={({ field }) => (
 										<TextInput
 											isFullWidth
@@ -253,7 +252,6 @@ export const EditRecipe = () => {
 								<Controller
 									control={control}
 									name="recipeTitle"
-									css={{ width: '100%' }}
 									render={({ field }) => (
 										<TextInput
 											isFullWidth
@@ -290,7 +288,6 @@ export const EditRecipe = () => {
 								<Controller
 									control={control}
 									name="description"
-									css={{ width: '100%' }}
 									render={({ field }) => (
 										<TextInput
 											isFullWidth

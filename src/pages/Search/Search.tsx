@@ -77,7 +77,7 @@ export const Search = () => {
 			</Typography>
 
 			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
-				<Form form={form}>
+				<Form form={form} onSubmit={handleSearchFormSubmit}>
 					<div css={{ marginBottom: '24px', maxWidth: '450px' }}>
 						<div css={{ display: 'flex' }}>
 							<Controller

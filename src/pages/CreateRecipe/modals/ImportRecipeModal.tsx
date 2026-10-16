@@ -20,7 +20,7 @@ interface ImportRecipeModalProps extends ModalControls {
 }
 
 export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormReset }: ImportRecipeModalProps) => {
-	const isImportingRecipe = useAppSelector((state) => state.recipes.importedRecipeDraft.isFetchingDraft);
+	const isImportingRecipe = useAppSelector((state) => state.recipes.isFetchingDraft);
 	const dispatch = useAppDispatch();
 
 	const form = useForm({
@@ -38,20 +38,43 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 		reset,
 	} = form;
 
+	const handleCloseModal = () => {
+		reset();
+		closeModalHandler(false);
+	};
+
+	const handleParseUrl = handleSubmit(async (formValues) => {
+		try {
+			const draft = await dispatch(importRecipeDraft({ url: formValues.sourceUrl })).unwrap();
+
+			recipeFormReset({
+				...DEFAULT_RECIPE_FORM_VALUES,
+				sourceUrl: draft.sourceUrl,
+				recipeTitle: draft.recipeTitle ?? '',
+				description: draft.description ?? '',
+				ingredients: draft.ingredients?.map((text) => ({ text })) ?? DEFAULT_RECIPE_FORM_VALUES.ingredients,
+				steps: draft.steps?.map((step) => ({ stepDescription: step })) ?? [],
+			});
+			toast.success('Дані за посиланням успішно імпортовано для створення рецепту!');
+			handleCloseModal();
+		} catch (error) {
+			toast.error(getErrorText(error as ServerError));
+		}
+	});
+
 	const modalContent = (
 		<div>
 			<Typography variant="paragraphS" customStyles={{ marginBottom: '8px' }} component="div">
-				На разі, як джерело підтримується тільки Instagram.
+				Наразі як джерело підтримується тільки Instagram.
 			</Typography>
 			<Typography color="error" variant="paragraphS" customStyles={{ marginBottom: '12px' }} component="div">
 				Увага - імпортування рецепту з іншого ресурсу призведе до скидання поточного стану форми
 			</Typography>
 
-			<Form form={form}>
+			<Form form={form} onSubmit={handleParseUrl}>
 				<Controller
 					control={control}
 					name="sourceUrl"
-					css={{ width: '100%' }}
 					render={({ field }) => (
 						<TextInput
 							isFullWidth
@@ -69,28 +92,6 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 		</div>
 	);
 
-	const handleCloseModal = () => {
-		reset();
-		closeModalHandler(false);
-	};
-
-	const handleParseUrl = handleSubmit(async (formValues) => {
-		try {
-			const draft = await dispatch(importRecipeDraft({ url: formValues.sourceUrl })).unwrap();
-
-			recipeFormReset({
-				...DEFAULT_RECIPE_FORM_VALUES,
-				sourceUrl: formValues.sourceUrl,
-				recipeTitle: draft.recipeTitle ?? '',
-				steps: draft.steps?.map((step) => ({ stepDescription: step })) ?? [],
-			});
-			toast.success('Дані за посиланням успішно імпортовано для створення рецепту!');
-			handleCloseModal();
-		} catch (error) {
-			toast.error(getErrorText(error as ServerError));
-		}
-	});
-
 	const buttons = [
 		<Button
 			onClick={handleParseUrl}
@@ -99,11 +100,11 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 			key="confirm"
 			fullWidth
 			isDisabled={!isValid}
-			isBusy={isImportingRecipe}
+			type="submit"
 		>
 			Аналізувати
 		</Button>,
-		<Button onClick={handleCloseModal} variant="outlined-neutral" key="cancel" fullWidth>
+		<Button onClick={handleCloseModal} variant="outlined-neutral" key="cancel" fullWidth isDisabled>
 			Скасувати
 		</Button>,
 	];

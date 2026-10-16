@@ -131,7 +131,7 @@ export const EditRecipe = () => {
 			description: description && description.length > 0 ? description : null,
 			sourceUrl,
 		};
-		dispatchUpdateRecipe({ ...payload, recipeId });
+		await dispatchUpdateRecipe({ ...payload, recipeId });
 	});
 
 	const {

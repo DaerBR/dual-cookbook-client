@@ -91,7 +91,7 @@ export const CreateRecipe = () => {
 			description: description && description.length > 0 ? description : null,
 			sourceUrl,
 		};
-		dispatchCreateRecipe({ ...payload });
+		await dispatchCreateRecipe({ ...payload });
 	});
 
 	const {

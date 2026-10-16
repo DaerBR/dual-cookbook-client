@@ -12,7 +12,7 @@ interface ServerErrorResponse {
 	};
 }
 
-interface ServerError {
+export interface ServerError {
 	error?: string;
 	message?: string;
 	status?: string;
@@ -25,7 +25,7 @@ interface UseThunkOptions {
 	useGlobalLoader?: boolean;
 }
 
-const getErrorText = (error: ServerError) => {
+export const getErrorText = (error: ServerError) => {
 	if (typeof error !== 'object') {
 		return 'Unknown error occurred.';
 	}

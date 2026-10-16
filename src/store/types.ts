@@ -42,3 +42,12 @@ export interface RecipesPaginationModel {
 	data: RecipeTableModel[];
 	pagination: PaginationModel | null;
 }
+
+export interface ImportedRecipeDraft {
+	description?: string;
+	imageUrl?: string;
+	ingredients?: string[];
+	recipeTitle?: string;
+	sourceUrl: string;
+	steps?: string[];
+}

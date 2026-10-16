@@ -2,7 +2,13 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosError } from 'axios';
 
 import { apiRequest } from '../../api/apiRequest.ts';
-import { RecipeDetailModel, RecipeIngredient, RecipeStep, RecipesPaginationModel } from '../types.ts';
+import {
+	ImportedRecipeDraft,
+	RecipeDetailModel,
+	RecipeIngredient,
+	RecipeStep,
+	RecipesPaginationModel,
+} from '../types.ts';
 
 interface FetchRecipesParams {
 	categories?: string;
@@ -139,6 +145,27 @@ export const deleteRecipe = createAsyncThunk<any, DeleteRecipeParams>(
 			const response = await apiRequest.request({
 				url: `/api/recipes/${recipeId}`,
 				method: 'delete',
+			});
+
+			return response.data;
+		} catch (error: unknown) {
+			return rejectWithValue((error as AxiosError).response?.data);
+		}
+	},
+);
+
+interface ImportRecipeDraftParams {
+	url: string;
+}
+
+export const importRecipeDraft = createAsyncThunk<ImportedRecipeDraft, ImportRecipeDraftParams>(
+	'recipes/importRecipeDraft',
+	async (params, { rejectWithValue }) => {
+		try {
+			const response = await apiRequest.request({
+				url: `/api/recipes/import`,
+				method: 'post',
+				data: params,
 			});
 
 			return response.data;

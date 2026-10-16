@@ -13,3 +13,21 @@ export const addRecipeValidationSchema = z.object({
 });
 
 export type AddRecipeFormValues = z.infer<typeof addRecipeValidationSchema>;
+
+const URL_SCHEME_REGEX = /^[a-z][a-z\d+.-]*:\/\//i;
+
+const prependHttps = (value: string) => (value && !URL_SCHEME_REGEX.test(value) ? `https://${value}` : value);
+
+export const importRecipeValidationSchema = z.object({
+	sourceUrl: z
+		.string()
+		.trim()
+		.transform(prependHttps)
+		.pipe(
+			z.url({
+				protocol: /^https$/,
+				hostname: z.regexes.domain,
+				error: 'Введіть коректне посилання на допис',
+			}),
+		),
+});

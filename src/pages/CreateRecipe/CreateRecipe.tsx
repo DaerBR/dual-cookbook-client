@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMagicWandSparkles, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { DragDropProvider, type DragOverEvent } from '@dnd-kit/react';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
@@ -32,11 +32,14 @@ import {
 	recipeTitleFieldStyles,
 	sourceUrlFieldStyles,
 } from './styles.ts';
+import { ImportRecipeModal } from './modals/ImportRecipeModal.tsx';
+import { DEFAULT_RECIPE_FORM_VALUES } from './constant.ts';
 
 export const CreateRecipe = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
 	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
 	const isCreatingRecipe = useAppSelector((state) => state.recipes.isCreating);
+	const [isImportRecipeModalOpen, setIsImportRecipeModalOpen] = useState(false);
 
 	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
 
@@ -53,15 +56,7 @@ export const CreateRecipe = () => {
 	const form = useForm<AddRecipeFormValues>({
 		mode: 'all',
 		reValidateMode: 'onChange',
-		defaultValues: {
-			recipeTitle: '',
-			categories: [],
-			description: '',
-			ingredients: [{ text: '' }],
-			steps: [{ stepDescription: '' }],
-			recipeImage: null,
-			sourceUrl: '',
-		},
+		defaultValues: DEFAULT_RECIPE_FORM_VALUES,
 		resolver: zodResolver(addRecipeValidationSchema),
 	});
 
@@ -69,6 +64,7 @@ export const CreateRecipe = () => {
 		handleSubmit,
 		control,
 		formState: { isValid },
+		reset,
 	} = form;
 
 	const selectedCategories = useWatch({ control, name: 'categories' });
@@ -132,9 +128,23 @@ export const CreateRecipe = () => {
 		}
 	};
 
+	const headerControls = [
+		<Button
+			startIcon={<Icon fontSize={12} icon={faMagicWandSparkles} />}
+			key="parse-button"
+			onClick={() => setIsImportRecipeModalOpen(true)}
+		>
+			Імпортувати
+		</Button>,
+	];
+
 	return (
 		<div>
-			<PageTitle title={recipeTitleValue || 'Створити новий рецепт'} withReturnButton />
+			<PageTitle
+				title={recipeTitleValue || 'Створити новий рецепт'}
+				withReturnButton
+				controlElements={headerControls}
+			/>
 			<div>
 				<Form form={form} onSubmit={handleFormSubmit}>
 					<div css={mainWrapperStyles}>
@@ -278,6 +288,11 @@ export const CreateRecipe = () => {
 					</div>
 				</Form>
 			</div>
+			<ImportRecipeModal
+				isModalOpen={isImportRecipeModalOpen}
+				closeModalHandler={setIsImportRecipeModalOpen}
+				recipeFormReset={reset}
+			/>
 		</div>
 	);
 };

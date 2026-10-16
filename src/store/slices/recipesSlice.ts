@@ -1,6 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { createRecipe, fetchRecipeDetails, fetchRecipes, searchRecipes, updateRecipe } from '../thunks/recipes.ts';
-import { PaginationModel, RecipeDetailModel, RecipeTableModel } from '../types.ts';
+import {
+	createRecipe,
+	fetchRecipeDetails,
+	fetchRecipes,
+	importRecipeDraft,
+	searchRecipes,
+	updateRecipe,
+} from '../thunks/recipes.ts';
+import { ImportedRecipeDraft, PaginationModel, RecipeDetailModel, RecipeTableModel } from '../types.ts';
 
 export interface SearchQuery {
 	categories: Array<{ label: string; value: string }>;
@@ -9,6 +16,10 @@ export interface SearchQuery {
 }
 
 interface RecipesState {
+	importedRecipeDraft: {
+		draftDetails: ImportedRecipeDraft | null;
+		isFetchingDraft: boolean;
+	};
 	isCreating: boolean;
 	isLoading: boolean;
 	isUpdating: boolean;
@@ -30,6 +41,10 @@ interface RecipesState {
 }
 
 const initialState: RecipesState = {
+	importedRecipeDraft: {
+		draftDetails: null,
+		isFetchingDraft: false,
+	},
 	isCreating: false,
 	isLoading: false,
 	isUpdating: false,
@@ -41,6 +56,7 @@ const initialState: RecipesState = {
 		isLoading: false,
 		recipeData: null,
 	},
+
 	search: {
 		isSearching: false,
 		recipesList: [],
@@ -64,6 +80,9 @@ const recipesSlice = createSlice({
 		// Save search query parameters (i.e. for "return to search page" case)
 		setSearchQuery(state, action: PayloadAction<SearchQuery>) {
 			state.search.query = action.payload;
+		},
+		resetRecipeDraft(state) {
+			state.importedRecipeDraft.draftDetails = null;
 		},
 	},
 	extraReducers(builder) {
@@ -125,6 +144,17 @@ const recipesSlice = createSlice({
 		});
 		builder.addCase(updateRecipe.rejected, (state) => {
 			state.isUpdating = false;
+		});
+		// Import Recipe
+		builder.addCase(importRecipeDraft.pending, (state) => {
+			state.importedRecipeDraft.isFetchingDraft = true;
+		});
+		builder.addCase(importRecipeDraft.fulfilled, (state, action) => {
+			state.importedRecipeDraft.isFetchingDraft = false;
+			state.importedRecipeDraft.draftDetails = action.payload;
+		});
+		builder.addCase(importRecipeDraft.rejected, (state) => {
+			state.importedRecipeDraft.isFetchingDraft = false;
 		});
 	},
 });

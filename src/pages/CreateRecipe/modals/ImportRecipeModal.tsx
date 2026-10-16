@@ -96,7 +96,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 		<Button variant="primary" color="primary" key="confirm" fullWidth isDisabled={!isValid} type="submit">
 			Аналізувати
 		</Button>,
-		<Button onClick={handleCloseModal} variant="outlined-neutral" key="cancel" fullWidth isDisabled>
+		<Button onClick={handleCloseModal} variant="outlined-neutral" key="cancel" fullWidth>
 			Скасувати
 		</Button>,
 	];

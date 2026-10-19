@@ -10,6 +10,7 @@ import { CategoryCard } from './copmponents/CategoryCard.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { categoriesContainerStyles } from './styles.ts';
+import { UNTESTED_RECIPES_CAT_ID } from '../../constants/categories.ts';
 
 export const AllCategories = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
@@ -50,7 +51,9 @@ export const AllCategories = () => {
 				{isFetchingCategories ? (
 					<LoadingIndicator />
 				) : (
-					categoriesList.map((category) => <CategoryCard category={category} key={category.id} />)
+					categoriesList
+						.filter((category) => category.id !== UNTESTED_RECIPES_CAT_ID)
+						.map((category) => <CategoryCard category={category} key={category.id} />)
 				)}
 			</div>
 		</div>

@@ -1,6 +1,6 @@
-import { ChangeEvent, createRef, useEffect, useState } from 'react';
-import { faPizzaSlice } from '@fortawesome/free-solid-svg-icons';
-import { Controller, useFormContext } from 'react-hook-form';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { faPizzaSlice, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { CSSObject } from '@emotion/react';
 
 import { useAppTheme } from '../../../styles/hooks.ts';
@@ -26,19 +26,47 @@ export const ImageInput = ({
 	initialImageUrl,
 	name,
 }: ImageInputProps) => {
-	const [imagePreview, setImagePreview] = useState<string | undefined>(undefined);
-	const imageInputRef = createRef<HTMLInputElement>();
+	const [filePreviewUrl, setFilePreviewUrl] = useState<string | undefined>(undefined);
+	const imageInputRef = useRef<HTMLInputElement>(null);
 
 	const theme = useAppTheme();
 	const { setValue, formState, control } = useFormContext() ?? {};
 	const { errors } = formState ?? {};
 	const fieldErrors = errors ? errors[name] : undefined;
+	const fieldValue = useWatch({ control, name });
 
 	useEffect(() => {
-		if (isEdit) {
-			setImagePreview(initialImageUrl ?? undefined);
+		if (!(fieldValue instanceof File)) {
+			setFilePreviewUrl(undefined);
+
+			if (imageInputRef.current) {
+				// Lets the same file be picked again after the value was cleared
+				imageInputRef.current.value = '';
+			}
+
+			return undefined;
 		}
-	}, [isEdit, initialImageUrl]);
+
+		const objectUrl = URL.createObjectURL(fieldValue);
+		setFilePreviewUrl(objectUrl);
+
+		return () => URL.revokeObjectURL(objectUrl);
+	}, [fieldValue]);
+
+	// In edit mode a `null` value means "keep the current image", so the initial image is shown as a fallback
+	const imagePreview = filePreviewUrl ?? (isEdit ? initialImageUrl : undefined);
+
+	const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+
+		if (!file) {
+			return;
+		}
+
+		setValue(name, file, { shouldDirty: true, shouldValidate: true });
+	};
+
+	const handleClearImage = () => setValue(name, null, { shouldDirty: true, shouldValidate: true });
 
 	const imageFieldStyles = {
 		...imageFieldStaticStyles,
@@ -73,27 +101,36 @@ export const ImageInput = ({
 							id={name}
 							name={name}
 							type="file"
-							onChange={(event: ChangeEvent<HTMLInputElement>) => {
-								if (event.target?.files) {
-									const file = event.target?.files[0];
-
-									const imageUrl = URL.createObjectURL(file);
-
-									setImagePreview(imageUrl);
-									setValue(name, file);
-								}
-							}}
+							onChange={handleImageChange}
 							ref={imageInputRef}
 						/>
-						<Button
-							css={{ marginTop: '16px' }}
-							variant="secondary"
-							onClick={() => {
-								imageInputRef.current!.click();
+						<div
+							css={{
+								marginTop: '16px',
+								display: 'flex',
+								justifyContent: 'space-between',
+								alignItems: 'center',
+								gap: '24px',
 							}}
 						>
-							Оберіть зображення
-						</Button>
+							<Button
+								variant="secondary"
+								onClick={() => {
+									imageInputRef.current!.click();
+								}}
+							>
+								Оберіть зображення
+							</Button>
+							{fieldValue && (
+								<Button
+									startIcon={<Icon icon={faTrash} fontSize={12} />}
+									variant="outlined-error"
+									onClick={handleClearImage}
+								>
+									Очистити
+								</Button>
+							)}
+						</div>
 					</label>
 				)}
 			/>

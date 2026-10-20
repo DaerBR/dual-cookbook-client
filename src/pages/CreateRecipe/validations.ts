@@ -30,4 +30,5 @@ export const importRecipeValidationSchema = z.object({
 				error: 'Введіть коректне посилання на допис',
 			}),
 		),
+	useImportedTitle: z.boolean(),
 });

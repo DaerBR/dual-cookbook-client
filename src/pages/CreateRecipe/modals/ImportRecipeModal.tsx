@@ -14,20 +14,27 @@ import { ServerError, getErrorText } from '../../../store/hooks/useThunk.ts';
 import { importRecipeDraft } from '../../../store/thunks/recipes.ts';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks/hooks.ts';
 import { DEFAULT_RECIPE_FORM_VALUES } from '../constant.ts';
+import { Checkbox } from '../../../components/atoms/Checkbox';
 
 interface ImportRecipeModalProps extends ModalControls {
 	recipeFormReset: UseFormReset<AddRecipeFormValues>;
+}
+
+interface ImportRecipeFormValues {
+	sourceUrl: string;
+	useImportedTitle: boolean;
 }
 
 export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormReset }: ImportRecipeModalProps) => {
 	const isImportingRecipe = useAppSelector((state) => state.recipes.isFetchingDraft);
 	const dispatch = useAppDispatch();
 
-	const form = useForm({
+	const form = useForm<ImportRecipeFormValues>({
 		mode: 'all',
 		reValidateMode: 'onChange',
 		defaultValues: {
 			sourceUrl: '',
+			useImportedTitle: false,
 		},
 		resolver: zodResolver(importRecipeValidationSchema),
 	});
@@ -65,7 +72,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 	const modalContent = (
 		<div>
 			<Typography variant="paragraphS" customStyles={{ marginBottom: '8px' }} component="div">
-				Наразі як джерело підтримується тільки Instagram.
+				Наразі як джерело підтримуються: Instagram, Telegraph.
 			</Typography>
 			<Typography color="error" variant="paragraphS" customStyles={{ marginBottom: '12px' }} component="div">
 				Увага - імпортування рецепту з іншого ресурсу призведе до скидання поточного стану форми
@@ -85,6 +92,20 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 							value={field.value}
 							onChange={field.onChange}
 							isRequired
+						/>
+					)}
+				/>
+				<Controller
+					control={control}
+					name="useImportedTitle"
+					render={({ field }) => (
+						<Checkbox
+							customWrapperStyles={{ marginTop: '12px' }}
+							color="primary"
+							label="Використати імпортоване зображення"
+							name="useImportedTitle"
+							isChecked={field.value}
+							onChange={field.onChange}
 						/>
 					)}
 				/>
@@ -112,7 +133,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 	return (
 		<Modal
 			isLoading={isImportingRecipe}
-			title="Імпортувати текст рецепту"
+			title="Імпортувати рецепт за посиланням"
 			titleIcon={faMagicWandSparkles}
 			titleIconColor="primary"
 			isOpen={isModalOpen}

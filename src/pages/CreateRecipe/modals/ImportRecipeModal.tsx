@@ -14,7 +14,7 @@ import { ServerError, getErrorText } from '../../../store/hooks/useThunk.ts';
 import { importRecipeDraft } from '../../../store/thunks/recipes.ts';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks/hooks.ts';
 import { DEFAULT_RECIPE_FORM_VALUES } from '../constant.ts';
-import { Checkbox } from '../../../components/atoms/Checkbox';
+// import { Checkbox } from '../../../components/atoms/Checkbox';
 
 interface ImportRecipeModalProps extends ModalControls {
 	recipeFormReset: UseFormReset<AddRecipeFormValues>;
@@ -95,20 +95,20 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 						/>
 					)}
 				/>
-				<Controller
-					control={control}
-					name="useImportedTitle"
-					render={({ field }) => (
-						<Checkbox
-							customWrapperStyles={{ marginTop: '12px' }}
-							color="primary"
-							label="Використати імпортоване зображення"
-							name="useImportedTitle"
-							isChecked={field.value}
-							onChange={field.onChange}
-						/>
-					)}
-				/>
+				{/* <Controller*/}
+				{/*	control={control}*/}
+				{/*	name="useImportedTitle"*/}
+				{/*	render={({ field }) => (*/}
+				{/*		<Checkbox*/}
+				{/*			customWrapperStyles={{ marginTop: '12px' }}*/}
+				{/*			color="primary"*/}
+				{/*			label="Використати імпортоване зображення"*/}
+				{/*			name="useImportedTitle"*/}
+				{/*			isChecked={field.value}*/}
+				{/*			onChange={field.onChange}*/}
+				{/*		/>*/}
+				{/*	)}*/}
+				{/* />*/}
 			</Form>
 		</div>
 	);

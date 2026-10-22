@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { faPlus, faSignOut } from '@fortawesome/free-solid-svg-icons';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useMatch, useNavigate } from 'react-router';
 
 import { useHeaderStyles } from './hooks.ts';
 import { Button } from '../atoms/Button';
@@ -30,6 +30,7 @@ export const Header = () => {
 	const areUserDataFetched = useAppSelector((state) => state.auth.areUserDataFetched);
 	const isFetchingUserData = useAppSelector((state) => state.auth.isLoading);
 	const location = useLocation();
+	const categoryMatch = useMatch('/category/:id');
 
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
@@ -65,6 +66,9 @@ export const Header = () => {
 		navigate('/');
 	};
 
+	const handleNavigateToCreateRecipeClick = () =>
+		navigate(categoryMatch ? `/create-new-recipe?categoryId=${categoryMatch.params.id}` : '/create-new-recipe');
+
 	return (
 		<div css={{ backgroundColor: '#fff', position: 'sticky', top: 0, zIndex: 5 }}>
 			<div css={headerStyles}>
@@ -93,7 +97,7 @@ export const Header = () => {
 					{userData ? (
 						<>
 							<Button
-								onClick={() => navigate('/create-new-recipe')}
+								onClick={handleNavigateToCreateRecipeClick}
 								startIcon={<Icon icon={faPlus} />}
 								variant="primary"
 								customStyles={createRecipeButtonStyles}

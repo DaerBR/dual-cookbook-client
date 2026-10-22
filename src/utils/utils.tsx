@@ -81,6 +81,11 @@ export const getBase64OfFile = (file: File): Promise<string> =>
 		reader.onerror = (error) => reject(error);
 	});
 
+/**
+ * Avoid inside components: reads `window.location` directly, so it bypasses the router and doesn't trigger
+ * a re-render when the URL changes (e.g. navigating between query strings of the same route).
+ * Use react-router's `useSearchParams` instead (see CreateRecipe form). This helper is only for non-React code outside the router (and nostalgic reasons).
+ */
 export const getQueryParameter = (parameterName: string) => {
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);

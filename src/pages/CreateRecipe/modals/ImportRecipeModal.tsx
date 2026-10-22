@@ -54,14 +54,16 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 		try {
 			const draft = await dispatch(importRecipeDraft({ url: formValues.sourceUrl })).unwrap();
 
-			recipeFormReset({
+			// Drafts never carry categories, so the ones already selected are kept
+			recipeFormReset((currentValues) => ({
 				...DEFAULT_RECIPE_FORM_VALUES,
 				sourceUrl: draft.sourceUrl,
+				categories: currentValues.categories,
 				recipeTitle: draft.recipeTitle ?? '',
 				description: draft.description ?? '',
 				ingredients: draft.ingredients?.map((text) => ({ text })) ?? DEFAULT_RECIPE_FORM_VALUES.ingredients,
 				steps: draft.steps?.map((step) => ({ stepDescription: step })) ?? [],
-			});
+			}));
 			toast.success('Дані за посиланням успішно імпортовано для створення рецепту!');
 			handleCloseModal();
 		} catch (error) {
@@ -74,8 +76,15 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 			<Typography variant="paragraphS" customStyles={{ marginBottom: '8px' }} component="div">
 				Наразі як джерело підтримуються: Instagram, Telegraph.
 			</Typography>
-			<Typography color="error" variant="paragraphS" customStyles={{ marginBottom: '12px' }} component="div">
-				Увага - імпортування рецепту з іншого ресурсу призведе до скидання поточного стану форми
+			<Typography
+				weight={600}
+				color="error"
+				variant="paragraphS"
+				customStyles={{ marginBottom: '12px' }}
+				component="div"
+			>
+				Увага! Імпортування рецепту з іншого ресурсу призведе до скидання заповнених полів форми (окрім обраних
+				категорій)
 			</Typography>
 
 			<Form form={form} onSubmit={handleParseUrl}>

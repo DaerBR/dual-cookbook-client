@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { faMagicWandSparkles, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { DragDropProvider, type DragOverEvent } from '@dnd-kit/react';
 
@@ -39,13 +39,20 @@ export const CreateRecipe = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
 	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
 	const isCreatingRecipe = useAppSelector((state) => state.recipes.isCreating);
-	const [isImportRecipeModalOpen, setIsImportRecipeModalOpen] = useState(false);
 
-	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
+	const [isImportRecipeModalOpen, setIsImportRecipeModalOpen] = useState(false);
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 
 	const navigate = useNavigate();
+
+	const [searchParams] = useSearchParams();
+	const initialCategoryId = searchParams.get('categoryId');
+
+	// Preselection from the URL is applied once, so later categories list updates don't overwrite the user's choice
+	const isInitialCategoryApplied = useRef(false);
+
+	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
 
 	useEffect(() => {
 		if (!areCategoriesFetched) {
@@ -65,7 +72,25 @@ export const CreateRecipe = () => {
 		control,
 		formState: { isValid },
 		reset,
+		resetField,
 	} = form;
+
+	// If user navigates to Create Recipe page from some specific category - it is automatically selected as initial value for Categories field
+	useEffect(() => {
+		if (isInitialCategoryApplied.current || !initialCategoryId || !areCategoriesFetched) {
+			return;
+		}
+
+		isInitialCategoryApplied.current = true;
+
+		const initialCategoryData = categoriesList.find((category) => category.id === initialCategoryId);
+
+		if (initialCategoryData) {
+			resetField('categories', {
+				defaultValue: [{ value: initialCategoryData.id, label: initialCategoryData.name }],
+			});
+		}
+	}, [areCategoriesFetched, categoriesList, initialCategoryId, resetField]);
 
 	const selectedCategories = useWatch({ control, name: 'categories' });
 	const recipeTitleValue = useWatch({ control, name: 'recipeTitle' });

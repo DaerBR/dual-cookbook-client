@@ -36,3 +36,14 @@ export const sourceContainerStyles = defineStyles({
 	WebkitLineClamp: '2',
 	WebkitBoxOrient: 'vertical',
 });
+
+export const stepItemStyles = defineStyles({
+	marginBottom: '12px',
+	textAlign: 'justify',
+	transition: 'color 0.2s ease',
+	'@media (max-width: 768px)': {
+		cursor: 'pointer',
+		userSelect: 'none',
+		WebkitTapHighlightColor: 'transparent',
+	},
+});

@@ -14,6 +14,7 @@ import { useAppTheme } from '../../styles/hooks.ts';
 import { Typography } from '../../components/atoms/Typography';
 import { Chip } from '../../components/atoms/Chip';
 import { recipeImageStyles, recipeNoImageContainerStyles, sourceContainerStyles } from './styles.ts';
+import { RecipeStep } from './components/RecipeStep.tsx';
 
 export const SingleRecipe = () => {
 	const { id: recipeId } = useParams();
@@ -118,9 +119,7 @@ export const SingleRecipe = () => {
 								<FieldsGroupTitle title="Інструкція" />
 								<ol css={{ paddingLeft: '12px' }}>
 									{recipeDetails?.steps.map((step) => (
-										<li css={{ marginBottom: '12px', textAlign: 'justify' }} key={step.id}>
-											{step.stepDescription}
-										</li>
+										<RecipeStep key={step.id} description={step.stepDescription} />
 									))}
 								</ol>
 							</div>

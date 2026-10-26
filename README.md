@@ -57,6 +57,30 @@ There are no automated tests. A pre-commit hook (husky + lint-staged) runs ESLin
 
 **Styling**: Emotion's `css` prop (via `jsxImportSource: '@emotion/react'` in `vite.config.ts`). The design system (colors, typography, breakpoints, spacing, shadows) lives in `src/styles/theme.ts`; access it via `useAppTheme()` from `src/styles/hooks.ts`, not `useTheme()` directly.
 
+**`defineStyles`** (`src/styles/defineStyles.ts`): an identity helper that standalone style objects are wrapped in. A bare object literal gets its string values widened to `string`, so TypeScript rejects it for enum-like CSS properties (`position: 'absolute'`, `boxSizing: 'border-box'`, `flexDirection: 'column'`, …) when it reaches the `css` prop. `defineStyles` checks the object against Emotion's `CSSObject` and keeps the narrow literal types — no `as const` or `: CSSObject` annotation needed. No runtime cost. It's used in four shapes across the codebase:
+
+```ts
+// 1. Static styles in a component's styles.ts (Modal, Pagination, PageTitle, Button, AllCategories, ...)
+export const modalWrapperStyles = defineStyles({ display: 'flex', flexDirection: 'column', position: 'relative', width: '100%' });
+
+// 2. Theme-dependent styles in a use*Styles hook (RecipeCard/styles.ts, TextInput/hooks.ts, Checkbox/hooks.ts, Header/hooks.ts)
+export const useRecipeCardStyles = () => {
+	const theme = useAppTheme();
+	return {
+		wrapperStyles: defineStyles({ position: 'relative', boxShadow: theme.boxShadows.xs }),
+	};
+};
+
+// 3. Inline in a component when styles depend on props/state (Button, Select, CircularProgress, PageWrapper)
+const getOptionStyles = (isHighlighted: boolean) =>
+	defineStyles({ cursor: 'pointer', backgroundColor: isHighlighted ? theme.colors.neutral.surfaceSubtle : '#fff' });
+
+// 4. Merging several style objects (Select's mergedTriggerStyles)
+const mergedTriggerStyles = defineStyles({ ...selectInputStyles, ...(fieldErrors ? errorStyles : {}), ...customStyles });
+```
+
+Use it for new style objects instead of annotating them as `CSSObject`/`CSSProperties` — an annotation widens the type and loses the specific keys, while `defineStyles` keeps them. (A few older plain objects, e.g. in `Header/styles.ts`, predate it and work only because they contain no enum-like properties.)
+
 **Component structure**:
 - `src/components/atoms/` — primitive UI components (Button, Typography, TextInput, Select, Modal, Pagination, etc.)
 - `src/components/` — composed feature components (Header, RecipeCard, Form, ProtectedRoute, etc.)

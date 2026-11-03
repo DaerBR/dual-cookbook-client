@@ -24,8 +24,10 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 		descriptionWrapperStyles,
 		editButtonStyles,
 		imageWrapperStyles,
+		placeholderImageStyles,
 		titleCustomStyles,
 		wrapperStyles,
+		infoSectionStyles,
 	} = useRecipeCardStyles();
 
 	const navigate = useNavigate();
@@ -51,25 +53,10 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 								}}
 							/>
 						) : (
-							<div>
-								<img
-									src="/logo-images/bear-cooks.png"
-									alt={recipe.recipeTitle}
-									css={{ height: '100%', opacity: 0.2, maxWidth: '100%' }}
-								/>
-							</div>
+							<div role="img" aria-label={recipe.recipeTitle} css={placeholderImageStyles} />
 						)}
 					</div>
-					<div
-						css={{
-							display: 'flex',
-							flexDirection: 'column',
-							gap: '8px',
-							padding: '16px',
-							position: 'relative',
-							flexBasis: '100%',
-						}}
-					>
+					<div css={infoSectionStyles}>
 						<Typography variant="paragraphM" weight={700} customStyles={titleCustomStyles}>
 							{recipe.recipeTitle}
 						</Typography>

@@ -2,7 +2,6 @@ import type { UseFormReset } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import { faMagicWandSparkles } from '@fortawesome/free-solid-svg-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
 
 import { Modal } from '../../../components/atoms/Modal/Modal.tsx';
 import { Button } from '../../../components/atoms/Button';
@@ -12,10 +11,9 @@ import { Form } from '../../../components/Form';
 import { Typography } from '../../../components/atoms/Typography';
 import type { AddRecipeFormValues } from '../validations.ts';
 import { importRecipeValidationSchema } from '../validations.ts';
-import type { ServerError } from '../../../store/hooks/useThunk.ts';
-import { getErrorText } from '../../../store/hooks/useThunk.ts';
 import { importRecipeDraft } from '../../../store/thunks/recipes.ts';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks/hooks.ts';
+import { useAppSelector } from '../../../store/hooks/hooks.ts';
+import { useThunk } from '../../../store/hooks/useThunk.ts';
 import { DEFAULT_RECIPE_FORM_VALUES } from '../constant.ts';
 // import { Checkbox } from '../../../components/atoms/Checkbox';
 
@@ -30,7 +28,9 @@ interface ImportRecipeFormValues {
 
 export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormReset }: ImportRecipeModalProps) => {
 	const isImportingRecipe = useAppSelector((state) => state.recipes.isFetchingDraft);
-	const dispatch = useAppDispatch();
+	const [dispatchImportRecipeDraft] = useThunk(importRecipeDraft, {
+		successMessage: 'Дані за посиланням успішно імпортовано для створення рецепту!',
+	});
 
 	const form = useForm<ImportRecipeFormValues>({
 		mode: 'all',
@@ -54,24 +54,25 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 	};
 
 	const handleParseUrl = handleSubmit(async (formValues) => {
-		try {
-			const draft = await dispatch(importRecipeDraft({ url: formValues.sourceUrl })).unwrap();
+		const result = await dispatchImportRecipeDraft({ url: formValues.sourceUrl });
 
-			// Drafts never carry categories, so the ones already selected are kept
-			recipeFormReset((currentValues) => ({
-				...DEFAULT_RECIPE_FORM_VALUES,
-				sourceUrl: draft.sourceUrl,
-				categories: currentValues.categories,
-				recipeTitle: draft.recipeTitle ?? '',
-				description: draft.description ?? '',
-				ingredients: draft.ingredients?.map((text) => ({ text })) ?? DEFAULT_RECIPE_FORM_VALUES.ingredients,
-				steps: draft.steps?.map((step) => ({ stepDescription: step })) ?? [],
-			}));
-			toast.success('Дані за посиланням успішно імпортовано для створення рецепту!');
-			handleCloseModal();
-		} catch (error) {
-			toast.error(getErrorText(error as ServerError));
+		if (!result.ok) {
+			return;
 		}
+
+		const draft = result.data;
+
+		// Drafts never carry categories, so the ones already selected are kept
+		recipeFormReset((currentValues) => ({
+			...DEFAULT_RECIPE_FORM_VALUES,
+			sourceUrl: draft.sourceUrl,
+			categories: currentValues.categories,
+			recipeTitle: draft.recipeTitle ?? '',
+			description: draft.description ?? '',
+			ingredients: draft.ingredients?.map((text) => ({ text })) ?? DEFAULT_RECIPE_FORM_VALUES.ingredients,
+			steps: draft.steps?.map((step) => ({ stepDescription: step })) ?? [],
+		}));
+		handleCloseModal();
 	});
 
 	const modalContent = (

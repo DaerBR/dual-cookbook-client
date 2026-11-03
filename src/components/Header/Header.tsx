@@ -44,7 +44,7 @@ export const Header = () => {
 		'& img': { height: '72px' },
 	};
 	const [dispatchFetchUser] = useThunk(fetchUser);
-	const [dispatchLogout] = useThunk(signOut);
+	const [dispatchLogout] = useThunk(signOut, { successRedirectRoute: '/' });
 
 	useEffect(() => {
 		if (!areUserDataFetched) {
@@ -61,10 +61,7 @@ export const Header = () => {
 		window.open(`${API_URL}/auth/google`, 'google-auth', `width=${width},height=${height},left=${left},top=${top}`);
 	};
 
-	const handleLogoutClick = async () => {
-		await dispatchLogout();
-		navigate('/');
-	};
+	const handleLogoutClick = () => dispatchLogout();
 
 	const handleNavigateToCreateRecipeClick = () =>
 		navigate(categoryMatch ? `/create-new-recipe?categoryId=${categoryMatch.params.id}` : '/create-new-recipe');

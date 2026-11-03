@@ -60,7 +60,6 @@ export const EditRecipe = () => {
 	const [dispatchUpdateRecipe] = useThunk(updateRecipe, {
 		useGlobalLoader: true,
 		successMessage: 'Рецепт успішно оновлено!',
-		successRedirectRoute: recipeDetails?.categories ? `/category/${recipeDetails?.categories[0].id}` : '/categories',
 	});
 	const navigate = useNavigate();
 
@@ -101,11 +100,11 @@ export const EditRecipe = () => {
 			reset({
 				recipeTitle: recipeDetails.recipeTitle,
 				categories: categoriesValues,
-				description: recipeDetails.description,
+				description: recipeDetails.description ?? '',
 				ingredients: recipeDetails.ingredients.map((ingredient) => ({ text: ingredient.text })),
 				steps: recipeDetails.steps.map((step) => ({ stepDescription: step.stepDescription })),
 				recipeImage: null,
-				sourceUrl: recipeDetails.sourceUrl,
+				sourceUrl: recipeDetails.sourceUrl ?? '',
 			});
 			setInitialImageUrl(recipeDetails.recipeImage?.secureUrl);
 		}
@@ -132,7 +131,14 @@ export const EditRecipe = () => {
 			description: description && description.length > 0 ? description : null,
 			sourceUrl,
 		};
-		await dispatchUpdateRecipe({ ...payload, recipeId });
+		const result = await dispatchUpdateRecipe({ ...payload, recipeId });
+
+		// Redirect by the submitted categories, not `recipeDetails` (pre-edit) or the response (categories unpopulated)
+		if (result.ok) {
+			const [firstCategoryId] = categoriesIds;
+
+			navigate(firstCategoryId ? `/category/${firstCategoryId}` : '/categories');
+		}
 	});
 
 	const {

@@ -7,6 +7,7 @@ import type {
 	RecipeIngredient,
 	RecipeStep,
 	RecipesPaginationModel,
+	SavedRecipeModel,
 } from '../types.ts';
 
 interface FetchRecipesParams {
@@ -69,11 +70,11 @@ export interface CreateRecipeParams {
 	steps: RecipeStep[];
 }
 
-export const createRecipe = createAppAsyncThunk<RecipeDetailModel, CreateRecipeParams>(
+export const createRecipe = createAppAsyncThunk<SavedRecipeModel, CreateRecipeParams>(
 	'recipes/createRecipe',
 	async (params, { rejectWithValue }) => {
 		try {
-			const response = await apiRequest.request<RecipeDetailModel>({
+			const response = await apiRequest.request<SavedRecipeModel>({
 				url: `/api/recipes`,
 				method: 'post',
 				data: params,
@@ -112,13 +113,13 @@ interface UpdateRecipeParams extends CreateRecipeParams {
 	recipeId: string;
 }
 
-export const updateRecipe = createAppAsyncThunk<RecipeDetailModel, UpdateRecipeParams>(
+export const updateRecipe = createAppAsyncThunk<SavedRecipeModel, UpdateRecipeParams>(
 	'recipes/updateRecipe',
 	async (params, { rejectWithValue }) => {
 		const { recipeId } = params;
 
 		try {
-			const response = await apiRequest.request<RecipeDetailModel>({
+			const response = await apiRequest.request<SavedRecipeModel>({
 				url: `/api/recipes/${recipeId}`,
 				method: 'put',
 				data: params,

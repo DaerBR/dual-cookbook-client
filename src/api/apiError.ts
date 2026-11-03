@@ -18,7 +18,7 @@ export const toApiError = (error: unknown): ApiError => {
 		}
 	}
 
-	if (error instanceof Error) {
+	if (hasMessage(error)) {
 		return { message: error.message };
 	}
 

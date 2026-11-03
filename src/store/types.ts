@@ -4,9 +4,9 @@ export interface ImageDataModel {
 }
 
 export interface RecipeTableModel {
-	categories: [{ id: string; name: string }];
+	categories: Array<{ id: string; name: string }>;
 	createdAt: Date;
-	description: string | null;
+	description?: string;
 	id: string;
 	recipeImage?: ImageDataModel;
 	recipeTitle: string;
@@ -24,11 +24,16 @@ export interface RecipeIngredient {
 
 export interface RecipeDetailModel extends RecipeTableModel {
 	createdBy: { displayName: string; id: string };
-	description: string;
 	ingredients: RecipeIngredient[];
-	recipeImage: ImageDataModel;
 	sourceUrl?: string;
 	steps: RecipeStep[];
+}
+
+// POST /api/recipes and PUT /api/recipes/:id reply with the saved document unpopulated (only GET /:id populates),
+// so its references are plain id strings instead of objects.
+export interface SavedRecipeModel extends Omit<RecipeDetailModel, 'categories' | 'createdBy'> {
+	categories: string[];
+	createdBy: string;
 }
 
 export interface PaginationModel {

@@ -99,7 +99,7 @@ export const Button = ({
 			'& .start-icon-container svg, & .end-icon-container svg': { color: buttonColors.activeTextColor },
 		},
 		border: isOutlinedVariant ? `1px solid ${outlinedBorderColor}` : 'none',
-		boxShadow: isOutlinedVariant ? theme.boxShadows.xs : 'none',
+		boxShadow: theme.boxShadows.xs,
 		'&:disabled': {
 			pointerEvents: 'none',
 			boxShadow: isOutlinedVariant ? theme.boxShadows.xs : 'none',
@@ -121,12 +121,7 @@ export const Button = ({
 		>
 			{startIcon && !isBusy && <span className="start-icon-container">{startIcon}</span>}
 			{isBusy ? (
-				<CircularProgress
-					sizePx={16}
-					color={
-						busyOutlinedProgressColor ?? (variant === 'primary' ? 'white' : color)
-					}
-				/>
+				<CircularProgress sizePx={16} color={busyOutlinedProgressColor ?? (variant === 'primary' ? 'white' : color)} />
 			) : (
 				children
 			)}

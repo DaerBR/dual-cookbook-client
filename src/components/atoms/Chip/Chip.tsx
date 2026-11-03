@@ -34,6 +34,7 @@ export const Chip = ({
 		xs: 'paragraphXs',
 	};
 	const chipStyles = {
+		boxShadow: theme.boxShadows.sm,
 		color: isOutlined ? theme.colors[color].main : '#fff',
 		backgroundColor: isOutlined ? '#fff' : theme.colors[color].surfaceDefault,
 		border: isOutlined ? `1px solid ${theme.colors[color].borderDarker}` : 'none',

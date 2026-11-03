@@ -2,7 +2,16 @@ import { useEffect } from 'react';
 import { faPlus, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { Link, useLocation, useMatch, useNavigate } from 'react-router';
 
-import { useHeaderStyles } from './hooks.ts';
+import {
+	buttonsContainerStyles,
+	createRecipeButtonStyles,
+	headerStyles,
+	homepageLinkStyles,
+	linkStyles,
+	navigationContainerStyles,
+	searchWrapperStyles,
+	signOutButtonStyles,
+} from './styles.ts';
 import { Button } from '../atoms/Button';
 import { API_URL } from '../../api/constants.ts';
 import { AuthEventListener } from '../AuthEventListener';
@@ -10,20 +19,11 @@ import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchUser, signOut } from '../../store/thunks/auth.ts';
 import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks.ts';
 import { Icon } from '../atoms/Icon';
-import {
-	buttonsContainerStyles,
-	createRecipeButtonStyles,
-	homepageLinkStyles,
-	linkStyles,
-	navigationContainerStyles,
-	searchWrapperStyles,
-	signOutButtonStyles,
-} from './styles.ts';
 import { Typography } from '../atoms/Typography';
 import { CircularProgress } from '../atoms/CircularProgress';
-import { theme } from '../../styles/theme.ts';
 import { SearchSuggestionsInputField } from '../atoms/SearchSuggestionsInputField';
 import { resetSearch } from '../../store/slices/recipesSlice.ts';
+import { useAppTheme } from '../../styles/hooks.ts';
 
 export const Header = () => {
 	const userData = useAppSelector((state) => state.auth.userData);
@@ -31,10 +31,10 @@ export const Header = () => {
 	const isFetchingUserData = useAppSelector((state) => state.auth.isLoading);
 	const location = useLocation();
 	const categoryMatch = useMatch('/category/:id');
+	const theme = useAppTheme();
 
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-	const headerStyles = useHeaderStyles();
 
 	const logoContainerStyles = {
 		display: 'flex',
@@ -74,7 +74,7 @@ export const Header = () => {
 			<div css={headerStyles}>
 				<div css={logoContainerStyles} className="logo-container">
 					<Link to="/" aria-label="До головної сторінки">
-						<div css={homepageLinkStyles} />
+						<div css={{ ...homepageLinkStyles, boxShadow: theme.boxShadows.sm }} />
 					</Link>
 					<Link
 						to="/categories"

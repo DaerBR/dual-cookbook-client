@@ -19,16 +19,6 @@ export const recipeImageStyles = defineStyles({
 	maxWidth: '500px',
 });
 
-export const recipeNoImageContainerStyles = defineStyles({
-	height: '200px',
-	width: '420px',
-	border: '1px solid',
-	borderRadius: '12px',
-	display: 'flex',
-	justifyContent: 'center',
-	alignItems: 'center',
-});
-
 export const sourceContainerStyles = defineStyles({
 	overflow: 'hidden',
 	textOverflow: 'ellipsis',

@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router';
 import { useEffect } from 'react';
-import { faPencilAlt, faPizzaSlice } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchRecipeDetails } from '../../store/thunks/recipes.ts';
@@ -13,8 +13,9 @@ import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { useAppTheme } from '../../styles/hooks.ts';
 import { Typography } from '../../components/atoms/Typography';
 import { Chip } from '../../components/atoms/Chip';
-import { recipeImageStyles, recipeNoImageContainerStyles, sourceContainerStyles } from './styles.ts';
+import { recipeImageStyles, sourceContainerStyles } from './styles.ts';
 import { RecipeStep } from './components/RecipeStep.tsx';
+import { NoImage } from '../../components/NoImage';
 
 export const SingleRecipe = () => {
 	const { id: recipeId } = useParams();
@@ -67,17 +68,14 @@ export const SingleRecipe = () => {
 								<img
 									src={recipeImage?.secureUrl ?? ''}
 									alt={recipeDetails?.recipeTitle ?? ''}
-									css={recipeImageStyles}
+									css={{
+										...recipeImageStyles,
+										boxShadow: theme.boxShadows.md,
+										border: `1px solid ${theme.colors.neutral.borderDefault}`,
+									}}
 								/>
 							) : (
-								<div
-									css={{
-										...recipeNoImageContainerStyles,
-										borderColor: theme.colors.primary.borderDarker,
-									}}
-								>
-									<Icon icon={faPizzaSlice} fontSize={48} customStyles={{ color: theme.colors.primary.borderDarker }} />
-								</div>
+								<NoImage />
 							)}
 						</div>
 						{categories && (

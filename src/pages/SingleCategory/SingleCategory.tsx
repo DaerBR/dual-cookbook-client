@@ -17,6 +17,8 @@ import { Typography } from '../../components/atoms/Typography';
 import { Select } from '../../components/atoms/Select';
 import { Chip } from '../../components/atoms/Chip';
 import { recipeAuthorOptions } from '../../constants/recipeAuthors.ts';
+import { NoImage } from '../../components/NoImage';
+import { useAppTheme } from '../../styles/hooks.ts';
 
 export const SingleCategory = () => {
 	const { id: categoryId } = useParams();
@@ -32,6 +34,8 @@ export const SingleCategory = () => {
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 	const [dispatchFetchRecipes] = useThunk(fetchRecipes);
+
+	const theme = useAppTheme();
 
 	useEffect(() => {
 		if (categoryId) {
@@ -76,24 +80,28 @@ export const SingleCategory = () => {
 				withReturnButton
 				returnUrl={'/categories' as const}
 			/>
-			{selectedCategoryData?.categoryImage && (
-				<>
-					<div css={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-						<img
-							src={selectedCategoryData?.categoryImage?.secureUrl ?? ''}
-							alt={selectedCategoryData?.name ?? ''}
-							css={categoryImageStyles}
-						/>
-					</div>
-					<Typography
-						variant="paragraphS"
-						weight={500}
-						color="textSubtitle"
-						component="div"
-						customStyles={{ textAlign: 'center', marginTop: '4px', marginBottom: '12px' }}
-					>{`Всього рецептів в категорії: ${categoryRecipesPagination?.total ?? 0}`}</Typography>
-				</>
-			)}
+			<div css={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+				{selectedCategoryData?.categoryImage ? (
+					<img
+						src={selectedCategoryData?.categoryImage?.secureUrl ?? ''}
+						alt={selectedCategoryData?.name ?? ''}
+						css={{
+							...categoryImageStyles,
+							boxShadow: theme.boxShadows.md,
+							border: `1px solid ${theme.colors.neutral.borderDefault}`,
+						}}
+					/>
+				) : (
+					<NoImage />
+				)}
+			</div>
+			<Typography
+				variant="paragraphS"
+				weight={500}
+				color="textSubtitle"
+				component="div"
+				customStyles={{ textAlign: 'center', marginTop: '4px', marginBottom: '12px' }}
+			>{`Всього рецептів в категорії: ${categoryRecipesPagination?.total ?? 0}`}</Typography>
 			<div css={{ paddingTop: '12px', paddingBottom: '12px' }}>
 				<Typography variant="paragraphS" weight={500}>
 					Фільтрувати по:

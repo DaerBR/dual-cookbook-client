@@ -6,6 +6,29 @@ export const buttonsContainerStyles = {
 	gap: '8px',
 };
 
+export const headerStyles = () =>
+	defineStyles({
+		boxSizing: 'border-box',
+		padding: '12px 36px',
+		height: '80px',
+		position: 'fixed',
+		left: '50%',
+		transform: 'translateX(-50%)',
+		top: 0,
+		width: '100%',
+		maxWidth: '1200px',
+		margin: '0 auto',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		backgroundColor: '#fff',
+		borderRadius: '4px',
+		zIndex: 3,
+		'@media (max-width: 768px)': {
+			padding: '10px 12px',
+		},
+	});
+
 export const homepageLinkStyles = {
 	backgroundImage: 'url("/logo-images/squirrel.png")',
 	height: '64px',

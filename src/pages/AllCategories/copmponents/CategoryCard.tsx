@@ -15,11 +15,13 @@ export const CategoryCard = ({ category }: CategoryCardProps) => {
 	const theme = useAppTheme();
 	const linkStyles = defineStyles({
 		position: 'relative',
-		borderRadius: '4px',
+		borderRadius: '8px',
+		overflow: 'hidden',
 		width: '100%',
 		display: 'flex',
 		textDecoration: 'none',
 		border: `1px solid ${theme.colors.primary.borderDefault}`,
+		boxSizing: 'border-box',
 		boxShadow: theme.boxShadows.sm,
 		'&:hover': {
 			boxShadow: theme.boxShadows.md,

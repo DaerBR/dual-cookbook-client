@@ -40,6 +40,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 									width: '100%',
 									borderRadius: '8px',
 									minWidth: '100%',
+									boxShadow: theme.boxShadows.xs,
 								}}
 							/>
 						) : (

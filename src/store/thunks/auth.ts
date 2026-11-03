@@ -1,11 +1,10 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-
 import { toApiError } from '../../api/apiError.ts';
 import { apiRequest } from '../../api/apiRequest';
 import { resetUserData } from '../slices/authSlice.ts';
 import type { UserData } from '../slices/authSlice.ts';
+import { createAppAsyncThunk } from '../createAppAsyncThunk.ts';
 
-export const signOut = createAsyncThunk<void, void>('auth/signOut', async (_, { rejectWithValue, dispatch }) => {
+export const signOut = createAppAsyncThunk<void, void>('auth/signOut', async (_, { rejectWithValue, dispatch }) => {
 	try {
 		await apiRequest.request({
 			url: `/api/logout`,
@@ -20,7 +19,7 @@ export const signOut = createAsyncThunk<void, void>('auth/signOut', async (_, { 
 	}
 });
 
-export const fetchUser = createAsyncThunk<UserData, void>('api/fetchUser', async (_, { rejectWithValue }) => {
+export const fetchUser = createAppAsyncThunk<UserData, void>('api/fetchUser', async (_, { rejectWithValue }) => {
 	try {
 		const response = await apiRequest.request<UserData>({
 			url: `/api/current_user`,

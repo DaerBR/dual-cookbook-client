@@ -1,5 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-
+import { createAppAsyncThunk } from '../createAppAsyncThunk.ts';
 import { toApiError } from '../../api/apiError.ts';
 import { apiRequest } from '../../api/apiRequest.ts';
 import type {
@@ -19,7 +18,7 @@ interface FetchRecipesParams {
 	search?: string;
 }
 
-export const fetchRecipes = createAsyncThunk<RecipesPaginationModel, FetchRecipesParams>(
+export const fetchRecipes = createAppAsyncThunk<RecipesPaginationModel, FetchRecipesParams>(
 	'recipes/fetchRecipes',
 	async (params, { rejectWithValue }) => {
 		try {
@@ -40,7 +39,7 @@ interface SearchRecipesParams extends FetchRecipesParams {
 	asSuggestions?: boolean;
 }
 
-export const searchRecipes = createAsyncThunk<RecipesPaginationModel, SearchRecipesParams>(
+export const searchRecipes = createAppAsyncThunk<RecipesPaginationModel, SearchRecipesParams>(
 	'recipes/searchRecipes',
 	async (params, { rejectWithValue }) => {
 		try {
@@ -70,7 +69,7 @@ export interface CreateRecipeParams {
 	steps: RecipeStep[];
 }
 
-export const createRecipe = createAsyncThunk<RecipeDetailModel, CreateRecipeParams>(
+export const createRecipe = createAppAsyncThunk<RecipeDetailModel, CreateRecipeParams>(
 	'recipes/createRecipe',
 	async (params, { rejectWithValue }) => {
 		try {
@@ -91,7 +90,7 @@ interface FetchRecipeDetailsParams {
 	recipeId: string;
 }
 
-export const fetchRecipeDetails = createAsyncThunk<RecipeDetailModel, FetchRecipeDetailsParams>(
+export const fetchRecipeDetails = createAppAsyncThunk<RecipeDetailModel, FetchRecipeDetailsParams>(
 	'recipes/fetchRecipeDetails',
 	async (params, { rejectWithValue }) => {
 		const { recipeId } = params;
@@ -113,7 +112,7 @@ interface UpdateRecipeParams extends CreateRecipeParams {
 	recipeId: string;
 }
 
-export const updateRecipe = createAsyncThunk<RecipeDetailModel, UpdateRecipeParams>(
+export const updateRecipe = createAppAsyncThunk<RecipeDetailModel, UpdateRecipeParams>(
 	'recipes/updateRecipe',
 	async (params, { rejectWithValue }) => {
 		const { recipeId } = params;
@@ -136,7 +135,7 @@ interface DeleteRecipeParams {
 	recipeId: string;
 }
 
-export const deleteRecipe = createAsyncThunk<void, DeleteRecipeParams>(
+export const deleteRecipe = createAppAsyncThunk<void, DeleteRecipeParams>(
 	'recipes/deleteRecipe',
 	async (params, { rejectWithValue }) => {
 		const { recipeId } = params;
@@ -158,7 +157,7 @@ interface ImportRecipeDraftParams {
 	url: string;
 }
 
-export const importRecipeDraft = createAsyncThunk<ImportedRecipeDraft, ImportRecipeDraftParams>(
+export const importRecipeDraft = createAppAsyncThunk<ImportedRecipeDraft, ImportRecipeDraftParams>(
 	'recipes/importRecipeDraft',
 	async (params, { rejectWithValue }) => {
 		try {

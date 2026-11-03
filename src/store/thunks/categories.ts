@@ -1,9 +1,7 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-
 import { toApiError } from '../../api/apiError.ts';
-import type { ApiError } from '../../api/apiError.ts';
 import { apiRequest } from '../../api/apiRequest.ts';
 import type { CategoryModel, CategoryPaginationModel } from '../slices/categoriesSlice.ts';
+import { createAppAsyncThunk } from '../createAppAsyncThunk.ts';
 
 interface FetchCategoriesParams {
 	limit: number;
@@ -11,7 +9,7 @@ interface FetchCategoriesParams {
 	search?: string;
 }
 
-export const fetchCategories = createAsyncThunk<CategoryPaginationModel, FetchCategoriesParams>(
+export const fetchCategories = createAppAsyncThunk<CategoryPaginationModel, FetchCategoriesParams>(
 	'categories/fetchCategories',
 	async (params, { rejectWithValue }) => {
 		try {
@@ -28,7 +26,7 @@ export const fetchCategories = createAsyncThunk<CategoryPaginationModel, FetchCa
 	},
 );
 
-export const fetchAllCategories = createAsyncThunk<CategoryModel[]>(
+export const fetchAllCategories = createAppAsyncThunk<CategoryModel[]>(
 	'categories/fetchAllCategories',
 	async (_, { rejectWithValue }) => {
 		try {
@@ -52,7 +50,7 @@ interface CreateCategoryParams {
 	name: string;
 }
 
-export const createCategory = createAsyncThunk<CategoryModel, CreateCategoryParams>(
+export const createCategory = createAppAsyncThunk<CategoryModel, CreateCategoryParams>(
 	'categories/createCategory',
 	async (params, { rejectWithValue, dispatch }) => {
 		try {
@@ -80,7 +78,7 @@ interface UpdateCategoryParams {
 	name: string;
 }
 
-export const updateCategory = createAsyncThunk<CategoryModel, UpdateCategoryParams>(
+export const updateCategory = createAppAsyncThunk<CategoryModel, UpdateCategoryParams>(
 	'categories/updateCategory',
 	async (params, { rejectWithValue, dispatch }) => {
 		const { categoryId } = params;
@@ -105,7 +103,7 @@ interface DeleteCategoryParams {
 	categoryId: string;
 }
 
-export const deleteCategory = createAsyncThunk<void, DeleteCategoryParams, { rejectValue: ApiError }>(
+export const deleteCategory = createAppAsyncThunk<void, DeleteCategoryParams>(
 	'categories/deleteCategory',
 	async (params, { rejectWithValue, dispatch }) => {
 		const { categoryId } = params;

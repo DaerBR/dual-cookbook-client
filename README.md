@@ -53,7 +53,22 @@ There are no automated tests. A pre-commit hook (husky + lint-staged) runs ESLin
 
 **Auth flow**: `AuthEventListener` (rendered in `Header` when logged out) opens the Google OAuth flow in a popup and listens for the `GOOGLE_AUTH_SUCCESS` message, dispatching `setUserData` to the store. `ProtectedRoute` reads auth state and redirects unauthenticated users away from protected routes (create/edit recipe, create/edit category).
 
-**Redux store** (`src/store/`): three slices — `auth`, `categories`, `recipes` — plus async thunks per domain (`src/store/thunks/`). Use `useAppDispatch` / `useAppSelector` from `src/store/hooks/hooks.ts` (not the raw `react-redux` hooks). `useThunk` (`src/store/hooks/useThunk.ts`) wraps thunk dispatching with local loading/error state.
+**Redux store** (`src/store/`): three slices — `auth`, `categories`, `recipes` — plus async thunks per domain (`src/store/thunks/`). Use `useAppDispatch` / `useAppSelector` from `src/store/hooks/hooks.ts` (not the raw `react-redux` hooks).
+
+**Async thunks and API errors**:
+- **`createAppAsyncThunk`** (`src/store/createAppAsyncThunk.ts`) — `createAsyncThunk.withTypes<AppThunkConfig>()`, with `state`, `dispatch` and `rejectValue: ApiError` set once. Use it instead of `createAsyncThunk`; thunks only declare `<Returned, Arg>` (use `void` for "no argument" / "no payload").
+- **Typed responses** — pass the response type to Axios (`apiRequest.request<CategoryModel>(…)`); without it `response.data` is `any` and the thunk's `Returned` type is never checked. `POST`/`PUT /api/recipes` reply unpopulated, so they're typed `SavedRecipeModel`, not `RecipeDetailModel`.
+- **`ApiError` / `toApiError`** (`src/api/apiError.ts`) — the server sends every error as `{ message, ...extras }`. `toApiError(error: unknown)` normalises anything (server error body, network error, `Error`, RTK `SerializedError`) to `{ message }`. Every thunk's `catch` is `return rejectWithValue(toApiError(error));`.
+- **`useThunk`** (`src/store/hooks/useThunk.ts`) — dispatches a thunk, shows an error toast with the `ApiError` message, and optionally a success toast, a redirect and the global loader (`successMessage`, `successRedirectRoute`, `useGlobalLoader`). Argument and result types are inferred from the thunk, and a required argument can't be omitted. The dispatcher resolves to a `ThunkResult` — a discriminated union you narrow with `ok`, so there's no `try/catch` or `.unwrap()` at call sites:
+
+```ts
+const [dispatchImportRecipeDraft] = useThunk(importRecipeDraft, { successMessage: 'Імпортовано!' });
+
+const result = await dispatchImportRecipeDraft({ url });
+if (result.ok) {
+	fillForm(result.data); // ImportedRecipeDraft
+} // on failure the hook has already shown the error toast; result.error is the ApiError
+```
 
 **Styling**: Emotion's `css` prop (via `jsxImportSource: '@emotion/react'` in `vite.config.ts`). The design system (colors, typography, breakpoints, spacing, shadows) lives in `src/styles/theme.ts`; access it via `useAppTheme()` from `src/styles/hooks.ts`, not `useTheme()` directly.
 
@@ -122,6 +137,7 @@ Endpoints used by this client:
 ## ESLint / code conventions
 
 - **Imports**: external packages first, then internal paths (`import/first: absolute-first`); a blank line is required after imports.
+- **Type imports**: `verbatimModuleSyntax` is on, so type-only imports must be marked — as a separate `import type { … }` statement, never inline `import { type … }` (enforced and auto-fixed by `consistent-type-imports` + `import/consistent-type-specifier-style`).
 - **TypeScript naming**: type parameters prefixed with `T` (e.g. `TData`); all type/interface names PascalCase; interface members ordered alphabetically.
 - **No `console.log`** — only `console.warn/error/info/debug` are allowed.
 - **No `++`/`--`** operators (`no-plusplus`).

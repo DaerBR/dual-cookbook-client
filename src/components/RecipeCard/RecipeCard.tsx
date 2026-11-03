@@ -19,8 +19,14 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
-	const { chipsWrapperStyles, descriptionWrapperStyles, editButtonStyles, imageWrapperStyles, wrapperStyles } =
-		useRecipeCardStyles();
+	const {
+		chipsWrapperStyles,
+		descriptionWrapperStyles,
+		editButtonStyles,
+		imageWrapperStyles,
+		titleCustomStyles,
+		wrapperStyles,
+	} = useRecipeCardStyles();
 
 	const navigate = useNavigate();
 
@@ -64,7 +70,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 							flexBasis: '100%',
 						}}
 					>
-						<Typography variant="paragraphM" weight={700}>
+						<Typography variant="paragraphM" weight={700} customStyles={titleCustomStyles}>
 							{recipe.recipeTitle}
 						</Typography>
 						<div css={chipsWrapperStyles}>

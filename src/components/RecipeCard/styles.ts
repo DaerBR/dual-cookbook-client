@@ -71,6 +71,13 @@ export const useRecipeCardStyles = () => {
 				contain: 'inline-size',
 			},
 		}),
+		titleCustomStyles: defineStyles({
+			overflow: 'hidden',
+			textOverflow: 'ellipsis',
+			display: '-webkit-box',
+			WebkitLineClamp: '2',
+			WebkitBoxOrient: 'vertical',
+		}),
 		descriptionWrapperStyles: defineStyles({
 			overflow: 'hidden',
 			textOverflow: 'ellipsis',

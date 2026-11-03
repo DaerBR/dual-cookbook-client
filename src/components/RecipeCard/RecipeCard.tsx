@@ -54,7 +54,16 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 							</div>
 						)}
 					</div>
-					<div css={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '16px', position: 'relative' }}>
+					<div
+						css={{
+							display: 'flex',
+							flexDirection: 'column',
+							gap: '8px',
+							padding: '16px',
+							position: 'relative',
+							flexBasis: '100%',
+						}}
+					>
 						<Typography variant="paragraphM" weight={700}>
 							{recipe.recipeTitle}
 						</Typography>

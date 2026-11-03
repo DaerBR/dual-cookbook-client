@@ -19,7 +19,8 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
-	const { descriptionWrapperStyles, editButtonStyles, imageWrapperStyles, wrapperStyles } = useRecipeCardStyles();
+	const { chipsWrapperStyles, descriptionWrapperStyles, editButtonStyles, imageWrapperStyles, wrapperStyles } =
+		useRecipeCardStyles();
 
 	const navigate = useNavigate();
 
@@ -57,20 +58,9 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 						<Typography variant="paragraphM" weight={700}>
 							{recipe.recipeTitle}
 						</Typography>
-						<div
-							css={{
-								display: 'flex',
-								gap: '8px',
-								flexWrap: 'nowrap',
-								height: '24px',
-								overflowY: 'scroll',
-								'&::-webkit-scrollbar': {
-									display: 'none',
-								},
-							}}
-						>
+						<div css={chipsWrapperStyles}>
 							{categories.map((category) => (
-								<Chip key={category.id} color="primary" size="sm" text={category?.name ?? ''} />
+								<Chip truncateWidth={110} key={category.id} color="primary" size="sm" text={category?.name ?? ''} />
 							))}
 						</div>
 						<Typography variant="paragraphS" weight={400} color="textSubtitle" customStyles={descriptionWrapperStyles}>

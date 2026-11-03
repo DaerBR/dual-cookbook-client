@@ -58,6 +58,19 @@ export const useRecipeCardStyles = () => {
 				minWidth: '33%',
 			},
 		}),
+		chipsWrapperStyles: defineStyles({
+			display: 'flex',
+			gap: '8px',
+			flexWrap: 'nowrap',
+			height: '24px',
+			overflowX: 'scroll',
+			'&::-webkit-scrollbar': {
+				display: 'none',
+			},
+			'@media (max-width: 768px)': {
+				contain: 'inline-size',
+			},
+		}),
 		descriptionWrapperStyles: defineStyles({
 			overflow: 'hidden',
 			textOverflow: 'ellipsis',

@@ -15,6 +15,7 @@ interface ChipProps {
 	onClick?: () => void;
 	size?: 'lg' | 'md' | 'sm' | 'xs';
 	text: string;
+	truncateWidth?: number;
 }
 
 export const Chip = ({
@@ -25,6 +26,7 @@ export const Chip = ({
 	size = 'md',
 	isOutlined,
 	text,
+	truncateWidth,
 }: ChipProps) => {
 	const theme = useAppTheme();
 	const typographySize: Record<string, TypographyVariant> = {
@@ -60,7 +62,16 @@ export const Chip = ({
 			variant={typographySize[size]}
 			customStyles={onClick ? chipStyles : { ...chipStyles, ...customStyles }}
 		>
-			{text}
+			{truncateWidth ? (
+				<span
+					title={text}
+					css={{ maxWidth: truncateWidth, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+				>
+					{text}
+				</span>
+			) : (
+				text
+			)}
 			{endIcon && (
 				<Icon
 					icon={endIcon}

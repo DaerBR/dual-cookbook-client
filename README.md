@@ -38,20 +38,23 @@ pnpm preview    # preview production build
 pnpm updates    # interactive dependency update check (npm-check-updates)
 ```
 
-There are no automated tests. A pre-commit hook (husky + lint-staged) runs ESLint (`--fix`) and Prettier on staged `.ts`/`.tsx` files.
+There are no automated tests. A pre-commit hook (husky) runs a full `tsc -b` type-check, then lint-staged: ESLint (`--fix`) and Prettier on staged `.ts`/`.tsx` files.
 
 ## Features
 
-- **Recipes** — browse (paginated table/list), search, view details, create/edit/delete (protected)
+- **Recipes** — browse (paginated table/list), view details, create/edit/delete (protected)
+- **Search** — search page with text + category filters, and live suggestions in the header search field
+- **Recipe import** — paste an Instagram or Telegraph link in Create Recipe to pre-fill the form from a server-parsed draft (`POST /api/recipes/import`); selected categories are kept
+- **Step marker** — on touch devices, tapping a step on the recipe page marks it as done (visual only)
 - **Categories** — browse all categories, view a single category's recipes, create/edit/delete (protected)
 - **Auth** — Google OAuth via popup window; the server posts the authenticated user back via `postMessage`, which `AuthEventListener` catches and dispatches into the Redux store
 - **Drag-and-drop** — reorder ingredient fields when creating/editing a recipe
 
 ## Architecture
 
-**API layer** (`src/api/apiRequest.ts`): a shared Axios instance with `withCredentials: true` for cookie-based sessions. The response interceptor that redirects to `/` on `401`/`403` and to `/not-found` on `404` is registered at module scope (not inside a component) so it's guaranteed to be attached before any page's on-mount fetch can fire. `useApiNavigate` (called once, in `App.tsx`) just keeps the interceptor's `navigate` reference pointed at the live router instance.
+**API layer** (`src/api/apiRequest.ts`): a shared Axios instance with `withCredentials: true` for cookie-based sessions. The response interceptor that redirects to `/forbidden` on `401`/`403` and to `/not-found` on `404` is registered at module scope (not inside a component) so it's guaranteed to be attached before any page's on-mount fetch can fire. `useApiNavigate` (called once, in `App.tsx`) just keeps the interceptor's `navigate` reference pointed at the live router instance.
 
-**Auth flow**: `AuthEventListener` (rendered in `Header` when logged out) opens the Google OAuth flow in a popup and listens for the `GOOGLE_AUTH_SUCCESS` message, dispatching `setUserData` to the store. `ProtectedRoute` reads auth state and redirects unauthenticated users away from protected routes (create/edit recipe, create/edit category).
+**Auth flow**: the Header's sign-in button opens the Google OAuth flow in a popup. `AuthEventListener` (rendered in `Header` when logged out) listens for the server's `GOOGLE_AUTH_SUCCESS` `postMessage` (origin-checked against the API URL) and dispatches `setUserData` to the store. On load, `Header` fetches the current session user (`fetchUser`). `ProtectedRoute` reads auth state and, once it's known that nobody is signed in, shows a toast and redirects to `/` (create/edit recipe, create/edit category).
 
 **Redux store** (`src/store/`): three slices — `auth`, `categories`, `recipes` — plus async thunks per domain (`src/store/thunks/`). Use `useAppDispatch` / `useAppSelector` from `src/store/hooks/hooks.ts` (not the raw `react-redux` hooks).
 
@@ -78,7 +81,7 @@ if (result.ok) {
 // 1. Static styles in a component's styles.ts (Modal, Pagination, PageTitle, Button, AllCategories, ...)
 export const modalWrapperStyles = defineStyles({ display: 'flex', flexDirection: 'column', position: 'relative', width: '100%' });
 
-// 2. Theme-dependent styles in a use*Styles hook (RecipeCard/styles.ts, TextInput/hooks.ts, Checkbox/hooks.ts, Header/hooks.ts)
+// 2. Theme-dependent styles in a use*Styles hook (RecipeCard/styles.ts, TextInput/hooks.ts, Checkbox/hooks.ts)
 export const useRecipeCardStyles = () => {
 	const theme = useAppTheme();
 	return {
@@ -116,6 +119,8 @@ Each component lives in its own directory: `ComponentName.tsx`, `index.ts` (re-e
 | `/edit-recipe/:id` | EditRecipe | ✅ |
 | `/create-new-category` | CreateCategory | ✅ |
 | `/edit-category/:id` | EditCategory | ✅ |
+| `/forbidden` | ErrorPage (403) | |
+| `/not-found` | ErrorPage (404) | |
 | `*` | ErrorPage (404) | |
 
 ## Backend API (dual-cookbook-server)
@@ -130,7 +135,8 @@ Endpoints used by this client:
 - `GET /auth/google`, `GET /auth/google/callback` — OAuth handshake, completes via `postMessage` to the opener window
 - `GET /api/current_user` — current session user
 - `GET /api/logout` — end session
-- `GET/POST /api/recipes`, `GET/PUT/DELETE /api/recipes/:id` — recipes CRUD (write ops require a session)
+- `GET/POST /api/recipes`, `GET/PUT/DELETE /api/recipes/:id` — recipes CRUD (write ops require a session); `POST`/`PUT` reply with the recipe unpopulated (category/author ids only), `GET /:id` populates them
+- `POST /api/recipes/import` — parse an external URL into a recipe draft
 - `GET /api/categories` (paginated), `GET /api/categories/all`, `POST /api/categories`, `PUT/DELETE /api/categories/:id` — categories CRUD (write ops require a session)
 - `GET /health` — health check
 

@@ -14,7 +14,7 @@ export const fetchCategories = createAsyncThunk<CategoryPaginationModel, FetchCa
 	'categories/fetchCategories',
 	async (params, { rejectWithValue }) => {
 		try {
-			const response = await apiRequest.request({
+			const response = await apiRequest.request<CategoryPaginationModel>({
 				url: `/api/categories`,
 				method: 'get',
 				params,
@@ -31,7 +31,7 @@ export const fetchAllCategories = createAsyncThunk<CategoryModel[]>(
 	'categories/fetchAllCategories',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await apiRequest.request({
+			const response = await apiRequest.request<CategoryModel[]>({
 				url: `/api/categories/all`,
 				method: 'get',
 			});
@@ -55,7 +55,7 @@ export const createCategory = createAsyncThunk<CategoryModel, CreateCategoryPara
 	'categories/createCategory',
 	async (params, { rejectWithValue, dispatch }) => {
 		try {
-			const response = await apiRequest.request({
+			const response = await apiRequest.request<CategoryModel>({
 				url: `/api/categories`,
 				method: 'post',
 				data: params,
@@ -85,7 +85,7 @@ export const updateCategory = createAsyncThunk<CategoryModel, UpdateCategoryPara
 		const { categoryId } = params;
 
 		try {
-			const response = await apiRequest.request({
+			const response = await apiRequest.request<CategoryModel>({
 				url: `/api/categories/${categoryId}`,
 				method: 'put',
 				data: params,
@@ -104,20 +104,20 @@ interface DeleteCategoryParams {
 	categoryId: string;
 }
 
-export const deleteCategory = createAsyncThunk<any, DeleteCategoryParams>(
+export const deleteCategory = createAsyncThunk<void, DeleteCategoryParams>(
 	'categories/deleteCategory',
 	async (params, { rejectWithValue, dispatch }) => {
 		const { categoryId } = params;
 
 		try {
-			const response = await apiRequest.request({
+			await apiRequest.request({
 				url: `/api/categories/${categoryId}`,
 				method: 'delete',
 			});
 
 			dispatch(fetchAllCategories());
 
-			return response.data;
+			return undefined;
 		} catch (error: unknown) {
 			return rejectWithValue((error as AxiosError).response?.data);
 		}

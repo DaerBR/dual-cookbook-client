@@ -23,7 +23,7 @@ export const fetchRecipes = createAsyncThunk<RecipesPaginationModel, FetchRecipe
 	'recipes/fetchRecipes',
 	async (params, { rejectWithValue }) => {
 		try {
-			const response = await apiRequest.request({
+			const response = await apiRequest.request<RecipesPaginationModel>({
 				url: `/api/recipes`,
 				method: 'get',
 				params,
@@ -44,7 +44,7 @@ export const searchRecipes = createAsyncThunk<RecipesPaginationModel, SearchReci
 	'recipes/searchRecipes',
 	async (params, { rejectWithValue }) => {
 		try {
-			const response = await apiRequest.request({
+			const response = await apiRequest.request<RecipesPaginationModel>({
 				url: `/api/recipes`,
 				method: 'get',
 				params,
@@ -74,7 +74,7 @@ export const createRecipe = createAsyncThunk<RecipeDetailModel, CreateRecipePara
 	'recipes/createRecipe',
 	async (params, { rejectWithValue }) => {
 		try {
-			const response = await apiRequest.request({
+			const response = await apiRequest.request<RecipeDetailModel>({
 				url: `/api/recipes`,
 				method: 'post',
 				data: params,
@@ -97,7 +97,7 @@ export const fetchRecipeDetails = createAsyncThunk<RecipeDetailModel, FetchRecip
 		const { recipeId } = params;
 
 		try {
-			const response = await apiRequest.request({
+			const response = await apiRequest.request<RecipeDetailModel>({
 				url: `/api/recipes/${recipeId}`,
 				method: 'get',
 			});
@@ -119,7 +119,7 @@ export const updateRecipe = createAsyncThunk<RecipeDetailModel, UpdateRecipePara
 		const { recipeId } = params;
 
 		try {
-			const response = await apiRequest.request({
+			const response = await apiRequest.request<RecipeDetailModel>({
 				url: `/api/recipes/${recipeId}`,
 				method: 'put',
 				data: params,
@@ -136,18 +136,18 @@ interface DeleteRecipeParams {
 	recipeId: string;
 }
 
-export const deleteRecipe = createAsyncThunk<any, DeleteRecipeParams>(
+export const deleteRecipe = createAsyncThunk<void, DeleteRecipeParams>(
 	'recipes/deleteRecipe',
 	async (params, { rejectWithValue }) => {
 		const { recipeId } = params;
 
 		try {
-			const response = await apiRequest.request({
+			await apiRequest.request({
 				url: `/api/recipes/${recipeId}`,
 				method: 'delete',
 			});
 
-			return response.data;
+			return undefined;
 		} catch (error: unknown) {
 			return rejectWithValue((error as AxiosError).response?.data);
 		}
@@ -162,7 +162,7 @@ export const importRecipeDraft = createAsyncThunk<ImportedRecipeDraft, ImportRec
 	'recipes/importRecipeDraft',
 	async (params, { rejectWithValue }) => {
 		try {
-			const response = await apiRequest.request({
+			const response = await apiRequest.request<ImportedRecipeDraft>({
 				url: `/api/recipes/import`,
 				method: 'post',
 				data: params,

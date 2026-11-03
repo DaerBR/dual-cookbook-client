@@ -4,37 +4,24 @@ import type { AxiosError } from 'axios';
 import { apiRequest } from '../../api/apiRequest';
 import { UserData, resetUserData } from '../slices/authSlice.ts';
 
-export const logIn = createAsyncThunk<any, any>('auth/logIn', async (_, { rejectWithValue }) => {
+export const signOut = createAsyncThunk<void, void>('auth/signOut', async (_, { rejectWithValue, dispatch }) => {
 	try {
-		const response = await apiRequest.request({
-			url: `/auth/google`,
-			method: 'get',
-		});
-
-		return response.data;
-	} catch (error: unknown) {
-		return rejectWithValue((error as AxiosError).response?.data);
-	}
-});
-
-export const signOut = createAsyncThunk<any, any>('auth/signOut', async (_, { rejectWithValue, dispatch }) => {
-	try {
-		const response = await apiRequest.request({
+		await apiRequest.request({
 			url: `/api/logout`,
 			method: 'get',
 		});
 
 		dispatch(resetUserData());
 
-		return response.data;
+		return undefined;
 	} catch (error: unknown) {
 		return rejectWithValue((error as AxiosError).response?.data);
 	}
 });
 
-export const fetchUser = createAsyncThunk<UserData, any>('api/fetchUser', async (_, { rejectWithValue }) => {
+export const fetchUser = createAsyncThunk<UserData, void>('api/fetchUser', async (_, { rejectWithValue }) => {
 	try {
-		const response = await apiRequest.request({
+		const response = await apiRequest.request<UserData>({
 			url: `/api/current_user`,
 			method: 'get',
 		});

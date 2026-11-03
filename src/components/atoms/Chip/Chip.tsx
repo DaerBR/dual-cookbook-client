@@ -26,7 +26,7 @@ export const Chip = ({
 	size = 'md',
 	isOutlined,
 	text,
-	truncateWidth,
+	truncateWidth = 130,
 }: ChipProps) => {
 	const theme = useAppTheme();
 	const typographySize: Record<string, TypographyVariant> = {

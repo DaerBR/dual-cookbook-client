@@ -1,4 +1,4 @@
-import { ChangeEvent, RefObject } from 'react';
+import type { ChangeEvent, RefObject } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { CSSObject } from '@emotion/react';
 

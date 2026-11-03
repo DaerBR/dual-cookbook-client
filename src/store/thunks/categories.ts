@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { AxiosError } from 'axios';
 
+import { toApiError } from '../../api/apiError.ts';
+import type { ApiError } from '../../api/apiError.ts';
 import { apiRequest } from '../../api/apiRequest.ts';
-import { CategoryModel, CategoryPaginationModel } from '../slices/categoriesSlice.ts';
+import type { CategoryModel, CategoryPaginationModel } from '../slices/categoriesSlice.ts';
 
 interface FetchCategoriesParams {
 	limit: number;
@@ -22,7 +23,7 @@ export const fetchCategories = createAsyncThunk<CategoryPaginationModel, FetchCa
 
 			return response.data;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );
@@ -38,7 +39,7 @@ export const fetchAllCategories = createAsyncThunk<CategoryModel[]>(
 
 			return response.data;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );
@@ -65,7 +66,7 @@ export const createCategory = createAsyncThunk<CategoryModel, CreateCategoryPara
 
 			return response.data;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );
@@ -95,7 +96,7 @@ export const updateCategory = createAsyncThunk<CategoryModel, UpdateCategoryPara
 
 			return response.data;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );
@@ -104,7 +105,7 @@ interface DeleteCategoryParams {
 	categoryId: string;
 }
 
-export const deleteCategory = createAsyncThunk<void, DeleteCategoryParams>(
+export const deleteCategory = createAsyncThunk<void, DeleteCategoryParams, { rejectValue: ApiError }>(
 	'categories/deleteCategory',
 	async (params, { rejectWithValue, dispatch }) => {
 		const { categoryId } = params;
@@ -119,7 +120,7 @@ export const deleteCategory = createAsyncThunk<void, DeleteCategoryParams>(
 
 			return undefined;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );

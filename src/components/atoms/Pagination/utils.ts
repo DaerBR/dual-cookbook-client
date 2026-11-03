@@ -1,5 +1,5 @@
 import { EDGE_SIZE } from './constants.ts';
-import { PageItem } from './types.ts';
+import type { PageItem } from './types.ts';
 
 export const getPageItems = (currentPage: number, totalPages: number): PageItem[] => {
 	if (totalPages <= 0) return [];

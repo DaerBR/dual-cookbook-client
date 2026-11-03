@@ -3,7 +3,7 @@ import type { CSSObject } from '@emotion/react';
 
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { Typography } from '../Typography';
-import { TypographyVariant } from '../Typography/types.ts';
+import type { TypographyVariant } from '../Typography/types.ts';
 import { Icon } from '../Icon';
 import { chipHeight, chipIconSize, chipPadding } from './constants.ts';
 

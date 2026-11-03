@@ -1,17 +1,8 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { CSSObject } from '@emotion/react';
 
 export type TypographyVariant =
-	| 'h1'
-	| 'h2'
-	| 'h3'
-	| 'h4'
-	| 'h5'
-	| 'h6'
-	| 'paragraphL'
-	| 'paragraphM'
-	| 'paragraphS'
-	| 'paragraphXs';
+	'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'paragraphL' | 'paragraphM' | 'paragraphS' | 'paragraphXs';
 
 type TypographyColor =
 	| 'primary'

@@ -1,25 +1,26 @@
 import { faChevronDown, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { type ReactElement, useMemo } from 'react';
+import { useMemo } from 'react';
+import type { ReactElement } from 'react';
 import type { CSSObject } from '@emotion/react';
-import {
-	type ClearIndicatorProps,
-	type DropdownIndicatorProps,
+import { components } from 'react-select';
+import type {
+	ClearIndicatorProps,
+	DropdownIndicatorProps,
 	GroupBase,
-	type IndicatorSeparatorProps,
-	type IndicatorsContainerProps,
-	type MenuListProps,
-	type MenuProps,
-	type NoticeProps,
-	type OptionProps,
+	IndicatorSeparatorProps,
+	IndicatorsContainerProps,
+	MenuListProps,
+	MenuProps,
+	NoticeProps,
+	OptionProps,
 	PlaceholderProps,
-	type SingleValueProps,
-	type StylesConfig,
-	components,
+	SingleValueProps,
+	StylesConfig,
 } from 'react-select';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
 import { Icon } from '../Icon';
-import { SelectOption } from '../Select/types.ts';
+import type { SelectOption } from '../Select/types.ts';
 
 interface UseCommonFieldStylesProps {
 	isFullWidth?: boolean;

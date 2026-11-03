@@ -1,4 +1,5 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import {
 	createRecipe,
 	fetchRecipeDetails,
@@ -7,7 +8,7 @@ import {
 	searchRecipes,
 	updateRecipe,
 } from '../thunks/recipes.ts';
-import { PaginationModel, RecipeDetailModel, RecipeTableModel } from '../types.ts';
+import type { PaginationModel, RecipeDetailModel, RecipeTableModel } from '../types.ts';
 
 export interface SearchQuery {
 	categories: Array<{ label: string; value: string }>;

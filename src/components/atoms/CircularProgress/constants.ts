@@ -1,5 +1,5 @@
 import { keyframes } from '@emotion/react';
-import { CircularProgressColor } from './CircularProgress.tsx';
+import type { CircularProgressColor } from './CircularProgress.tsx';
 import { colors } from '../../../styles/colors.ts';
 
 export const dash = keyframes`

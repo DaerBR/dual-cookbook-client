@@ -1,6 +1,6 @@
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
-import { Colors } from './types.ts';
+import type { Colors } from './types.ts';
 
 interface UseCheckboxStylesProps {
 	color: Colors;

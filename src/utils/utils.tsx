@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import type { FieldErrors } from 'react-hook-form';
 
 import { Typography } from '../components/atoms/Typography';

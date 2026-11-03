@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { TextInput } from '../../components/atoms/TextInput';
 import { Form } from '../../components/Form';
-import { AddCategoryFormValues } from './types';
+import type { AddCategoryFormValues } from './types';
 import { Button } from '../../components/atoms/Button';
 import { ImageInput } from '../../components/atoms/ImageInput';
 import { addCategoryValidationSchema } from './validations';

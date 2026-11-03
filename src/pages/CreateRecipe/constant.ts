@@ -1,4 +1,4 @@
-import { AddRecipeFormValues } from './validations.ts';
+import type { AddRecipeFormValues } from './validations.ts';
 
 export const DEFAULT_RECIPE_FORM_VALUES: AddRecipeFormValues = {
 	recipeTitle: '',

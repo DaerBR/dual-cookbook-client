@@ -1,7 +1,8 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { faPizzaSlice, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { CSSObject } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { Icon } from '../Icon';

@@ -1,5 +1,5 @@
 import { useAppTheme } from '../../../styles/hooks.ts';
-import { TypographyProps } from './types.ts';
+import type { TypographyProps } from './types.ts';
 
 export const Typography = ({
 	color = 'textMain',

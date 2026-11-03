@@ -1,5 +1,6 @@
-import { ReactNode, useEffect, useRef } from 'react';
-import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import type { ReactNode } from 'react';
+import { useEffect, useRef } from 'react';
+import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { ModelPresentation } from './components/ModelPresentation.tsx';

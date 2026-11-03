@@ -1,15 +1,6 @@
 import { useFormContext } from 'react-hook-form';
-import {
-	type CSSProperties,
-	ChangeEvent,
-	FocusEvent,
-	KeyboardEvent,
-	useCallback,
-	useEffect,
-	useId,
-	useRef,
-	useState,
-} from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import type { CSSProperties, ChangeEvent, FocusEvent, KeyboardEvent } from 'react';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import type { CSSObject } from '@emotion/react';
 import { useAppTheme } from '../../../styles/hooks.ts';
@@ -18,7 +9,7 @@ import { InputLabel } from '../InputLabel';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { Icon } from '../Icon';
 import { useCommonFieldStyles } from '../TextInput/hooks.ts';
-import { SelectOption } from './types.ts';
+import type { SelectOption } from './types.ts';
 import { HelperText } from '../HelperText';
 
 interface SelectProps {

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
-import { Controller, type FieldArrayWithId, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
+import type { FieldArrayWithId } from 'react-hook-form';
 import { faGridVertical } from '@fortawesome/free-solid-svg-icons';
 import { useSortable } from '@dnd-kit/react/sortable';
 
@@ -7,7 +8,7 @@ import { Button } from '../../../components/atoms/Button';
 import { Icon } from '../../../components/atoms/Icon';
 import { TextInput } from '../../../components/atoms/TextInput';
 import { DeleteIconButton } from '../../../components/DeleteIconButton';
-import { AddRecipeFormValues } from '../validations.ts';
+import type { AddRecipeFormValues } from '../validations.ts';
 import { fieldDragButtonStyles, ingredientDeleteButtonStyles, ingredientsFieldStyles } from '../styles.ts';
 
 interface IngredientFieldProps {

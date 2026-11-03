@@ -6,7 +6,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { TextInput } from '../../components/atoms/TextInput';
 import { Form } from '../../components/Form';
-import { EditCategoryFormValues } from './types';
+import type { EditCategoryFormValues } from './types';
 import { Button } from '../../components/atoms/Button';
 import { ImageInput } from '../../components/atoms/ImageInput';
 import { editCategoryValidationSchema } from './validations';

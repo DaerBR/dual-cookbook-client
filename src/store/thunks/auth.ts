@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { AxiosError } from 'axios';
 
+import { toApiError } from '../../api/apiError.ts';
 import { apiRequest } from '../../api/apiRequest';
-import { UserData, resetUserData } from '../slices/authSlice.ts';
+import { resetUserData } from '../slices/authSlice.ts';
+import type { UserData } from '../slices/authSlice.ts';
 
 export const signOut = createAsyncThunk<void, void>('auth/signOut', async (_, { rejectWithValue, dispatch }) => {
 	try {
@@ -15,7 +16,7 @@ export const signOut = createAsyncThunk<void, void>('auth/signOut', async (_, { 
 
 		return undefined;
 	} catch (error: unknown) {
-		return rejectWithValue((error as AxiosError).response?.data);
+		return rejectWithValue(toApiError(error));
 	}
 });
 
@@ -28,6 +29,6 @@ export const fetchUser = createAsyncThunk<UserData, void>('api/fetchUser', async
 
 		return response.data;
 	} catch (error: unknown) {
-		return rejectWithValue((error as AxiosError).response?.data);
+		return rejectWithValue(toApiError(error));
 	}
 });

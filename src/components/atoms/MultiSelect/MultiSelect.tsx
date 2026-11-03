@@ -1,8 +1,9 @@
-import Select, { ActionMeta, MultiValue } from 'react-select';
+import type { ActionMeta, MultiValue } from 'react-select';
+import Select from 'react-select';
 import { useFormContext } from 'react-hook-form';
 import type { CSSObject } from '@emotion/react';
 
-import { SelectOption } from '../Select/types.ts';
+import type { SelectOption } from '../Select/types.ts';
 import { InputLabel } from '../InputLabel';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { HelperText } from '../HelperText';

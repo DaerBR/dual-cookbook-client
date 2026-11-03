@@ -1,4 +1,5 @@
-import { type SerializedError, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { SerializedError } from '@reduxjs/toolkit';
 import { fetchUser, signOut } from '../thunks/auth';
 
 export interface UserData {

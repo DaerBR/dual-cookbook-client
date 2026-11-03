@@ -1,5 +1,5 @@
-import { RecipeTableModel } from '../../../store/types.ts';
-import { RecipeOption } from './types.ts';
+import type { RecipeTableModel } from '../../../store/types.ts';
+import type { RecipeOption } from './types.ts';
 
 export const createDebouncedRecipeSearch = (
 	load: (query: string) => Promise<RecipeTableModel[]>,

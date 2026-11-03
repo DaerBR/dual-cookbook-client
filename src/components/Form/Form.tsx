@@ -1,5 +1,6 @@
-import { FormProvider, UseFormReturn, useFormState } from 'react-hook-form';
-import { BaseSyntheticEvent, CSSProperties, ReactNode, SubmitEvent } from 'react';
+import type { UseFormReturn } from 'react-hook-form';
+import { FormProvider, useFormState } from 'react-hook-form';
+import type { BaseSyntheticEvent, CSSProperties, ReactNode, SubmitEvent } from 'react';
 
 interface FormProps {
 	children: ReactNode;

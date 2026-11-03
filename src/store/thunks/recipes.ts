@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { AxiosError } from 'axios';
 
+import { toApiError } from '../../api/apiError.ts';
 import { apiRequest } from '../../api/apiRequest.ts';
-import {
+import type {
 	ImportedRecipeDraft,
 	RecipeDetailModel,
 	RecipeIngredient,
@@ -31,7 +31,7 @@ export const fetchRecipes = createAsyncThunk<RecipesPaginationModel, FetchRecipe
 
 			return response.data;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );
@@ -52,7 +52,7 @@ export const searchRecipes = createAsyncThunk<RecipesPaginationModel, SearchReci
 
 			return response.data;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );
@@ -82,7 +82,7 @@ export const createRecipe = createAsyncThunk<RecipeDetailModel, CreateRecipePara
 
 			return response.data;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );
@@ -104,7 +104,7 @@ export const fetchRecipeDetails = createAsyncThunk<RecipeDetailModel, FetchRecip
 
 			return response.data;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );
@@ -127,7 +127,7 @@ export const updateRecipe = createAsyncThunk<RecipeDetailModel, UpdateRecipePara
 
 			return response.data;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );
@@ -149,7 +149,7 @@ export const deleteRecipe = createAsyncThunk<void, DeleteRecipeParams>(
 
 			return undefined;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );
@@ -170,7 +170,7 @@ export const importRecipeDraft = createAsyncThunk<ImportedRecipeDraft, ImportRec
 
 			return response.data;
 		} catch (error: unknown) {
-			return rejectWithValue((error as AxiosError).response?.data);
+			return rejectWithValue(toApiError(error));
 		}
 	},
 );

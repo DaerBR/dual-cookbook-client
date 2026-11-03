@@ -1,4 +1,5 @@
-import { ReactNode, useCallback, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { LoadingIndicator } from '../LoadingIndicator';
 import { GlobalLoadingIndicatorContext } from '../../contexts/GlobalLoadingIndicator.tsx';

@@ -1,7 +1,7 @@
 import type { CSSObject } from '@emotion/react';
-import { ReactNode, SyntheticEvent } from 'react';
+import type { ReactNode, SyntheticEvent } from 'react';
 
-import { Colors, Variants } from './types';
+import type { Colors, Variants } from './types';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
 import { useButtonColors } from './hooks.ts';

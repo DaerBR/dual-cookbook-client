@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { CSSProperties } from 'react';
+import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import type { CSSProperties } from 'react';
 import { useAppTheme } from '../../../styles/hooks.ts';
-import { IconColor } from './types.ts';
+import type { IconColor } from './types.ts';
 
 interface IconProps {
 	color?: IconColor;

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createCategory, fetchAllCategories, fetchCategories, updateCategory } from '../thunks/categories.ts';
-import { ImageDataModel, PaginationModel } from '../types.ts';
+import type { ImageDataModel, PaginationModel } from '../types.ts';
 
 export interface CategoryModel {
 	categoryImage?: ImageDataModel;

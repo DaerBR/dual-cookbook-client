@@ -2,7 +2,7 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router';
 
 import { Typography } from '../atoms/Typography';
-import { RecipeTableModel } from '../../store/types.ts';
+import type { RecipeTableModel } from '../../store/types.ts';
 import { Chip } from '../atoms/Chip';
 import { Icon } from '../atoms/Icon';
 import { useAppTheme } from '../../styles/hooks.ts';

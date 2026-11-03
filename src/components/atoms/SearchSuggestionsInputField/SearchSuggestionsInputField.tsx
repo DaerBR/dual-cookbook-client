@@ -10,7 +10,7 @@ import { useSearchAsyncSelectComponents, useSearchAsyncSelectStyles } from './as
 import { searchRecipes } from '../../../store/thunks/recipes.ts';
 import { DEBOUNCE_MS, MIN_QUERY_LENGTH } from './constants.ts';
 import { createDebouncedRecipeSearch } from './utils.ts';
-import { SelectOption } from '../Select/types.ts';
+import type { SelectOption } from '../Select/types.ts';
 import { Button } from '../Button';
 import { searchContainerStyles } from './styles.ts';
 import { resetSearch } from '../../../store/slices/recipesSlice.ts';

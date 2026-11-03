@@ -1,4 +1,4 @@
-import { SearchQuery } from '../../store/slices/recipesSlice.ts';
+import type { SearchQuery } from '../../store/slices/recipesSlice.ts';
 import { pluck } from '../../utils/utils.tsx';
 
 export const toSearchRequestParams = ({ categories, searchInput, recipeAuthor }: SearchQuery) => {

@@ -1,4 +1,4 @@
-import { SearchFormValues } from './validations.ts';
+import type { SearchFormValues } from './validations.ts';
 
 export const emptySearchFormValues: SearchFormValues = {
 	searchInput: '',

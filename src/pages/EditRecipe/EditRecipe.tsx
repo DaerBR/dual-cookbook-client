@@ -3,10 +3,12 @@ import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useParams } from 'react-router';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { DragDropProvider, type DragOverEvent } from '@dnd-kit/react';
+import { DragDropProvider } from '@dnd-kit/react';
+import type { DragOverEvent } from '@dnd-kit/react';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
-import { EditRecipeFormValues, editRecipeValidationSchema } from './validations.ts';
+import type { EditRecipeFormValues } from './validations.ts';
+import { editRecipeValidationSchema } from './validations.ts';
 import { Form } from '../../components/Form';
 import { ImageInput } from '../../components/atoms/ImageInput';
 import { TextInput } from '../../components/atoms/TextInput';

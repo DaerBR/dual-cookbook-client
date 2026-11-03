@@ -1,8 +1,8 @@
-import { ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
 import type { CSSObject } from '@emotion/react';
 
 import { Typography } from '../Typography';
-import { Colors } from './types.ts';
+import type { Colors } from './types.ts';
 import { useCheckboxStyles } from './hooks.ts';
 
 interface CheckboxProps {

@@ -1,8 +1,9 @@
-import { Controller, type FieldArrayWithId, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
+import type { FieldArrayWithId } from 'react-hook-form';
 
 import { TextInput } from '../../../components/atoms/TextInput';
 import { DeleteIconButton } from '../../../components/DeleteIconButton';
-import { AddRecipeFormValues } from '../validations.ts';
+import type { AddRecipeFormValues } from '../validations.ts';
 import { stepDeleteButtonStyles, stepWrapperStyles } from '../styles.ts';
 
 interface StepFieldProps {

@@ -2,8 +2,9 @@ import { useNavigate } from 'react-router';
 import { useCallback, useContext, useState } from 'react';
 import { toast } from 'sonner';
 
-import { ThunkAppDispatch, useAppDispatch } from './hooks';
-import { RootState } from '../index';
+import type { ThunkAppDispatch } from './hooks';
+import { useAppDispatch } from './hooks';
+import type { RootState } from '../index';
 import { GlobalLoadingIndicatorContext } from '../../contexts/GlobalLoadingIndicator.tsx';
 
 interface ServerErrorResponse {

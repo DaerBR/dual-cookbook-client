@@ -1,6 +1,6 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import { ModalControls } from '../../../components/atoms/Modal/types.ts';
+import type { ModalControls } from '../../../components/atoms/Modal/types.ts';
 import { Modal } from '../../../components/atoms/Modal/Modal.tsx';
 import { Button } from '../../../components/atoms/Button';
 import { useThunk } from '../../../store/hooks/useThunk.ts';

@@ -1,5 +1,5 @@
 import { useAppTheme } from '../../../styles/hooks.ts';
-import { Colors, Variants } from './types.ts';
+import type { Colors, Variants } from './types.ts';
 
 interface UseButtonColorsProps {
 	color: Colors;

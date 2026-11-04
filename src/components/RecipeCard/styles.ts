@@ -78,16 +78,18 @@ export const useRecipeCardStyles = () => {
 			WebkitLineClamp: '2',
 			WebkitBoxOrient: 'vertical',
 		}),
-		// Background image instead of <img>: iOS Safari sized the wrapper by the <img>'s natural width (863px),
-		// leaving a blank gap next to the placeholder. Width comes from the image's aspect ratio instead.
+
 		placeholderImageStyles: defineStyles({
 			backgroundImage: 'url(/logo-images/bear-cooks.png)',
 			backgroundSize: 'contain',
 			backgroundPosition: 'center',
 			backgroundRepeat: 'no-repeat',
 			height: '100%',
+			// iOS Safari sized the wrapper by the <img>'s natural width (863px),
+			// leaving a blank gap next to the placeholder. Width comes from the image's aspect ratio instead.
 			aspectRatio: '863 / 980',
 			opacity: 0.2,
+			maxWidth: '100%',
 		}),
 		descriptionWrapperStyles: defineStyles({
 			overflow: 'hidden',

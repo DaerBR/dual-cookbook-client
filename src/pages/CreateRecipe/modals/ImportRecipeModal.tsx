@@ -78,7 +78,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 	const modalContent = (
 		<div>
 			<Typography variant="paragraphS" customStyles={{ marginBottom: '8px' }} component="div">
-				Наразі як джерело підтримуються: Instagram, Telegraph.
+				Наразі підтримуються посилання на Instagram, YouTube та Telegraph.
 			</Typography>
 			<Typography
 				weight={600}

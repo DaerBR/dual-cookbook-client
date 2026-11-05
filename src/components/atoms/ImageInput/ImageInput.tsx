@@ -85,56 +85,58 @@ export const ImageInput = ({
 
 	return (
 		<div css={{ display: 'flex', flexDirection: 'column', width: '100%', ...customWrapperStyles }}>
-			<div css={imageFieldStyles}>
-				{!imagePreview && (
-					<Icon icon={faPizzaSlice} fontSize={48} customStyles={{ color: theme.colors.primary.borderDarker }} />
-				)}
-			</div>
-			<div>{fieldErrors && processFieldValidationErrors(fieldErrors)}</div>
-			<Controller
-				control={control}
-				name={name}
-				render={() => (
-					<label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-						<input
-							style={{ display: 'none' }}
-							accept="image/jpeg, image/png"
-							id={name}
-							name={name}
-							type="file"
-							onChange={handleImageChange}
-							ref={imageInputRef}
-						/>
-						<div
-							css={{
-								marginTop: '16px',
-								display: 'flex',
-								justifyContent: 'space-between',
-								alignItems: 'center',
-								gap: '24px',
-							}}
-						>
-							<Button
-								variant="secondary"
-								onClick={() => {
-									imageInputRef.current!.click();
+			<label htmlFor={name}>
+				<div css={imageFieldStyles}>
+					{!imagePreview && (
+						<Icon icon={faPizzaSlice} fontSize={48} customStyles={{ color: theme.colors.primary.borderDarker }} />
+					)}
+				</div>
+				<div>{fieldErrors && processFieldValidationErrors(fieldErrors)}</div>
+				<Controller
+					control={control}
+					name={name}
+					render={() => (
+						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+							<input
+								style={{ display: 'none' }}
+								accept="image/jpeg, image/png"
+								id={name}
+								name={name}
+								type="file"
+								onChange={handleImageChange}
+								ref={imageInputRef}
+							/>
+							<div
+								css={{
+									marginTop: '16px',
+									display: 'flex',
+									justifyContent: 'space-between',
+									alignItems: 'center',
+									gap: '24px',
 								}}
 							>
-								Оберіть зображення
-							</Button>
-							{fieldValue && (
 								<Button
-									startIcon={<Icon icon={faTrash} fontSize={12} />}
-									variant="outlined-error"
-									onClick={handleClearImage}
+									variant="secondary"
+									onClick={() => {
+										imageInputRef.current!.click();
+									}}
 								>
-									Очистити
+									Оберіть зображення
 								</Button>
-							)}
+								{fieldValue && (
+									<Button
+										startIcon={<Icon icon={faTrash} fontSize={12} />}
+										variant="outlined-error"
+										onClick={handleClearImage}
+									>
+										Очистити
+									</Button>
+								)}
+							</div>
 						</div>
-					</label>
-				)}
-			/>
+					)}
+				/>
+			</label>
 		</div>
 	);
 };

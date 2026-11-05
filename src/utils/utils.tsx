@@ -98,15 +98,6 @@ export const pluck = <TObj, TKey extends keyof TObj>(key: TKey, arr: TObj[]): Ar
 		.map((item) => item[key])
 		.filter((value): value is NonNullable<TObj[TKey]> => value !== undefined && value !== null);
 
-// Keycap sequences (1️⃣, #️⃣) first, so the digit goes too; then pictographs, skin tones, flag letters,
-// and the invisible variation selector / zero-width joiner that glue emoji sequences together
-const EMOJI_REGEX = /[\d#*]️?⃣|[\p{Extended_Pictographic}\p{Emoji_Modifier}\p{Regional_Indicator}️‍]/gu;
-
-/** "🔥 СОКОВИТІ  КОТЛЕТКИ 🍔" → "Соковиті котлетки" */
+/** "СОКОВИТІ КОТЛЕТКИ" → "Соковиті котлетки" (emoji are already stripped from imported drafts by the server) */
 export const normalizeTitle = (title: string) =>
-	title
-		.replace(EMOJI_REGEX, '')
-		.replace(/\s+/g, ' ')
-		.trim()
-		.toLowerCase()
-		.replace(/\p{L}/u, (letter) => letter.toUpperCase());
+	title.toLowerCase().replace(/\p{L}/u, (letter) => letter.toUpperCase());

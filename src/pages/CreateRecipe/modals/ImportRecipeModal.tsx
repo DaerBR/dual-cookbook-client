@@ -15,15 +15,16 @@ import { importRecipeDraft } from '../../../store/thunks/recipes.ts';
 import { useAppSelector } from '../../../store/hooks/hooks.ts';
 import { useThunk } from '../../../store/hooks/useThunk.ts';
 import { DEFAULT_RECIPE_FORM_VALUES } from '../constant.ts';
-// import { Checkbox } from '../../../components/atoms/Checkbox';
+import { Checkbox } from '../../../components/atoms/Checkbox';
+import { normalizeTitle } from '../../../utils/utils.tsx';
 
 interface ImportRecipeModalProps extends ModalControls {
 	recipeFormReset: UseFormReset<AddRecipeFormValues>;
 }
 
 interface ImportRecipeFormValues {
+	formatTitle: boolean;
 	sourceUrl: string;
-	useImportedTitle: boolean;
 }
 
 export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormReset }: ImportRecipeModalProps) => {
@@ -36,8 +37,8 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 		mode: 'all',
 		reValidateMode: 'onChange',
 		defaultValues: {
+			formatTitle: false,
 			sourceUrl: '',
-			useImportedTitle: false,
 		},
 		resolver: zodResolver(importRecipeValidationSchema),
 	});
@@ -62,12 +63,15 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 
 		const draft = result.data;
 
-		// Drafts never carry categories, so the ones already selected are kept
+		const { formatTitle } = formValues;
+
+		const { recipeTitle } = draft;
+
 		recipeFormReset((currentValues) => ({
 			...DEFAULT_RECIPE_FORM_VALUES,
 			sourceUrl: draft.sourceUrl,
 			categories: currentValues.categories,
-			recipeTitle: draft.recipeTitle ?? '',
+			recipeTitle: recipeTitle ? (formatTitle ? normalizeTitle(recipeTitle) : recipeTitle) : '',
 			description: draft.description ?? '',
 			ingredients: draft.ingredients?.map((text) => ({ text })) ?? DEFAULT_RECIPE_FORM_VALUES.ingredients,
 			steps: draft.steps?.map((step) => ({ stepDescription: step })) ?? [],
@@ -97,6 +101,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 					name="sourceUrl"
 					render={({ field }) => (
 						<TextInput
+							customStyles={{ marginBottom: '8px' }}
 							isFullWidth
 							id="sourceUrl"
 							name="sourceUrl"
@@ -108,20 +113,20 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 						/>
 					)}
 				/>
-				{/* <Controller*/}
-				{/*	control={control}*/}
-				{/*	name="useImportedTitle"*/}
-				{/*	render={({ field }) => (*/}
-				{/*		<Checkbox*/}
-				{/*			customWrapperStyles={{ marginTop: '12px' }}*/}
-				{/*			color="primary"*/}
-				{/*			label="Використати імпортоване зображення"*/}
-				{/*			name="useImportedTitle"*/}
-				{/*			isChecked={field.value}*/}
-				{/*			onChange={field.onChange}*/}
-				{/*		/>*/}
-				{/*	)}*/}
-				{/* />*/}
+				<Controller
+					control={control}
+					name="formatTitle"
+					render={({ field }) => (
+						<Checkbox
+							customWrapperStyles={{ marginTop: '12px' }}
+							color="primary"
+							label='Форматувати назву ("СОКОВИТІ КОТЛЕТКИ" → "Соковиті котлетки"'
+							name="formatTitle"
+							isChecked={field.value}
+							onChange={field.onChange}
+						/>
+					)}
+				/>
 			</Form>
 		</div>
 	);
@@ -153,6 +158,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 			onClose={handleCloseModal}
 			buttons={buttons}
 			content={modalContent}
+			width={500}
 		/>
 	);
 };

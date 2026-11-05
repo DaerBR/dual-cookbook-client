@@ -1,14 +1,15 @@
 import { defineStyles } from '../../../styles/defineStyles.ts';
 
-export const modalBodyStyles = defineStyles({
-	backgroundColor: '#fff',
-	width: '450px',
-	display: 'flex',
-	alignItems: 'center',
-	padding: '32px 0',
-	position: 'relative',
-	borderRadius: '4px',
-});
+export const getModalBodyStyles = ({ width }: { width: number }) =>
+	defineStyles({
+		backgroundColor: '#fff',
+		width: `${width}px`,
+		display: 'flex',
+		alignItems: 'center',
+		padding: '32px 0',
+		position: 'relative',
+		borderRadius: '4px',
+	});
 
 export const closeButtonStyles = defineStyles({
 	border: 'none',

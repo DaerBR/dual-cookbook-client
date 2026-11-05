@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { ModelPresentation } from './components/ModelPresentation.tsx';
+import { ModalPresentation } from './components/ModalPresentation.tsx';
 import { Icon } from '../Icon';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { Typography } from '../Typography';
@@ -11,8 +11,8 @@ import {
 	buttonsContainerStyles,
 	closeButtonStyles,
 	contentWrapperStyles,
+	getModalBodyStyles,
 	iconWrapperStyles,
-	modalBodyStyles,
 	modalWrapperStyles,
 } from './styles.ts';
 import { LoadingIndicator } from '../../LoadingIndicator';
@@ -27,6 +27,7 @@ interface ModalProps {
 	title?: string | ReactNode;
 	titleIcon?: IconDefinition;
 	titleIconColor?: 'primary' | 'success' | 'error';
+	width?: number;
 }
 
 export const Modal = ({
@@ -39,6 +40,7 @@ export const Modal = ({
 	titleIcon,
 	titleIconColor = 'primary',
 	isLoading,
+	width = 450,
 }: ModalProps) => {
 	const modalRef = useRef<HTMLDivElement>(null);
 	const theme = useAppTheme();
@@ -65,10 +67,14 @@ export const Modal = ({
 		};
 	}, [onClose]);
 
-	if (!isOpen) return null;
+	if (!isOpen) {
+		return null;
+	}
+
+	const modalBodyStyles = getModalBodyStyles({ width });
 
 	return (
-		<ModelPresentation>
+		<ModalPresentation>
 			<div ref={modalRef} css={modalBodyStyles}>
 				<div css={modalWrapperStyles}>
 					{isLoading && <LoadingIndicator sizePx={42} />}
@@ -97,6 +103,6 @@ export const Modal = ({
 					<div css={buttonsContainerStyles}>{buttons.map((button) => button)}</div>
 				</div>
 			</div>
-		</ModelPresentation>
+		</ModalPresentation>
 	);
 };

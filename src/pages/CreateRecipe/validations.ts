@@ -21,6 +21,7 @@ const URL_SCHEME_REGEX = /^[a-z][a-z\d+.-]*:\/\//i;
 const prependHttps = (value: string) => (value && !URL_SCHEME_REGEX.test(value) ? `https://${value}` : value);
 
 export const importRecipeValidationSchema = z.object({
+	formatTitle: z.boolean(),
 	sourceUrl: z
 		.string()
 		.trim()
@@ -32,5 +33,4 @@ export const importRecipeValidationSchema = z.object({
 				error: 'Введіть коректне посилання на допис',
 			}),
 		),
-	useImportedTitle: z.boolean(),
 });

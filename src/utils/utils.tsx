@@ -97,3 +97,21 @@ export const pluck = <TObj, TKey extends keyof TObj>(key: TKey, arr: TObj[]): Ar
 	arr
 		.map((item) => item[key])
 		.filter((value): value is NonNullable<TObj[TKey]> => value !== undefined && value !== null);
+
+export const normalizeTitle = (title: string) => {
+	if (!title) {
+		return '';
+	}
+
+	return title
+		.toLowerCase()
+		.split(' ')
+		.map((word, index) => {
+			if (index === 0) {
+				return word.replace(word[0], word[0].toUpperCase());
+			}
+
+			return word;
+		})
+		.join(' ');
+};

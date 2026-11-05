@@ -3,11 +3,11 @@ import type { ReactNode } from 'react';
 
 import { defineStyles } from '../../../../styles/defineStyles.ts';
 
-interface ModelPresentationProps {
+interface ModalPresentationProps {
 	children: ReactNode;
 }
 
-export const ModelPresentation = ({ children }: ModelPresentationProps) => {
+export const ModalPresentation = ({ children }: ModalPresentationProps) => {
 	const outerStyles = defineStyles({ position: 'fixed', zIndex: 1300, right: 0, bottom: 0, top: 0, left: 0 });
 	const backdropStyles = defineStyles({
 		opacity: 1,

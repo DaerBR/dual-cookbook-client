@@ -65,13 +65,11 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 
 		const { formatTitle } = formValues;
 
-		const { recipeTitle } = draft;
-
 		recipeFormReset((currentValues) => ({
 			...DEFAULT_RECIPE_FORM_VALUES,
 			sourceUrl: draft.sourceUrl,
 			categories: currentValues.categories,
-			recipeTitle: recipeTitle ? (formatTitle ? normalizeTitle(recipeTitle) : recipeTitle) : '',
+			recipeTitle: formatTitle ? normalizeTitle(draft.recipeTitle ?? '') : (draft.recipeTitle ?? ''),
 			description: draft.description ?? '',
 			ingredients: draft.ingredients?.map((text) => ({ text })) ?? DEFAULT_RECIPE_FORM_VALUES.ingredients,
 			steps: draft.steps?.map((step) => ({ stepDescription: step })) ?? [],
@@ -120,7 +118,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 						<Checkbox
 							customWrapperStyles={{ marginTop: '12px' }}
 							color="primary"
-							label='Форматувати назву ("СОКОВИТІ КОТЛЕТКИ" → "Соковиті котлетки"'
+							label='Форматувати назву ("СОКОВИТІ КОТЛЕТКИ" → "Соковиті котлетки")'
 							name="formatTitle"
 							isChecked={field.value}
 							onChange={field.onChange}

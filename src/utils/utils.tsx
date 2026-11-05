@@ -98,20 +98,15 @@ export const pluck = <TObj, TKey extends keyof TObj>(key: TKey, arr: TObj[]): Ar
 		.map((item) => item[key])
 		.filter((value): value is NonNullable<TObj[TKey]> => value !== undefined && value !== null);
 
-export const normalizeTitle = (title: string) => {
-	if (!title) {
-		return '';
-	}
+// Keycap sequences (1️⃣, #️⃣) first, so the digit goes too; then pictographs, skin tones, flag letters,
+// and the invisible variation selector / zero-width joiner that glue emoji sequences together
+const EMOJI_REGEX = /[\d#*]️?⃣|[\p{Extended_Pictographic}\p{Emoji_Modifier}\p{Regional_Indicator}️‍]/gu;
 
-	return title
+/** "🔥 СОКОВИТІ  КОТЛЕТКИ 🍔" → "Соковиті котлетки" */
+export const normalizeTitle = (title: string) =>
+	title
+		.replace(EMOJI_REGEX, '')
+		.replace(/\s+/g, ' ')
+		.trim()
 		.toLowerCase()
-		.split(' ')
-		.map((word, index) => {
-			if (index === 0) {
-				return word.replace(word[0], word[0].toUpperCase());
-			}
-
-			return word;
-		})
-		.join(' ');
-};
+		.replace(/\p{L}/u, (letter) => letter.toUpperCase());

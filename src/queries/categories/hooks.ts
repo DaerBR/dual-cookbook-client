@@ -1,9 +1,9 @@
-import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useContext } from 'react';
+import { queryOptions, useQuery } from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
 
 import { createCategory, deleteCategory, fetchAllCategories, updateCategory } from './api.ts';
 import type { CategoryModel, CategoryOption } from './types.ts';
-import { GlobalLoadingIndicatorContext } from '../../contexts/GlobalLoadingIndicator.tsx';
+import { useAppMutation } from '../useAppMutation.ts';
 
 // Query keys are the cache identity. Hierarchical keys let one call invalidate everything under ['categories'].
 export const categoryKeys = {
@@ -34,24 +34,13 @@ export const useCategory = (categoryId: string | undefined) =>
 		select: (categories) => categories.find((category) => category.id === categoryId),
 	});
 
-// Shared mutation setup: global loader (= `useThunk`'s `useGlobalLoader: true`) and cache invalidation
-// (= `dispatch(fetchAllCategories())` inside each thunk). Error toasts come from the MutationCache in queryClient.ts.
-const useCategoryMutation = <TData, TVariables>(mutationFn: (variables: TVariables) => Promise<TData>) => {
-	const queryClient = useQueryClient();
-	const { handleShowLoadingIndicator } = useContext(GlobalLoadingIndicatorContext);
+// `invalidateQueries` replaces `dispatch(fetchAllCategories())` inside each old thunk: every mounted query under
+// ['categories'] refetches, unmounted ones are just marked stale and refetch on next use.
+const invalidateCategories = (queryClient: QueryClient) =>
+	queryClient.invalidateQueries({ queryKey: categoryKeys.all });
 
-	return useMutation({
-		mutationFn,
-		onMutate: () => handleShowLoadingIndicator(true),
-		// Returning the promise keeps the mutation `isPending` until the list is refetched, so a redirect done
-		// in the call-site `onSuccess` lands on a page that already has fresh data.
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: categoryKeys.all }),
-		onSettled: () => handleShowLoadingIndicator(false),
-	});
-};
+export const useCreateCategory = () => useAppMutation({ mutationFn: createCategory, onSuccess: invalidateCategories });
 
-export const useCreateCategory = () => useCategoryMutation(createCategory);
+export const useUpdateCategory = () => useAppMutation({ mutationFn: updateCategory, onSuccess: invalidateCategories });
 
-export const useUpdateCategory = () => useCategoryMutation(updateCategory);
-
-export const useDeleteCategory = () => useCategoryMutation(deleteCategory);
+export const useDeleteCategory = () => useAppMutation({ mutationFn: deleteCategory, onSuccess: invalidateCategories });

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,18 +8,17 @@ import { TextInput } from '../../components/atoms/TextInput';
 import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks.ts';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { RecipeCard } from '../../components/RecipeCard';
-import { useThunk } from '../../store/hooks/useThunk.ts';
-import { searchRecipes } from '../../store/thunks/recipes.ts';
 import { Pagination } from '../../components/atoms/Pagination/Pagination.tsx';
 import { Form } from '../../components/Form';
 import { Button } from '../../components/atoms/Button';
 import { Icon } from '../../components/atoms/Icon';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
-import { resetSearch, setSearchQuery } from '../../store/slices/recipesSlice.ts';
+import { resetSearch, setSearchPage, setSearchQuery } from '../../store/slices/searchSlice.ts';
 import { Select } from '../../components/atoms/Select';
 import type { SearchFormValues } from './validations.ts';
 import { searchValidationSchema } from './validations.ts';
 import { useCategoryOptions } from '../../queries/categories';
+import { useRecipesList } from '../../queries/recipes';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { mobileSearchButtonStyles } from './styles.ts';
 import { recipeAuthorOptions } from '../../constants/recipeAuthors.ts';
@@ -27,13 +26,22 @@ import { toSearchRequestParams } from './utils.ts';
 import { emptySearchFormValues } from './constants.ts';
 
 export const Search = () => {
-	const [dispatchSearchRecipes] = useThunk(searchRecipes);
 	const dispatch = useAppDispatch();
-	const isSearching = useAppSelector((state) => state.recipes.search.isSearching);
-	const wasSearchInitiated = useAppSelector((state) => state.recipes.search.wasSearchInitiated);
-	const searchResults = useAppSelector((state) => state.recipes.search.recipesList);
-	const searchQuery = useAppSelector((state) => state.recipes.search.query);
-	const searchResultsPagination = useAppSelector((state) => state.recipes.search.pagination);
+	// Client state (Redux): what was searched + current page. Server state (TanStack): the results for that.
+	const searchQuery = useAppSelector((state) => state.search.query);
+	const page = useAppSelector((state) => state.search.page);
+
+	// `null` until the first search → the query stays idle (that's the old `wasSearchInitiated`)
+	const searchParams = useMemo(
+		() => (searchQuery ? { limit: 10, page, ...toSearchRequestParams(searchQuery) } : null),
+		[searchQuery, page],
+	);
+
+	const { data: searchData, isFetching: isSearching, isPlaceholderData } = useRecipesList(searchParams);
+	const searchResults = searchData?.data ?? [];
+	const searchResultsPagination = searchData?.pagination;
+	// `isFetching` (not `isPending`) for the buttons: also true while paging / re-searching over placeholder data
+	const isLoadingFirstResults = isSearching && !searchData;
 	const { data: categoriesOptions = [] } = useCategoryOptions();
 
 	const form = useForm<SearchFormValues>({
@@ -55,9 +63,9 @@ export const Search = () => {
 		dispatch(resetSearch());
 	};
 
-	const handleSearchFormSubmit = handleSubmit(async (formValues) => {
+	// Submitting only stores the query; the new key makes useRecipesList fetch (or read a cached result)
+	const handleSearchFormSubmit = handleSubmit((formValues) => {
 		dispatch(setSearchQuery(formValues));
-		await dispatchSearchRecipes({ limit: 10, page: 1, ...toSearchRequestParams(formValues) });
 	});
 
 	return (
@@ -141,16 +149,23 @@ export const Search = () => {
 					</div>
 				</Form>
 
-				{isSearching ? (
+				{isLoadingFirstResults ? (
 					<LoadingIndicator />
-				) : searchResults?.length > 0 ? (
-					<div css={{ display: 'flex', marginTop: '12px', flexDirection: 'column' }}>
+				) : searchResults.length > 0 ? (
+					<div
+						css={{
+							display: 'flex',
+							marginTop: '12px',
+							flexDirection: 'column',
+							opacity: isPlaceholderData ? 0.5 : 1,
+						}}
+					>
 						<FieldsGroupTitle title="Результати:" />
 						{searchResults.map((recipe) => (
 							<RecipeCard key={recipe.id} recipe={recipe} />
 						))}
 					</div>
-				) : wasSearchInitiated ? (
+				) : searchData ? (
 					<div css={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 						<Typography variant="paragraphL" color="primary" weight={500}>
 							Нічого не знайдено...
@@ -159,9 +174,8 @@ export const Search = () => {
 				) : null}
 				{searchResultsPagination && searchQuery && (
 					<Pagination
-						currentPage={searchResultsPagination.page}
-						fetchDataMethod={dispatchSearchRecipes}
-						fetchParams={{ limit: 10, ...toSearchRequestParams(searchQuery) }}
+						currentPage={page}
+						onPageChange={(newPage) => dispatch(setSearchPage(newPage))}
 						totalPages={searchResultsPagination.totalPages}
 					/>
 				)}

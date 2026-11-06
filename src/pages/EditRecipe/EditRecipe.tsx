@@ -5,6 +5,8 @@ import { useNavigate, useParams } from 'react-router';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { DragDropProvider } from '@dnd-kit/react';
 import type { DragOverEvent } from '@dnd-kit/react';
+import { useQuery } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import type { EditRecipeFormValues } from './validations.ts';
@@ -12,13 +14,11 @@ import { editRecipeValidationSchema } from './validations.ts';
 import { Form } from '../../components/Form';
 import { ImageInput } from '../../components/atoms/ImageInput';
 import { TextInput } from '../../components/atoms/TextInput';
-import { useAppSelector } from '../../store/hooks/hooks.ts';
-import { useThunk } from '../../store/hooks/useThunk.ts';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
 import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
-import { fetchRecipeDetails, updateRecipe } from '../../store/thunks/recipes.ts';
+import { recipeDetailsQueryOptions, useUpdateRecipe } from '../../queries/recipes';
 import { useCategoryOptions } from '../../queries/categories';
 import { DeleteRecipeModal } from '../SingleRecipe/modals/DeleteRecipeModal.tsx';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
@@ -38,25 +38,19 @@ import {
 
 export const EditRecipe = () => {
 	const { id: recipeId } = useParams();
-	const recipeDetails = useAppSelector((state) => state.recipes.recipeDetails.recipeData);
-	const isFetchingDetails = useAppSelector((state) => state.recipes.recipeDetails.isLoading);
+	// Same cache entry as SingleRecipe (so it's usually instant), but with background refetches off:
+	// the form is reset from this data, and a refetch on window focus must not wipe the user's unsaved edits.
+	const { data: recipeDetails, isPending: isFetchingDetails } = useQuery({
+		...recipeDetailsQueryOptions(recipeId),
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+	});
 	const [initialImageUrl, setInitialImageUrl] = useState<string | undefined>(undefined);
 	const [isDeleteRecipeModalOpen, setIsDeleteRecipeModalOpen] = useState(false);
 
-	const [dispatchFetchRecipeDetails] = useThunk(fetchRecipeDetails, { useGlobalLoader: true });
-
-	useEffect(() => {
-		if (recipeId) {
-			dispatchFetchRecipeDetails({ recipeId });
-		}
-	}, [dispatchFetchRecipeDetails, recipeId]);
-
 	const { data: categoriesOptions = [] } = useCategoryOptions();
 
-	const [dispatchUpdateRecipe] = useThunk(updateRecipe, {
-		useGlobalLoader: true,
-		successMessage: 'Рецепт успішно оновлено!',
-	});
+	const { mutate: updateRecipe, isPending: isUpdatingRecipe } = useUpdateRecipe();
 	const navigate = useNavigate();
 
 	const form = useForm<EditRecipeFormValues>({
@@ -98,7 +92,7 @@ export const EditRecipe = () => {
 			});
 			setInitialImageUrl(recipeDetails.recipeImage?.secureUrl);
 		}
-	}, [dispatchFetchRecipeDetails, recipeDetails, recipeId, reset]);
+	}, [recipeDetails, reset]);
 
 	const recipeTitleValue = useWatch({ control, name: 'recipeTitle' });
 
@@ -121,14 +115,18 @@ export const EditRecipe = () => {
 			description: description && description.length > 0 ? description : null,
 			sourceUrl,
 		};
-		const result = await dispatchUpdateRecipe({ ...payload, recipeId });
+		updateRecipe(
+			{ ...payload, recipeId },
+			{
+				// Redirect by the submitted categories, not `recipeDetails` (pre-edit) or the response (categories unpopulated)
+				onSuccess: () => {
+					const [firstCategoryId] = categoriesIds;
 
-		// Redirect by the submitted categories, not `recipeDetails` (pre-edit) or the response (categories unpopulated)
-		if (result.ok) {
-			const [firstCategoryId] = categoriesIds;
-
-			navigate(firstCategoryId ? `/category/${firstCategoryId}` : '/categories');
-		}
+					toast.success('Рецепт успішно оновлено!');
+					navigate(firstCategoryId ? `/category/${firstCategoryId}` : '/categories');
+				},
+			},
+		);
 	});
 
 	const {
@@ -316,8 +314,8 @@ export const EditRecipe = () => {
 						<Button
 							type="submit"
 							variant="primary"
-							isDisabled={!isValid || categoriesOptions.length === 0 || isFetchingDetails}
-							isBusy={isFetchingDetails}
+							isDisabled={!isValid || categoriesOptions.length === 0 || isFetchingDetails || isUpdatingRecipe}
+							isBusy={isFetchingDetails || isUpdatingRecipe}
 						>
 							Зберегти
 						</Button>

@@ -1,4 +1,4 @@
-import type { ImageDataModel } from '../../store/types.ts';
+import type { ImageDataModel } from '../types.ts';
 
 export interface CategoryModel {
 	categoryImage?: ImageDataModel;

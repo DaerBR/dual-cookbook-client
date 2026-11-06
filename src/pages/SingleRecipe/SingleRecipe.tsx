@@ -1,9 +1,7 @@
 import { useNavigate, useParams } from 'react-router';
-import { useEffect } from 'react';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
-import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchRecipeDetails } from '../../store/thunks/recipes.ts';
+import { useRecipe } from '../../queries/recipes';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { Button } from '../../components/atoms/Button';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
@@ -19,20 +17,12 @@ import { NoImage } from '../../components/NoImage';
 
 export const SingleRecipe = () => {
 	const { id: recipeId } = useParams();
-	const recipeDetails = useAppSelector((state) => state.recipes.recipeDetails.recipeData);
+	// Each recipe has its own cache entry: going back to a recipe you've already opened is instant
+	const { data: recipeDetails, isPending: isFetchingRecipeDetails } = useRecipe(recipeId);
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-	const isFetchingRecipeDetails = useAppSelector((state) => state.recipes.recipeDetails.isLoading);
 
 	const navigate = useNavigate();
 	const theme = useAppTheme();
-
-	const [dispatchFetchRecipeDetails] = useThunk(fetchRecipeDetails);
-
-	useEffect(() => {
-		if (recipeId) {
-			dispatchFetchRecipeDetails({ recipeId });
-		}
-	}, [dispatchFetchRecipeDetails, recipeId]);
 
 	const recipeControlButtons = isLoggedIn
 		? [

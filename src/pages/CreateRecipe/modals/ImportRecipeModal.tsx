@@ -2,6 +2,7 @@ import type { UseFormReset } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import { faMagicWandSparkles } from '@fortawesome/free-solid-svg-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
 
 import { Modal } from '../../../components/atoms/Modal/Modal.tsx';
 import { Button } from '../../../components/atoms/Button';
@@ -11,9 +12,7 @@ import { Form } from '../../../components/Form';
 import { Typography } from '../../../components/atoms/Typography';
 import type { AddRecipeFormValues } from '../validations.ts';
 import { importRecipeValidationSchema } from '../validations.ts';
-import { importRecipeDraft } from '../../../store/thunks/recipes.ts';
-import { useAppSelector } from '../../../store/hooks/hooks.ts';
-import { useThunk } from '../../../store/hooks/useThunk.ts';
+import { useImportRecipeDraft } from '../../../queries/recipes';
 import { DEFAULT_RECIPE_FORM_VALUES } from '../constant.ts';
 import { Checkbox } from '../../../components/atoms/Checkbox';
 import { normalizeTitle } from '../../../utils/utils.tsx';
@@ -28,10 +27,7 @@ interface ImportRecipeFormValues {
 }
 
 export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormReset }: ImportRecipeModalProps) => {
-	const isImportingRecipe = useAppSelector((state) => state.recipes.isFetchingDraft);
-	const [dispatchImportRecipeDraft] = useThunk(importRecipeDraft, {
-		successMessage: 'Дані за посиланням успішно імпортовано для створення рецепту!',
-	});
+	const { mutateAsync: importRecipeDraft, isPending: isImportingRecipe } = useImportRecipeDraft();
 
 	const form = useForm<ImportRecipeFormValues>({
 		mode: 'all',
@@ -55,13 +51,17 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 	};
 
 	const handleParseUrl = handleSubmit(async (formValues) => {
-		const result = await dispatchImportRecipeDraft({ url: formValues.sourceUrl });
+		// `mutateAsync` returns the data (and rejects on error — the toast is already shown by the MutationCache).
+		// The closest analogue of `useThunk`'s `ThunkResult`; `mutate` + callbacks would work as well.
+		let draft;
 
-		if (!result.ok) {
+		try {
+			draft = await importRecipeDraft({ url: formValues.sourceUrl });
+		} catch {
 			return;
 		}
 
-		const draft = result.data;
+		toast.success('Дані за посиланням успішно імпортовано для створення рецепту!');
 
 		const { formatTitle } = formValues;
 

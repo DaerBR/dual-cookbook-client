@@ -1,10 +1,11 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 import type { ModalControls } from '../../../components/atoms/Modal/types.ts';
 import { Modal } from '../../../components/atoms/Modal/Modal.tsx';
 import { Button } from '../../../components/atoms/Button';
-import { useThunk } from '../../../store/hooks/useThunk.ts';
-import { deleteRecipe } from '../../../store/thunks/recipes.ts';
+import { useDeleteRecipe } from '../../../queries/recipes';
 
 interface DeleteRecipeModalProps extends ModalControls {
 	categoryId: string;
@@ -12,18 +13,21 @@ interface DeleteRecipeModalProps extends ModalControls {
 }
 
 export const DeleteRecipeModal = ({ categoryId, recipeId, isModalOpen, closeModalHandler }: DeleteRecipeModalProps) => {
-	const [dispatchDeleteRecipe] = useThunk(deleteRecipe, {
-		useGlobalLoader: true,
-		successRedirectRoute: `/category/${categoryId}`,
-		successMessage: `Рецепт видалено`,
-	});
+	const { mutate: deleteRecipe } = useDeleteRecipe();
+	const navigate = useNavigate();
 
 	const handleCloseModal = () => closeModalHandler(false);
 
 	const handleDeleteRecipe = () => {
-		dispatchDeleteRecipe({
-			recipeId,
-		});
+		deleteRecipe(
+			{ recipeId },
+			{
+				onSuccess: () => {
+					toast.success('Рецепт видалено');
+					navigate(`/category/${categoryId}`);
+				},
+			},
+		);
 		closeModalHandler(false);
 	};
 

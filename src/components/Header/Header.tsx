@@ -22,7 +22,7 @@ import { Icon } from '../atoms/Icon';
 import { Typography } from '../atoms/Typography';
 import { CircularProgress } from '../atoms/CircularProgress';
 import { SearchSuggestionsInputField } from '../atoms/SearchSuggestionsInputField';
-import { resetSearch } from '../../store/slices/recipesSlice.ts';
+import { resetSearch } from '../../store/slices/searchSlice.ts';
 import { useAppTheme } from '../../styles/hooks.ts';
 
 export const Header = () => {

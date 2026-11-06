@@ -1,11 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import { authReducer } from './slices/authSlice';
-import { recipesReducer } from './slices/recipesSlice.ts';
+import { searchReducer } from './slices/searchSlice.ts';
 
 const rootReducer = combineReducers({
 	auth: authReducer,
-	recipes: recipesReducer,
+	search: searchReducer,
 });
 
 export function setupStore(preloadedState?: Partial<RootState>) {
@@ -18,7 +18,7 @@ export function setupStore(preloadedState?: Partial<RootState>) {
 export const store = configureStore({
 	reducer: {
 		auth: authReducer,
-		recipes: recipesReducer,
+		search: searchReducer,
 	},
 });
 

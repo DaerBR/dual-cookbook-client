@@ -1,13 +1,11 @@
-import { useNavigate, useParams } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
+import { useMemo, useState } from 'react';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
-import { useThunk } from '../../store/hooks/useThunk.ts';
 import { Button } from '../../components/atoms/Button';
 import { Icon } from '../../components/atoms/Icon';
-import { fetchRecipes } from '../../store/thunks/recipes.ts';
 import { RecipeCard } from '../../components/RecipeCard';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { Pagination } from '../../components/atoms/Pagination/Pagination.tsx';
@@ -19,32 +17,41 @@ import { recipeAuthorOptions } from '../../constants/recipeAuthors.ts';
 import { NoImage } from '../../components/NoImage';
 import { useAppTheme } from '../../styles/hooks.ts';
 import { useCategory } from '../../queries/categories';
+import { useRecipesList } from '../../queries/recipes';
 
 export const SingleCategory = () => {
 	const { id: categoryId } = useParams();
 	const { data: selectedCategoryData } = useCategory(categoryId);
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-	const categoryRecipes = useAppSelector((state) => state.recipes.paginatedRecipes.recipesList);
 	const navigate = useNavigate();
-	const isFetchingRecipes = useAppSelector((state) => state.recipes.isLoading);
-	const categoryRecipesPagination = useAppSelector((state) => state.recipes.paginatedRecipes.pagination);
 
 	const [recipeAuthorFilterValue, setRecipeAuthorFilterValue] = useState('');
 
-	const [dispatchFetchRecipes] = useThunk(fetchRecipes);
+	// The page lives in the URL (?page=2): back/forward and reloads keep it, and opening another category drops it.
+	const [searchParams, setSearchParams] = useSearchParams();
+	const page = Number(searchParams.get('page')) || 1;
+	const handlePageChange = (newPage: number) => setSearchParams(newPage > 1 ? { page: String(newPage) } : {});
+
+	// Everything the request depends on goes into the params (= the query key). Changing any of them is the
+	// "refetch" — there's no effect calling a fetch method.
+	const recipesParams = useMemo(
+		() =>
+			categoryId
+				? { categories: categoryId, limit: 10, page, recipeAuthor: recipeAuthorFilterValue || undefined }
+				: null,
+		[categoryId, page, recipeAuthorFilterValue],
+	);
+
+	const { data: recipesData, isPending: isFetchingRecipes, isPlaceholderData } = useRecipesList(recipesParams);
+	const categoryRecipes = recipesData?.data ?? [];
+	const categoryRecipesPagination = recipesData?.pagination;
+
+	const handleAuthorFilterChange = (value: string) => {
+		setRecipeAuthorFilterValue(value);
+		handlePageChange(1);
+	};
 
 	const theme = useAppTheme();
-
-	useEffect(() => {
-		if (categoryId) {
-			dispatchFetchRecipes({
-				categories: categoryId,
-				limit: 10,
-				page: 1,
-				recipeAuthor: recipeAuthorFilterValue || undefined,
-			});
-		}
-	}, [categoryId, recipeAuthorFilterValue, dispatchFetchRecipes]);
 
 	const categoryButtons = isLoggedIn
 		? [
@@ -100,9 +107,7 @@ export const SingleCategory = () => {
 					<Select
 						placeholder="Автор рецепту"
 						name="recipeAuthor"
-						onChange={(e) => {
-							setRecipeAuthorFilterValue(e.target.value);
-						}}
+						onChange={(e) => handleAuthorFilterChange(e.target.value)}
 						options={recipeAuthorOptions}
 						value={recipeAuthorFilterValue}
 						customStyles={{
@@ -116,14 +121,15 @@ export const SingleCategory = () => {
 						<Chip
 							color="neutral"
 							text="Скинути"
-							onClick={() => setRecipeAuthorFilterValue('')}
+							onClick={() => handleAuthorFilterChange('')}
 							customStyles={{ marginLeft: '12px' }}
 							isOutlined
 						/>
 					) : null}
 				</div>
 			</div>
-			<div css={recipesListStyles}>
+			{/* Previous page stays visible (dimmed) while the next one loads */}
+			<div css={[recipesListStyles, { opacity: isPlaceholderData ? 0.5 : 1, transition: 'opacity 0.2s' }]}>
 				{isFetchingRecipes ? (
 					<LoadingIndicator />
 				) : categoryRecipes.length > 0 ? (
@@ -138,9 +144,8 @@ export const SingleCategory = () => {
 			</div>
 			{categoryRecipesPagination && (
 				<Pagination
-					currentPage={categoryRecipesPagination.page}
-					fetchDataMethod={dispatchFetchRecipes}
-					fetchParams={{ limit: 10, categories: categoryId, recipeAuthor: recipeAuthorFilterValue || undefined }}
+					currentPage={page}
+					onPageChange={handlePageChange}
 					totalPages={categoryRecipesPagination.totalPages}
 				/>
 			)}

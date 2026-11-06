@@ -1,25 +1,16 @@
-import { useEffect } from 'react';
-
-import { useAppSelector } from '../../store/hooks/hooks.ts';
-import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchRecipes } from '../../store/thunks/recipes.ts';
+import { useRecipesList } from '../../queries/recipes';
+import type { FetchRecipesParams } from '../../queries/recipes';
 import { Typography } from '../../components/atoms/Typography';
 import { RecipeCard } from '../../components/RecipeCard';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 
+// Module-level constant = stable reference for the hook's prefetch effect
+const RECENT_RECIPES_PARAMS: FetchRecipesParams = { limit: 10, page: 1 };
+
 export const Homepage = () => {
-	const recipes = useAppSelector((state) => state.recipes.paginatedRecipes.recipesList);
-	const isFetchingRecipes = useAppSelector((state) => state.recipes.isLoading);
-	const [dispatchFetchRecipes] = useThunk(fetchRecipes);
-
-	useEffect(() => {
-		dispatchFetchRecipes({
-			limit: 10,
-			page: 1,
-		});
-	}, [dispatchFetchRecipes]);
-
-	const totalRecipesNumber = useAppSelector((state) => state.recipes?.paginatedRecipes?.pagination?.total);
+	const { data, isPending: isFetchingRecipes } = useRecipesList(RECENT_RECIPES_PARAMS);
+	const recipes = data?.data ?? [];
+	const totalRecipesNumber = data?.pagination?.total;
 
 	return (
 		<>

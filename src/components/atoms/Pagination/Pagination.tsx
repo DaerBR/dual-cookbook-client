@@ -9,17 +9,14 @@ import { ellipsisStyles, paginationButtonStyles, paginationContainerStyles } fro
 
 interface PaginationProps {
 	currentPage: number;
-	fetchDataMethod: any;
-	fetchParams: Record<string, any>;
+	// Pagination only reports the page; the page is part of the caller's query key, so changing it fetches (or reads
+	// from cache) the right page — no fetch method / params need to be passed down.
+	onPageChange: (page: number) => void;
 	totalPages: number;
 }
 
-export const Pagination = ({ currentPage, totalPages, fetchDataMethod, fetchParams }: PaginationProps) => {
+export const Pagination = ({ currentPage, totalPages, onPageChange: handleChangePage }: PaginationProps) => {
 	const theme = useAppTheme();
-
-	const handleChangePage = (page: number) => {
-		fetchDataMethod({ ...fetchParams, page });
-	};
 	const pageItems = getPageItems(currentPage, totalPages);
 
 	if (!totalPages || totalPages <= 0) return null;

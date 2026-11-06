@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { faMagicWandSparkles, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { DragDropProvider } from '@dnd-kit/react';
 import type { DragOverEvent } from '@dnd-kit/react';
+import { toast } from 'sonner';
 
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import type { AddRecipeFormValues } from './validations.ts';
@@ -12,13 +13,11 @@ import { addRecipeValidationSchema } from './validations.ts';
 import { Form } from '../../components/Form';
 import { ImageInput } from '../../components/atoms/ImageInput';
 import { TextInput } from '../../components/atoms/TextInput';
-import { useAppSelector } from '../../store/hooks/hooks.ts';
-import { useThunk } from '../../store/hooks/useThunk.ts';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
 import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
-import { createRecipe } from '../../store/thunks/recipes.ts';
+import { useCreateRecipe } from '../../queries/recipes';
 import { useCategoryOptions } from '../../queries/categories';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { IngredientField } from './components/IngredientField.tsx';
@@ -40,7 +39,7 @@ import { DEFAULT_RECIPE_FORM_VALUES } from './constant.ts';
 export const CreateRecipe = () => {
 	// `data` stays undefined until loaded, so the preselection effect below can wait for it
 	const { data: categoriesOptions } = useCategoryOptions();
-	const isCreatingRecipe = useAppSelector((state) => state.recipes.isCreating);
+	const { mutate: createRecipe, isPending: isCreatingRecipe } = useCreateRecipe();
 
 	const [isImportRecipeModalOpen, setIsImportRecipeModalOpen] = useState(false);
 
@@ -82,14 +81,7 @@ export const CreateRecipe = () => {
 		}
 	}, [categoriesOptions, initialCategoryId, resetField]);
 
-	const selectedCategories = useWatch({ control, name: 'categories' });
 	const recipeTitleValue = useWatch({ control, name: 'recipeTitle' });
-
-	const [dispatchCreateRecipe] = useThunk(createRecipe, {
-		useGlobalLoader: true,
-		successMessage: 'Рецепт успішно додано!',
-		successRedirectRoute: selectedCategories.length > 0 ? `/category/${selectedCategories[0].value}` : '/',
-	});
 
 	const handleFormSubmit = handleSubmit(async (formValues) => {
 		const { recipeImage, recipeTitle, description, steps, categories, ingredients, sourceUrl } = formValues;
@@ -106,7 +98,14 @@ export const CreateRecipe = () => {
 			description: description && description.length > 0 ? description : null,
 			sourceUrl,
 		};
-		await dispatchCreateRecipe({ ...payload });
+		createRecipe(payload, {
+			onSuccess: () => {
+				const [firstCategoryId] = categoriesIds;
+
+				toast.success('Рецепт успішно додано!');
+				navigate(firstCategoryId ? `/category/${firstCategoryId}` : '/');
+			},
+		});
 	});
 
 	const {

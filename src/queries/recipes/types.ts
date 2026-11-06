@@ -1,7 +1,4 @@
-export interface ImageDataModel {
-	publicId: string;
-	secureUrl: string;
-}
+import type { ImageDataModel, PaginationModel } from '../types.ts';
 
 export interface RecipeTableModel {
 	categories: Array<{ id: string; name: string }>;
@@ -36,13 +33,6 @@ export interface SavedRecipeModel extends Omit<RecipeDetailModel, 'categories' |
 	createdBy: string;
 }
 
-export interface PaginationModel {
-	limit: number;
-	page: number;
-	total: number;
-	totalPages: number;
-}
-
 export interface RecipesPaginationModel {
 	data: RecipeTableModel[];
 	pagination: PaginationModel | null;
@@ -55,4 +45,38 @@ export interface ImportedRecipeDraft {
 	recipeTitle?: string;
 	sourceUrl: string;
 	steps?: string[];
+}
+
+export interface FetchRecipesParams {
+	categories?: string;
+	limit: number;
+	order?: 'asc' | 'desc';
+	page: number;
+	recipeAuthor?: string;
+	search?: string;
+}
+
+export interface CreateRecipeParams {
+	categories: string[];
+	description: string | null;
+	ingredients: RecipeIngredient[];
+	recipeImage?: {
+		base64Content: string;
+		nameWithExtension: string;
+	} | null;
+	recipeTitle: string;
+	sourceUrl?: string;
+	steps: RecipeStep[];
+}
+
+export interface UpdateRecipeParams extends CreateRecipeParams {
+	recipeId: string;
+}
+
+export interface DeleteRecipeParams {
+	recipeId: string;
+}
+
+export interface ImportRecipeDraftParams {
+	url: string;
 }

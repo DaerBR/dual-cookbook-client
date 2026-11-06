@@ -2,25 +2,26 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import AsyncSelect from 'react-select/async';
 import { useNavigate } from 'react-router';
 import { useCallback, useMemo, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import type { GroupBase, SingleValue, StylesConfig } from 'react-select';
 
-import { useAppDispatch, useAppSelector } from '../../../store/hooks/hooks.ts';
+import { useAppDispatch } from '../../../store/hooks/hooks.ts';
 import { Icon } from '../Icon';
 import { useSearchAsyncSelectComponents, useSearchAsyncSelectStyles } from './asyncSelectComponents.tsx';
-import { searchRecipes } from '../../../store/thunks/recipes.ts';
+import { recipesListQueryOptions } from '../../../queries/recipes';
 import { DEBOUNCE_MS, MIN_QUERY_LENGTH } from './constants.ts';
 import { createDebouncedRecipeSearch } from './utils.ts';
 import type { SelectOption } from '../Select/types.ts';
 import { Button } from '../Button';
 import { searchContainerStyles } from './styles.ts';
-import { resetSearch } from '../../../store/slices/recipesSlice.ts';
+import { resetSearch } from '../../../store/slices/searchSlice.ts';
 
 export const SearchSuggestionsInputField = () => {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [selectedOption, setSelectedOption] = useState<SingleValue<SelectOption>>(null);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-	const isSearching = useAppSelector((state) => state.recipes.search.isSearching);
+	const queryClient = useQueryClient();
 	const searchSelectComponents = useSearchAsyncSelectComponents();
 	const baseSelectStyles = useSearchAsyncSelectStyles();
 
@@ -37,18 +38,13 @@ export const SearchSuggestionsInputField = () => {
 	const handleSearch = useCallback(
 		async (query: string) => {
 			setSearchTerm(query);
-			const result = await dispatch(
-				searchRecipes({
-					limit: 10,
-					page: 1,
-					search: query,
-					asSuggestions: true,
-				}),
-			).unwrap();
+			// Imperative read through the cache: typing the same text again within staleTime makes no request.
+			// It's a separate cache entry from the Search page results, so there's no `asSuggestions` special case.
+			const result = await queryClient.fetchQuery(recipesListQueryOptions({ limit: 10, page: 1, search: query }));
 
 			return result.data;
 		},
-		[dispatch],
+		[queryClient],
 	);
 
 	const loadOptions = useMemo(
@@ -71,8 +67,8 @@ export const SearchSuggestionsInputField = () => {
 		if (searchTerm === '') {
 			dispatch(resetSearch());
 		} else {
+			// The Search page fetches by itself once the query is set
 			dispatch(resetSearch(searchTerm));
-			dispatch(searchRecipes({ limit: 10, page: 1, search: searchTerm }));
 		}
 		navigate('/search');
 	};
@@ -90,7 +86,6 @@ export const SearchSuggestionsInputField = () => {
 					components={searchSelectComponents}
 					defaultOptions={false}
 					isClearable
-					isLoading={isSearching}
 					loadOptions={loadOptions}
 					loadingMessage={() => 'Пошук...'}
 					noOptionsMessage={() => 'Нічого не знайдено'}

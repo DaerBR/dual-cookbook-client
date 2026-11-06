@@ -1,4 +1,4 @@
-import type { RecipeTableModel } from '../../../store/types.ts';
+import type { RecipeTableModel } from '../../../queries/recipes';
 import type { RecipeOption } from './types.ts';
 
 export const createDebouncedRecipeSearch = (

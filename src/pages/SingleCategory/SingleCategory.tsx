@@ -5,7 +5,6 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchAllCategories } from '../../store/thunks/categories.ts';
 import { Button } from '../../components/atoms/Button';
 import { Icon } from '../../components/atoms/Icon';
 import { fetchRecipes } from '../../store/thunks/recipes.ts';
@@ -19,11 +18,11 @@ import { Chip } from '../../components/atoms/Chip';
 import { recipeAuthorOptions } from '../../constants/recipeAuthors.ts';
 import { NoImage } from '../../components/NoImage';
 import { useAppTheme } from '../../styles/hooks.ts';
+import { useCategory } from '../../queries/categories';
 
 export const SingleCategory = () => {
 	const { id: categoryId } = useParams();
-	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
-	const categoriesData = useAppSelector((state) => state.categories.categories);
+	const { data: selectedCategoryData } = useCategory(categoryId);
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 	const categoryRecipes = useAppSelector((state) => state.recipes.paginatedRecipes.recipesList);
 	const navigate = useNavigate();
@@ -32,7 +31,6 @@ export const SingleCategory = () => {
 
 	const [recipeAuthorFilterValue, setRecipeAuthorFilterValue] = useState('');
 
-	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 	const [dispatchFetchRecipes] = useThunk(fetchRecipes);
 
 	const theme = useAppTheme();
@@ -47,14 +45,6 @@ export const SingleCategory = () => {
 			});
 		}
 	}, [categoryId, recipeAuthorFilterValue, dispatchFetchRecipes]);
-
-	useEffect(() => {
-		if (!areCategoriesFetched) {
-			dispatchFetchCategories();
-		}
-	}, [areCategoriesFetched, dispatchFetchCategories]);
-
-	const selectedCategoryData = categoriesData.find((category) => category.id === categoryId);
 
 	const categoryButtons = isLoggedIn
 		? [

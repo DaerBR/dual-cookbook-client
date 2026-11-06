@@ -14,12 +14,12 @@ import { ImageInput } from '../../components/atoms/ImageInput';
 import { TextInput } from '../../components/atoms/TextInput';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchAllCategories } from '../../store/thunks/categories.ts';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
 import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
 import { createRecipe } from '../../store/thunks/recipes.ts';
+import { useCategoryOptions } from '../../queries/categories';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { IngredientField } from './components/IngredientField.tsx';
 import { StepField } from './components/StepField.tsx';
@@ -38,13 +38,11 @@ import { ImportRecipeModal } from './modals/ImportRecipeModal.tsx';
 import { DEFAULT_RECIPE_FORM_VALUES } from './constant.ts';
 
 export const CreateRecipe = () => {
-	const categoriesList = useAppSelector((state) => state.categories.categories);
-	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
+	// `data` stays undefined until loaded, so the preselection effect below can wait for it
+	const { data: categoriesOptions } = useCategoryOptions();
 	const isCreatingRecipe = useAppSelector((state) => state.recipes.isCreating);
 
 	const [isImportRecipeModalOpen, setIsImportRecipeModalOpen] = useState(false);
-
-	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 
 	const navigate = useNavigate();
 
@@ -53,14 +51,6 @@ export const CreateRecipe = () => {
 
 	// Preselection from the URL is applied once, so later categories list updates don't overwrite the user's choice
 	const isInitialCategoryApplied = useRef(false);
-
-	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
-
-	useEffect(() => {
-		if (!areCategoriesFetched) {
-			dispatchFetchCategories();
-		}
-	}, [dispatchFetchCategories, areCategoriesFetched]);
 
 	const form = useForm<AddRecipeFormValues>({
 		mode: 'all',
@@ -79,20 +69,18 @@ export const CreateRecipe = () => {
 
 	// If user navigates to Create Recipe page from some specific category - it is automatically selected as initial value for Categories field
 	useEffect(() => {
-		if (isInitialCategoryApplied.current || !initialCategoryId || !areCategoriesFetched) {
+		if (isInitialCategoryApplied.current || !initialCategoryId || !categoriesOptions) {
 			return;
 		}
 
 		isInitialCategoryApplied.current = true;
 
-		const initialCategoryData = categoriesList.find((category) => category.id === initialCategoryId);
+		const initialCategoryOption = categoriesOptions.find((option) => option.value === initialCategoryId);
 
-		if (initialCategoryData) {
-			resetField('categories', {
-				defaultValue: [{ value: initialCategoryData.id, label: initialCategoryData.name }],
-			});
+		if (initialCategoryOption) {
+			resetField('categories', { defaultValue: [initialCategoryOption] });
 		}
-	}, [areCategoriesFetched, categoriesList, initialCategoryId, resetField]);
+	}, [categoriesOptions, initialCategoryId, resetField]);
 
 	const selectedCategories = useWatch({ control, name: 'categories' });
 	const recipeTitleValue = useWatch({ control, name: 'recipeTitle' });
@@ -251,7 +239,7 @@ export const CreateRecipe = () => {
 											placeholder="Оберіть категорії"
 											name="categories"
 											onChange={(newValue) => field.onChange([...newValue])}
-											options={categoriesOptions}
+											options={categoriesOptions ?? []}
 											value={field.value}
 										/>
 									)}
@@ -301,7 +289,7 @@ export const CreateRecipe = () => {
 						<Button
 							type="submit"
 							variant="primary"
-							isDisabled={!isValid || categoriesList?.length === 0 || isCreatingRecipe}
+							isDisabled={!isValid || !categoriesOptions?.length || isCreatingRecipe}
 							isBusy={isCreatingRecipe}
 						>
 							Створити

@@ -1,8 +1,6 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchAllCategories } from '../../store/thunks/categories.ts';
+import { useAllCategories } from '../../queries/categories';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { Button } from '../../components/atoms/Button';
 import { Icon } from '../../components/atoms/Icon';
@@ -13,20 +11,12 @@ import { categoriesContainerStyles } from './styles.ts';
 import { UNTESTED_RECIPES_CAT_ID } from '../../constants/categories.ts';
 
 export const AllCategories = () => {
-	const categoriesList = useAppSelector((state) => state.categories.categories);
+	// `isPending` = no data yet (first load). A background refetch of stale data keeps showing the list
+	// (that's `isFetching`), so the spinner doesn't flash on every revisit.
+	const { data: categoriesList = [], isPending: isFetchingCategories } = useAllCategories();
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
-	const isFetchingCategories = useAppSelector((state) => state.categories.isLoading);
 
 	const navigate = useNavigate();
-
-	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
-
-	useEffect(() => {
-		if (!areCategoriesFetched) {
-			dispatchFetchCategories();
-		}
-	}, [dispatchFetchCategories, areCategoriesFetched]);
 
 	return (
 		<div>

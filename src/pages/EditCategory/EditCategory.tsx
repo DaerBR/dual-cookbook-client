@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { toast } from 'sonner';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -10,9 +11,7 @@ import type { EditCategoryFormValues } from './types';
 import { Button } from '../../components/atoms/Button';
 import { ImageInput } from '../../components/atoms/ImageInput';
 import { editCategoryValidationSchema } from './validations';
-import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchAllCategories, updateCategory } from '../../store/thunks/categories.ts';
-import { useAppSelector } from '../../store/hooks/hooks.ts';
+import { useCategory, useUpdateCategory } from '../../queries/categories';
 import { getBase64OfFile } from '../../utils/utils.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { DeleteCategoryModal } from '../SingleCategory/modals/DeleteCategoryModal.tsx';
@@ -28,25 +27,10 @@ import {
 export const EditCategory = () => {
 	const { id: categoryId } = useParams();
 	const [initialImageUrl, setInitialImageUrl] = useState<string | undefined>(undefined);
-	const categoriesData = useAppSelector((state) => state.categories.categories);
-	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
-	const selectedCategory = categoriesData.find((category) => category.id === categoryId);
-	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
+	const { data: selectedCategory } = useCategory(categoryId);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-	useEffect(() => {
-		if (!areCategoriesFetched) {
-			dispatchFetchCategories();
-		}
-	}, [areCategoriesFetched, dispatchFetchCategories]);
-
-	const [dispatchUpdateCategory] = useThunk(updateCategory, {
-		useGlobalLoader: true,
-		successMessage: 'Категорію успішно оновлено!',
-		successRedirectRoute: `/category/${categoryId}`,
-	});
-
-	const isUpdatingCategory = useAppSelector((state) => state.categories.isUpdating);
+	const { mutate: updateCategory, isPending: isUpdatingCategory } = useUpdateCategory();
 
 	const navigate = useNavigate();
 	const form = useForm<EditCategoryFormValues>({
@@ -82,7 +66,12 @@ export const EditCategory = () => {
 				: null,
 		};
 
-		await dispatchUpdateCategory(payload);
+		updateCategory(payload, {
+			onSuccess: () => {
+				toast.success('Категорію успішно оновлено!');
+				navigate(`/category/${categoryId}`);
+			},
+		});
 	});
 
 	useEffect(() => {

@@ -14,12 +14,12 @@ import { ImageInput } from '../../components/atoms/ImageInput';
 import { TextInput } from '../../components/atoms/TextInput';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useThunk } from '../../store/hooks/useThunk.ts';
-import { fetchAllCategories } from '../../store/thunks/categories.ts';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
 import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
 import { fetchRecipeDetails, updateRecipe } from '../../store/thunks/recipes.ts';
+import { useCategoryOptions } from '../../queries/categories';
 import { DeleteRecipeModal } from '../SingleRecipe/modals/DeleteRecipeModal.tsx';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { IngredientField } from '../CreateRecipe/components/IngredientField.tsx';
@@ -51,23 +51,13 @@ export const EditRecipe = () => {
 		}
 	}, [dispatchFetchRecipeDetails, recipeId]);
 
-	const categoriesList = useAppSelector((state) => state.categories.categories);
-	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
+	const { data: categoriesOptions = [] } = useCategoryOptions();
 
-	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
-
-	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 	const [dispatchUpdateRecipe] = useThunk(updateRecipe, {
 		useGlobalLoader: true,
 		successMessage: 'Рецепт успішно оновлено!',
 	});
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (!areCategoriesFetched) {
-			dispatchFetchCategories();
-		}
-	}, [dispatchFetchCategories, areCategoriesFetched]);
 
 	const form = useForm<EditRecipeFormValues>({
 		mode: 'all',
@@ -326,7 +316,7 @@ export const EditRecipe = () => {
 						<Button
 							type="submit"
 							variant="primary"
-							isDisabled={!isValid || categoriesList?.length === 0 || isFetchingDetails}
+							isDisabled={!isValid || categoriesOptions.length === 0 || isFetchingDetails}
 							isBusy={isFetchingDetails}
 						>
 							Зберегти

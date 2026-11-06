@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -8,9 +9,7 @@ import type { AddCategoryFormValues } from './types';
 import { Button } from '../../components/atoms/Button';
 import { ImageInput } from '../../components/atoms/ImageInput';
 import { addCategoryValidationSchema } from './validations';
-import { useThunk } from '../../store/hooks/useThunk.ts';
-import { createCategory } from '../../store/thunks/categories.ts';
-import { useAppSelector } from '../../store/hooks/hooks.ts';
+import { useCreateCategory } from '../../queries/categories';
 import { getBase64OfFile } from '../../utils/utils.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import {
@@ -22,12 +21,8 @@ import {
 } from './styles.ts';
 
 export const CreateCategory = () => {
-	const [dispatchCreateCategory] = useThunk(createCategory, {
-		useGlobalLoader: true,
-		successMessage: 'Нову категорію успішно створено!',
-		successRedirectRoute: '/categories',
-	});
-	const isCreatingCategory = useAppSelector((state) => state.categories.isCreating);
+	// `isPending` replaces the `isCreating` flag + pending/fulfilled/rejected reducers in the slice
+	const { mutate: createCategory, isPending: isCreatingCategory } = useCreateCategory();
 
 	const navigate = useNavigate();
 	const form = useForm<AddCategoryFormValues>({
@@ -58,7 +53,12 @@ export const CreateCategory = () => {
 				: null,
 		};
 
-		await dispatchCreateCategory(payload);
+		createCategory(payload, {
+			onSuccess: () => {
+				toast.success('Нову категорію успішно створено!');
+				navigate('/categories');
+			},
+		});
 	});
 
 	return (

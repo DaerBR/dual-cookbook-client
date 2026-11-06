@@ -1,10 +1,11 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 import type { ModalControls } from '../../../components/atoms/Modal/types.ts';
 import { Modal } from '../../../components/atoms/Modal/Modal.tsx';
 import { Button } from '../../../components/atoms/Button';
-import { useThunk } from '../../../store/hooks/useThunk.ts';
-import { deleteCategory } from '../../../store/thunks/categories.ts';
+import { useDeleteCategory } from '../../../queries/categories';
 
 interface DeleteCategoryModalProps extends ModalControls {
 	categoryId: string;
@@ -17,18 +18,22 @@ export const DeleteCategoryModal = ({
 	isModalOpen,
 	closeModalHandler,
 }: DeleteCategoryModalProps) => {
-	const [dispatchDeleteCategory] = useThunk(deleteCategory, {
-		useGlobalLoader: true,
-		successRedirectRoute: '/categories',
-		successMessage: `Категорія видалена`,
-	});
+	const { mutate: deleteCategory } = useDeleteCategory();
+	const navigate = useNavigate();
 
 	const handleCloseModal = () => closeModalHandler(false);
 
 	const handleDeleteCategory = () => {
-		dispatchDeleteCategory({
-			categoryId,
-		});
+		// Per-call callbacks run after the hook-level ones (i.e. after the categories list is invalidated/refetched)
+		deleteCategory(
+			{ categoryId },
+			{
+				onSuccess: () => {
+					toast.success('Категорія видалена');
+					navigate('/categories');
+				},
+			},
+		);
 		closeModalHandler(false);
 	};
 

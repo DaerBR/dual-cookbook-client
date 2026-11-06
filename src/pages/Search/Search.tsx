@@ -19,7 +19,7 @@ import { resetSearch, setSearchQuery } from '../../store/slices/recipesSlice.ts'
 import { Select } from '../../components/atoms/Select';
 import type { SearchFormValues } from './validations.ts';
 import { searchValidationSchema } from './validations.ts';
-import { fetchAllCategories } from '../../store/thunks/categories.ts';
+import { useCategoryOptions } from '../../queries/categories';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { mobileSearchButtonStyles } from './styles.ts';
 import { recipeAuthorOptions } from '../../constants/recipeAuthors.ts';
@@ -34,18 +34,7 @@ export const Search = () => {
 	const searchResults = useAppSelector((state) => state.recipes.search.recipesList);
 	const searchQuery = useAppSelector((state) => state.recipes.search.query);
 	const searchResultsPagination = useAppSelector((state) => state.recipes.search.pagination);
-	const categoriesList = useAppSelector((state) => state.categories.categories);
-	const areCategoriesFetched = useAppSelector((state) => state.categories.areCategoriesFetched);
-
-	const categoriesOptions = categoriesList.map((category) => ({ value: category.id, label: category.name }));
-
-	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
-
-	useEffect(() => {
-		if (!areCategoriesFetched) {
-			dispatchFetchCategories();
-		}
-	}, [dispatchFetchCategories, areCategoriesFetched]);
+	const { data: categoriesOptions = [] } = useCategoryOptions();
 
 	const form = useForm<SearchFormValues>({
 		mode: 'all',

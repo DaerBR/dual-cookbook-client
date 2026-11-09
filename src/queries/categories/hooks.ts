@@ -11,7 +11,7 @@ export const categoryKeys = {
 	list: () => [...categoryKeys.all, 'list'] as const,
 };
 
-// Shared definition, reusable in hooks and imperatively (queryClient.fetchQuery / prefetchQuery / getQueryData).
+// Shared definition, reusable in hooks and imperatively (queryClient.query / getQueryData).
 export const allCategoriesQueryOptions = queryOptions({
 	queryKey: categoryKeys.list(),
 	queryFn: fetchAllCategories,

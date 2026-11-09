@@ -1,4 +1,4 @@
-import { keepPreviousData, queryOptions, skipToken, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, noop, queryOptions, skipToken, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { QueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
@@ -52,10 +52,10 @@ export const useRecipesList = (params: FetchRecipesParams | null) => {
 	const totalPages = query.data?.pagination?.totalPages ?? 0;
 
 	// Prefetch the next page in the background, so clicking "next" is usually instant.
-	// prefetchQuery is a no-op while that page is already cached and fresh.
+	// `query` makes no request while that page is already cached and fresh. It rejects on failure, hence `.catch(noop)`.
 	useEffect(() => {
 		if (params && params.page < totalPages) {
-			queryClient.prefetchQuery(recipesListQueryOptions({ ...params, page: params.page + 1 }));
+			queryClient.query(recipesListQueryOptions({ ...params, page: params.page + 1 })).catch(noop);
 		}
 	}, [params, totalPages, queryClient]);
 

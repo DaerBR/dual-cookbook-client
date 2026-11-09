@@ -40,7 +40,7 @@ export const SearchSuggestionsInputField = () => {
 			setSearchTerm(query);
 			// Imperative read through the cache: typing the same text again within staleTime makes no request.
 			// It's a separate cache entry from the Search page results, so there's no `asSuggestions` special case.
-			const result = await queryClient.fetchQuery(recipesListQueryOptions({ limit: 10, page: 1, search: query }));
+			const result = await queryClient.query(recipesListQueryOptions({ limit: 10, page: 1, search: query }));
 
 			return result.data;
 		},

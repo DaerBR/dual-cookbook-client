@@ -14,7 +14,7 @@ import { importRecipeValidationSchema } from '../validations.ts';
 import { importRecipeDraft } from '../../../store/thunks/recipes.ts';
 import { useAppSelector } from '../../../store/hooks/hooks.ts';
 import { useThunk } from '../../../store/hooks/useThunk.ts';
-import { DEFAULT_RECIPE_FORM_VALUES } from '../constant.ts';
+import { DEFAULT_RECIPE_FORM_VALUES, MODAL_DESCRIPTION_TEXT, MODAL_WARNING_TEXT } from '../constant.ts';
 import { Checkbox } from '../../../components/atoms/Checkbox';
 import { normalizeTitle } from '../../../utils/utils.tsx';
 
@@ -80,7 +80,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 	const modalContent = (
 		<div>
 			<Typography variant="paragraphS" customStyles={{ marginBottom: '8px' }} component="div">
-				Наразі підтримуються посилання на Instagram, YouTube та Telegraph.
+				{MODAL_DESCRIPTION_TEXT}
 			</Typography>
 			<Typography
 				weight={600}
@@ -89,8 +89,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 				customStyles={{ marginBottom: '12px' }}
 				component="div"
 			>
-				Увага! Імпортування рецепту з іншого ресурсу призведе до скидання заповнених полів форми (окрім обраних
-				категорій)
+				{MODAL_WARNING_TEXT}
 			</Typography>
 
 			<Form form={form} onSubmit={handleParseUrl}>

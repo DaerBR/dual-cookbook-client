@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+General working rules (git, scope, editing, tooling) live in the user-level `~/.claude/CLAUDE.md`; this file holds only what is specific to this repository.
+
 ## Commands
 
 ```bash
@@ -39,7 +41,6 @@ There are no tests. The husky pre-commit hook runs a full `tsc -b` type-check, t
 Each component lives in its own directory following the pattern: `ComponentName.tsx`, `index.ts` (re-export), and optionally `styles.ts`, `hooks.ts`, `types.ts`, `constants.ts`.
 
 ## ESLint / code conventions
-
 - **Imports**: external packages first, then internal paths (`import/first: absolute-first`). A blank line is required after imports.
 - **Type imports**: `verbatimModuleSyntax` is on — type-only imports go in a separate `import type { … }` statement, never inline `import { type … }` (enforced/auto-fixed by `consistent-type-imports` + `import/consistent-type-specifier-style`).
 - **TypeScript naming**: type parameters prefixed with `T` (e.g. `TData`); all type/interface names PascalCase; interface members ordered alphabetically.
@@ -48,8 +49,13 @@ Each component lives in its own directory following the pattern: `ComponentName.
 - **No underscore-prefixed names** except the `_` ignore pattern for unused variables/args.
 - **Arrow body style**: omit braces when the body is a single expression.
 - **`no-param-reassign`** is enforced — don't mutate function parameters (except inside Redux Toolkit reducers using Immer).
-- Prettier config: single quotes, trailing commas, 120-char print width, LF line endings.
+- Prettier config: single quotes, trailing commas, 120-char print width, LF line endings, tab indentation.
+
+## Verification
+- Deprecated APIs seen here before: TanStack Query `prefetchQuery` variants — check the installed version's types.
+- After frontend changes, end with a short manual browser test checklist, because type-check, lint, and build do not prove UI behaviour.
 
 ## UI language
 
 The app UI is in Ukrainian.
+

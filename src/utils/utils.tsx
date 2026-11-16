@@ -107,7 +107,7 @@ export type ImageTransformation = 'cookbook_card' | 'cookbook_full' | 'cookbook_
 
 /**
  * Inserts a Cloudinary named transformation into a stored `secureUrl`:
- * ".../image/upload/v123/dual-cookbook/..." → ".../image/upload/t_cookbook_thumb/v123/dual-cookbook/..."
+ * ".../image/upload/v123/dual-cookbook/..." → ".../image/upload/t_cookbook_recipe_thumb/v123/dual-cookbook/..."
  * URLs without "/upload/" (non-Cloudinary) are returned unchanged.
  */
 export const getTransformedImageUrl = (secureUrl: string, transformation: ImageTransformation) =>

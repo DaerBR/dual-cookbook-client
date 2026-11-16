@@ -67,7 +67,7 @@ export const SingleRecipe = () => {
 						<div css={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
 							{recipeImage?.secureUrl ? (
 								<img
-									src={getTransformedImageUrl(recipeImage?.secureUrl, 'cookbook_full')}
+									src={getTransformedImageUrl(recipeImage.secureUrl, 'cookbook_full')}
 									alt={recipeDetails?.recipeTitle ?? ''}
 									css={{
 										...recipeImageStyles,

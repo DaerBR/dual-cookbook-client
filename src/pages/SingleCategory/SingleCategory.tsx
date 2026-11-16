@@ -84,11 +84,7 @@ export const SingleCategory = () => {
 			<div css={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
 				{selectedCategoryData?.categoryImage ? (
 					<img
-						src={
-							selectedCategoryData?.categoryImage?.secureUrl
-								? getTransformedImageUrl(selectedCategoryData.categoryImage.secureUrl, 'cookbook_card')
-								: ''
-						}
+						src={getTransformedImageUrl(selectedCategoryData.categoryImage.secureUrl, 'cookbook_card')}
 						alt={selectedCategoryData?.name ?? ''}
 						css={{
 							...categoryImageStyles,

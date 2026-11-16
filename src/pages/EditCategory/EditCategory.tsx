@@ -96,10 +96,7 @@ export const EditCategory = () => {
 			categoryName: name,
 		});
 
-		if (categoryImage?.secureUrl) {
-			const transformedInitialImageUrl = getTransformedImageUrl(categoryImage?.secureUrl, 'cookbook_full');
-			setInitialImageUrl(transformedInitialImageUrl);
-		}
+		setInitialImageUrl(categoryImage ? getTransformedImageUrl(categoryImage.secureUrl, 'cookbook_full') : undefined);
 	}, [categoryId, reset, selectedCategory]);
 
 	return (

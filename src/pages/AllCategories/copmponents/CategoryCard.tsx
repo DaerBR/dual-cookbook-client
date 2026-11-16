@@ -46,7 +46,7 @@ export const CategoryCard = ({ category }: CategoryCardProps) => {
 				css={{
 					...categoryImageSectionStyles,
 					backgroundImage: categoryImage?.secureUrl
-						? `url(${getTransformedImageUrl(categoryImage?.secureUrl, 'cookbook_card')})`
+						? `url(${getTransformedImageUrl(categoryImage.secureUrl, 'cookbook_card')})`
 						: 'none',
 				}}
 			>

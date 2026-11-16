@@ -107,15 +107,8 @@ export const EditRecipe = () => {
 				sourceUrl: recipeDetails.sourceUrl ?? '',
 			});
 
-			if (recipeDetails.recipeImage?.secureUrl) {
-				const transformedInitialImageUrl = getTransformedImageUrl(
-					recipeDetails.recipeImage?.secureUrl,
-					'cookbook_full',
-				);
-				setInitialImageUrl(transformedInitialImageUrl);
-			} else {
-				setInitialImageUrl(undefined);
-			}
+			const { recipeImage } = recipeDetails;
+			setInitialImageUrl(recipeImage ? getTransformedImageUrl(recipeImage.secureUrl, 'cookbook_full') : undefined);
 		}
 	}, [dispatchFetchRecipeDetails, recipeDetails, recipeId, reset]);
 

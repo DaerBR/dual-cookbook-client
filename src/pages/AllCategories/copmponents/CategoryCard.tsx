@@ -5,6 +5,7 @@ import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
 import { Typography } from '../../../components/atoms/Typography';
 import { categoryImageSectionStyles } from '../styles.ts';
+import { getTransformedImageUrl } from '../../../utils/utils.tsx';
 
 interface CategoryCardProps {
 	category: CategoryModel;
@@ -44,7 +45,9 @@ export const CategoryCard = ({ category }: CategoryCardProps) => {
 			<div
 				css={{
 					...categoryImageSectionStyles,
-					backgroundImage: categoryImage?.secureUrl ? `url(${categoryImage?.secureUrl})` : 'none',
+					backgroundImage: categoryImage?.secureUrl
+						? `url(${getTransformedImageUrl(categoryImage?.secureUrl, 'cookbook_card')})`
+						: 'none',
 				}}
 			>
 				{!categoryImage && (

@@ -8,6 +8,7 @@ import { Icon } from '../atoms/Icon';
 import { useAppTheme } from '../../styles/hooks.ts';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useRecipeCardStyles } from './styles.ts';
+import { getTransformedImageUrl } from '../../utils/utils.tsx';
 
 interface RecipeCardProps {
 	recipe: RecipeTableModel;
@@ -42,7 +43,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 						{recipe.recipeImage?.secureUrl ? (
 							<div
 								css={{
-									backgroundImage: `url(${recipe.recipeImage?.secureUrl})`,
+									backgroundImage: `url(${getTransformedImageUrl(recipe.recipeImage?.secureUrl, 'cookbook_recipe_thumb')})`,
 									backgroundSize: 'cover',
 									backgroundPosition: 'center',
 									height: '100%',

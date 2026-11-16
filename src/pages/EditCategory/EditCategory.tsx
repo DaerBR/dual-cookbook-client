@@ -13,7 +13,7 @@ import { editCategoryValidationSchema } from './validations';
 import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchAllCategories, updateCategory } from '../../store/thunks/categories.ts';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
-import { getBase64OfFile } from '../../utils/utils.tsx';
+import { getBase64OfFile, getTransformedImageUrl } from '../../utils/utils.tsx';
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { DeleteCategoryModal } from '../SingleCategory/modals/DeleteCategoryModal.tsx';
 import { Icon } from '../../components/atoms/Icon';
@@ -97,7 +97,8 @@ export const EditCategory = () => {
 		});
 
 		if (categoryImage?.secureUrl) {
-			setInitialImageUrl(categoryImage?.secureUrl);
+			const transformedInitialImageUrl = getTransformedImageUrl(categoryImage?.secureUrl, 'cookbook_full');
+			setInitialImageUrl(transformedInitialImageUrl);
 		}
 	}, [categoryId, reset, selectedCategory]);
 

@@ -101,3 +101,14 @@ export const pluck = <TObj, TKey extends keyof TObj>(key: TKey, arr: TObj[]): Ar
 /** "СОКОВИТІ КОТЛЕТКИ" → "Соковиті котлетки" (emoji are already stripped from imported drafts by the server) */
 export const normalizeTitle = (title: string) =>
 	title.toLowerCase().replace(/\p{L}/u, (letter) => letter.toUpperCase());
+
+/** Named transformations defined in the Cloudinary Console (Image → Transformations → Named Transformations). */
+export type ImageTransformation = 'cookbook_card' | 'cookbook_full' | 'cookbook_recipe_thumb';
+
+/**
+ * Inserts a Cloudinary named transformation into a stored `secureUrl`:
+ * ".../image/upload/v123/dual-cookbook/..." → ".../image/upload/t_cookbook_thumb/v123/dual-cookbook/..."
+ * URLs without "/upload/" (non-Cloudinary) are returned unchanged.
+ */
+export const getTransformedImageUrl = (secureUrl: string, transformation: ImageTransformation) =>
+	secureUrl.replace('/upload/', `/upload/t_${transformation}/`);

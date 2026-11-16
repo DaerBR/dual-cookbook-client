@@ -16,6 +16,7 @@ import { Chip } from '../../components/atoms/Chip';
 import { recipeImageStyles, sourceContainerStyles } from './styles.ts';
 import { RecipeStep } from './components/RecipeStep.tsx';
 import { NoImage } from '../../components/NoImage';
+import { getTransformedImageUrl } from '../../utils/utils.tsx';
 
 export const SingleRecipe = () => {
 	const { id: recipeId } = useParams();
@@ -66,7 +67,7 @@ export const SingleRecipe = () => {
 						<div css={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
 							{recipeImage?.secureUrl ? (
 								<img
-									src={recipeImage?.secureUrl ?? ''}
+									src={getTransformedImageUrl(recipeImage.secureUrl, 'cookbook_full')}
 									alt={recipeDetails?.recipeTitle ?? ''}
 									css={{
 										...recipeImageStyles,

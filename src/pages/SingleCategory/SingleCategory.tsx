@@ -19,6 +19,7 @@ import { Chip } from '../../components/atoms/Chip';
 import { recipeAuthorOptions } from '../../constants/recipeAuthors.ts';
 import { NoImage } from '../../components/NoImage';
 import { useAppTheme } from '../../styles/hooks.ts';
+import { getTransformedImageUrl } from '../../utils/utils.tsx';
 
 export const SingleCategory = () => {
 	const { id: categoryId } = useParams();
@@ -83,7 +84,7 @@ export const SingleCategory = () => {
 			<div css={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
 				{selectedCategoryData?.categoryImage ? (
 					<img
-						src={selectedCategoryData?.categoryImage?.secureUrl ?? ''}
+						src={getTransformedImageUrl(selectedCategoryData.categoryImage.secureUrl, 'cookbook_card')}
 						alt={selectedCategoryData?.name ?? ''}
 						css={{
 							...categoryImageStyles,

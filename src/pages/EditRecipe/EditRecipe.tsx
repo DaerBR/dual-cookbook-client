@@ -18,7 +18,7 @@ import { fetchAllCategories } from '../../store/thunks/categories.ts';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
 import { Icon } from '../../components/atoms/Icon';
-import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
+import { getBase64OfFile, getTransformedImageUrl, pluck } from '../../utils/utils.tsx';
 import { fetchRecipeDetails, updateRecipe } from '../../store/thunks/recipes.ts';
 import { DeleteRecipeModal } from '../SingleRecipe/modals/DeleteRecipeModal.tsx';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
@@ -106,7 +106,9 @@ export const EditRecipe = () => {
 				recipeImage: null,
 				sourceUrl: recipeDetails.sourceUrl ?? '',
 			});
-			setInitialImageUrl(recipeDetails.recipeImage?.secureUrl);
+
+			const { recipeImage } = recipeDetails;
+			setInitialImageUrl(recipeImage ? getTransformedImageUrl(recipeImage.secureUrl, 'cookbook_full') : undefined);
 		}
 	}, [dispatchFetchRecipeDetails, recipeDetails, recipeId, reset]);
 

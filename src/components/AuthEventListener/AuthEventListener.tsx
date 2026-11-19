@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 import { API_URL } from '../../api/constants.ts';
 import { useAppDispatch } from '../../store/hooks/hooks.ts';
 import { setUserData } from '../../store/slices/authSlice.ts';
@@ -15,6 +16,10 @@ export const AuthEventListener = () => {
 
 			if (event.data?.type === 'GOOGLE_AUTH_SUCCESS') {
 				dispatch(setUserData(event.data.payload));
+			}
+
+			if (event.data?.type === 'GOOGLE_AUTH_FAILURE') {
+				toast.error(event.data.message);
 			}
 		};
 

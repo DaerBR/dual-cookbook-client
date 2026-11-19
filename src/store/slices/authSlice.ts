@@ -45,11 +45,12 @@ const authSlice = createSlice({
 		builder.addCase(fetchUser.fulfilled, (state, action) => {
 			state.isLoading = false;
 			state.userData = action.payload;
-			state.areUserDataFetched = Boolean(action.payload);
+			state.areUserDataFetched = true;
 			state.isLoggedIn = Boolean(action.payload);
 		});
 		builder.addCase(fetchUser.rejected, (state, action) => {
 			state.isLoading = false;
+			state.areUserDataFetched = true;
 			state.authorizationError = action.error;
 		});
 		builder.addCase(signOut.pending, (state) => {

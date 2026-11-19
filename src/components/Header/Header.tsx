@@ -58,7 +58,14 @@ export const Header = () => {
 		const left = window.screenX + (window.outerWidth - width) / 2;
 		const top = window.screenY + (window.outerHeight - height) / 2;
 
-		window.open(`${API_URL}/auth/google`, 'google-auth', `width=${width},height=${height},left=${left},top=${top}`);
+		/** Explicit origin for the OAuth popup's postMessage target, instead of relying on the Referer header. */
+		const returnOrigin = encodeURIComponent(window.location.origin);
+
+		window.open(
+			`${API_URL}/auth/google?return_origin=${returnOrigin}`,
+			'google-auth',
+			`width=${width},height=${height},left=${left},top=${top}`,
+		);
 	};
 
 	const handleLogoutClick = () => dispatchLogout();

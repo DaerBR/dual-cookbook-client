@@ -5,7 +5,7 @@ export const imageFieldStaticStyles = defineStyles({
 	backgroundSize: 'cover',
 	backgroundPosition: 'center',
 	borderRadius: '4px',
-	padding: '40px',
+	padding: 10,
 	display: 'flex',
 	flexDirection: 'column',
 	justifyContent: 'center',

@@ -146,9 +146,8 @@ export const Select = ({
 		top: '100%',
 		left: 0,
 		right: 0,
-		marginTop: '4px',
 		padding: 0,
-		margin: '4px 0 0',
+		margin: [1, 0, 0],
 		listStyle: 'none',
 		backgroundColor: '#fff',
 		border: `1px solid ${theme.colors.neutral.borderDefault}`,
@@ -163,7 +162,7 @@ export const Select = ({
 	const getOptionStyles = (isHighlighted: boolean, isSelected: boolean) =>
 		defineStyles({
 			minHeight: '20px',
-			padding: '8px 12px',
+			padding: [2, 3],
 			fontSize: '14px',
 			lineHeight: 1.4,
 			color: '#000',

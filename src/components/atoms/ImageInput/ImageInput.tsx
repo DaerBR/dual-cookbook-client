@@ -96,7 +96,7 @@ export const ImageInput = ({
 					control={control}
 					name={name}
 					render={() => (
-						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+						<div style={defineStyles({ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 })}>
 							<input
 								style={{ display: 'none' }}
 								accept="image/jpeg, image/png"
@@ -107,13 +107,13 @@ export const ImageInput = ({
 								ref={imageInputRef}
 							/>
 							<div
-								css={{
-									marginTop: '16px',
+								css={defineStyles({
+									marginTop: 4,
 									display: 'flex',
 									justifyContent: 'space-between',
 									alignItems: 'center',
-									gap: '24px',
-								}}
+									gap: 6,
+								})}
 							>
 								<Button
 									variant="secondary"

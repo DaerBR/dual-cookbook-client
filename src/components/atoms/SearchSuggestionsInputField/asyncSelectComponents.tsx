@@ -22,6 +22,8 @@ import type {
 } from 'react-select';
 
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { defineStyles } from '../../../styles/defineStyles.ts';
+import { space } from '../../../styles/spacing.ts';
 import { useCommonFieldStyles } from '../TextInput/hooks.ts';
 import { Icon } from '../Icon';
 import type { RecipeOption } from './types.ts';
@@ -66,8 +68,8 @@ export const useSearchAsyncSelectComponents = (): Config => {
 	const theme = useAppTheme();
 
 	return useMemo(() => {
-		const listPanel = {
-			marginTop: '4px',
+		const listPanel = defineStyles({
+			marginTop: 1,
 			padding: 0,
 			backgroundColor: '#fff',
 			border: `1px solid ${theme.colors.neutral.borderDefault}`,
@@ -75,17 +77,18 @@ export const useSearchAsyncSelectComponents = (): Config => {
 			boxShadow: theme.boxShadows.xs,
 			overflow: 'hidden',
 			zIndex: 10,
-		};
-
-		const getOptionStyles = (isHighlighted: boolean, isSelected: boolean) => ({
-			minHeight: '20px',
-			padding: '8px 12px',
-			fontSize: theme.typography.paragraphS.fontSize,
-			lineHeight: theme.typography.paragraphS.lineHeight,
-			cursor: 'pointer',
-			color: theme.colors.text.main,
-			backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
 		});
+
+		const getOptionStyles = (isHighlighted: boolean, isSelected: boolean) =>
+			defineStyles({
+				minHeight: '20px',
+				padding: [2, 3],
+				fontSize: theme.typography.paragraphS.fontSize,
+				lineHeight: theme.typography.paragraphS.lineHeight,
+				cursor: 'pointer',
+				color: theme.colors.text.main,
+				backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
+			});
 
 		const Placeholder = (props: PlaceholderProps<RecipeOption, false, GroupBase<RecipeOption>>) => (
 			<components.Placeholder {...props} css={{ color: theme.colors.primary.disabled }} />
@@ -181,7 +184,7 @@ export const useSearchAsyncSelectComponents = (): Config => {
 			<components.LoadingMessage
 				{...props}
 				css={{
-					padding: '8px 12px',
+					padding: space(2, 3),
 					fontSize: theme.typography.paragraphS.fontSize,
 					color: theme.colors.text.caption,
 				}}
@@ -192,7 +195,7 @@ export const useSearchAsyncSelectComponents = (): Config => {
 			<components.NoOptionsMessage
 				{...props}
 				css={{
-					padding: '8px 12px',
+					padding: space(2, 3),
 					fontSize: theme.typography.paragraphS.fontSize,
 					color: theme.colors.text.caption,
 				}}

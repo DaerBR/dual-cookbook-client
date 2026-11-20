@@ -19,7 +19,7 @@ export const BackIconButton = ({
 }: BackIconButtonProps) => (
 	<button
 		css={defineStyles({
-			padding: '12px',
+			padding: 3,
 			border: 'none',
 			background: 'transparent',
 			cursor: 'pointer',

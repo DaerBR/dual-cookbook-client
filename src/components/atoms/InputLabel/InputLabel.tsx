@@ -1,4 +1,5 @@
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { defineStyles } from '../../../styles/defineStyles.ts';
 
 interface InputLabelProps {
 	id: string;
@@ -9,14 +10,14 @@ interface InputLabelProps {
 export const InputLabel = ({ isRequired, label, id }: InputLabelProps) => {
 	const theme = useAppTheme();
 
-	const labelStyles = {
+	const labelStyles = defineStyles({
 		fontSize: theme.typography.paragraphXs.fontSize,
 		lineHeight: theme.typography.paragraphXs.lineHeight,
 		color: theme.colors.text.main,
 		fontWeight: 600,
-		marginBottom: '4px',
+		marginBottom: 1,
 		display: 'block',
-	};
+	});
 
 	return (
 		<label css={labelStyles} htmlFor={id}>

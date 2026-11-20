@@ -19,7 +19,7 @@ export const FieldsGroupTitle = ({ captionText, isRequired, title, customStyles 
 				variant="paragraphM"
 				color="textTitle"
 				weight={600}
-				customStyles={{ marginBottom: '8px', ...customStyles }}
+				customStyles={{ marginBottom: 2, ...customStyles }}
 			>
 				{title}
 				{isRequired && (

@@ -5,6 +5,6 @@ export const mobileDeleteRecipeButtonStyles = defineStyles({
 	border: 'none',
 	boxShadow: 'none',
 	minWidth: '40px',
-	padding: '4px',
+	padding: 1,
 	backgroundColor: 'transparent',
 });

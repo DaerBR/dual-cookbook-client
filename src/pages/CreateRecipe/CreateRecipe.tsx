@@ -17,6 +17,7 @@ import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchAllCategories } from '../../store/thunks/categories.ts';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
+import { space } from '../../styles/spacing.ts';
 import { Icon } from '../../components/atoms/Icon';
 import { getBase64OfFile, pluck } from '../../utils/utils.tsx';
 import { createRecipe } from '../../store/thunks/recipes.ts';
@@ -179,7 +180,7 @@ export const CreateRecipe = () => {
 					<div css={mainWrapperStyles}>
 						<div css={leftColumnWrapperStyles}>
 							<ImageInput name="recipeImage" customHeight={350} customWidth={450} />
-							<div css={{ display: 'flex', flexDirection: 'column', marginTop: '24px' }}>
+							<div css={{ display: 'flex', flexDirection: 'column', marginTop: space(6) }}>
 								<FieldsGroupTitle title="Інгредієнти" />
 								<DragDropProvider onDragOver={handleDragOver}>
 									<div>
@@ -203,7 +204,7 @@ export const CreateRecipe = () => {
 									Додати
 								</Button>
 							</div>
-							<div css={{ marginTop: '24px', marginBottom: '12px' }}>
+							<div css={{ marginTop: space(6), marginBottom: space(3) }}>
 								<Controller
 									control={control}
 									name="sourceUrl"

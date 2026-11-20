@@ -1,6 +1,7 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
+import { space } from '../../../styles/spacing.ts';
 import type { SpacingStyles } from '../../../styles/spacing.ts';
 import { Typography } from '../Typography';
 import type { TypographyVariant } from '../Typography/types.ts';
@@ -76,7 +77,7 @@ export const Chip = ({
 				<Icon
 					icon={endIcon}
 					fontSize={chipIconSize[size]}
-					customStyles={{ color: chipStyles.color, marginLeft: '4px', marginTop: '2px' }}
+					customStyles={{ color: chipStyles.color, marginLeft: space(1), marginTop: '2px' }}
 				/>
 			)}
 		</Typography>

@@ -6,6 +6,7 @@ import type { RecipeTableModel } from '../../store/types.ts';
 import { Chip } from '../atoms/Chip';
 import { Icon } from '../atoms/Icon';
 import { useAppTheme } from '../../styles/hooks.ts';
+import { space } from '../../styles/spacing.ts';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
 import { useRecipeCardStyles } from './styles.ts';
 import { getTransformedImageUrl } from '../../utils/utils.tsx';
@@ -36,7 +37,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 	const { categories } = recipe;
 
 	return (
-		<span css={{ position: 'relative', marginBottom: '16px' }}>
+		<span css={{ position: 'relative', marginBottom: space(4) }}>
 			<Link to={`/recipe/${id}`} css={{ textDecoration: 'none', color: 'inherit' }}>
 				<div css={wrapperStyles}>
 					<div css={imageWrapperStyles}>

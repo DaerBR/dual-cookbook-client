@@ -18,9 +18,9 @@ export const categoriesContainerStyles = defineStyles({
 	display: 'grid',
 	gridTemplateRows: '1fr',
 	gridTemplateColumns: 'repeat(2, 1fr)',
-	gap: '24px',
+	gap: 6,
 	'@media (max-width: 768px)': {
 		gridTemplateColumns: 'repeat(1, 1fr)',
-		gap: '12px',
+		gap: 3,
 	},
 });

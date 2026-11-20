@@ -29,11 +29,11 @@ import {
 	descriptionFieldStyles,
 	fieldBlockStyles,
 	fieldsWrapperStyles,
-	formActionButtonsContainerStyles,
 	leftColumnWrapperStyles,
 	mainWrapperStyles,
 	recipeTitleFieldStyles,
 	sourceUrlFieldStyles,
+	useFormActionButtonsContainerStyles,
 } from '../CreateRecipe/styles.ts';
 
 export const EditRecipe = () => {
@@ -177,6 +177,8 @@ export const EditRecipe = () => {
 		}
 	};
 
+	const formActionButtonsContainerStyles = useFormActionButtonsContainerStyles();
+
 	return (
 		<div>
 			<PageTitle
@@ -228,7 +230,7 @@ export const EditRecipe = () => {
 									Додати
 								</Button>
 							</div>
-							<div css={{ marginTop: '24px' }}>
+							<div css={{ marginTop: '24px', marginBottom: '12px' }}>
 								<Controller
 									control={control}
 									name="sourceUrl"

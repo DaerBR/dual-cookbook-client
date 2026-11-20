@@ -1,3 +1,5 @@
+import { useTheme } from '@emotion/react';
+
 import { defineStyles } from '../../styles/defineStyles.ts';
 
 export const mainWrapperStyles = defineStyles({
@@ -5,7 +7,7 @@ export const mainWrapperStyles = defineStyles({
 	gap: '12px',
 	flexBasis: '100%',
 	wrap: 'nowrap',
-	'@media (max-width: 768px)': { flexDirection: 'column', alignItems: 'center' },
+	'@media (max-width: 768px)': { flexDirection: 'column', alignItems: 'center', marginBottom: '64px' },
 });
 
 export const fieldsWrapperStyles = defineStyles({
@@ -96,9 +98,24 @@ export const stepWrapperStyles = defineStyles({
 });
 
 export const addStepButtonStyles = { maxWidth: '250px', marginTop: '16px' };
-export const formActionButtonsContainerStyles = defineStyles({
-	display: 'flex',
-	gap: '24px',
-	justifyContent: 'center',
-	marginTop: '12px',
-});
+
+export const useFormActionButtonsContainerStyles = () => {
+	const theme = useTheme();
+
+	return defineStyles({
+		display: 'flex',
+		gap: '24px',
+		justifyContent: 'center',
+		marginTop: '12px',
+		'@media (max-width: 768px)': {
+			width: '100%',
+			backgroundColor: '#fff',
+			padding: '12px 0',
+			position: 'fixed',
+			bottom: 0,
+			left: 0,
+			zIndex: 3,
+			borderTop: `1px solid ${theme.colors.neutral.borderDefault}`,
+		},
+	});
+};

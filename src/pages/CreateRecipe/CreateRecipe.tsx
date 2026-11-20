@@ -28,11 +28,11 @@ import {
 	descriptionFieldStyles,
 	fieldBlockStyles,
 	fieldsWrapperStyles,
-	formActionButtonsContainerStyles,
 	leftColumnWrapperStyles,
 	mainWrapperStyles,
 	recipeTitleFieldStyles,
 	sourceUrlFieldStyles,
+	useFormActionButtonsContainerStyles,
 } from './styles.ts';
 import { ImportRecipeModal } from './modals/ImportRecipeModal.tsx';
 import { DEFAULT_RECIPE_FORM_VALUES } from './constant.ts';
@@ -165,6 +165,8 @@ export const CreateRecipe = () => {
 		</Button>,
 	];
 
+	const formActionButtonsContainerStyles = useFormActionButtonsContainerStyles();
+
 	return (
 		<div>
 			<PageTitle
@@ -201,7 +203,7 @@ export const CreateRecipe = () => {
 									Додати
 								</Button>
 							</div>
-							<div css={{ marginTop: '24px', marginBottom: '36px' }}>
+							<div css={{ marginTop: '24px', marginBottom: '12px' }}>
 								<Controller
 									control={control}
 									name="sourceUrl"

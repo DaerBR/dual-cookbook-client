@@ -1,14 +1,14 @@
 import type { ChangeEvent } from 'react';
-import type { CSSObject } from '@emotion/react';
-
 import { Typography } from '../Typography';
+import { defineStyles } from '../../../styles/defineStyles.ts';
+import type { SpacingStyles } from '../../../styles/spacing.ts';
 import type { Colors } from './types.ts';
 import { useCheckboxStyles } from './hooks.ts';
 
 interface CheckboxProps {
 	color?: Colors;
-	customLabelStyles?: CSSObject;
-	customWrapperStyles?: CSSObject;
+	customLabelStyles?: SpacingStyles;
+	customWrapperStyles?: SpacingStyles;
 	id?: string;
 	isChecked?: boolean;
 	isDisabled?: boolean;
@@ -31,7 +31,7 @@ export const Checkbox = ({
 	const { wrapperStyles, inputStyles, checkmarkStyles } = useCheckboxStyles({ color, isDisabled });
 
 	return (
-		<label htmlFor={id ?? name} css={{ ...wrapperStyles, ...customWrapperStyles }}>
+		<label htmlFor={id ?? name} css={defineStyles({ ...wrapperStyles, ...customWrapperStyles })}>
 			<input
 				type="checkbox"
 				id={id ?? name}

@@ -1,9 +1,9 @@
-import type { CSSObject } from '@emotion/react';
 import type { ReactNode, SyntheticEvent } from 'react';
 
 import type { Colors, Variants } from './types';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
+import type { SpacingStyles } from '../../../styles/spacing.ts';
 import { useButtonColors } from './hooks.ts';
 import { buttonStyles } from './styles.ts';
 import { CircularProgress } from '../CircularProgress';
@@ -11,7 +11,7 @@ import { CircularProgress } from '../CircularProgress';
 interface ButtonProps {
 	children: string | ReactNode;
 	color?: Colors;
-	customStyles?: CSSObject;
+	customStyles?: SpacingStyles;
 	endIcon?: ReactNode;
 	fullWidth?: boolean;
 	id?: string;
@@ -112,7 +112,7 @@ export const Button = ({
 
 	return (
 		<button
-			css={{ ...buttonStyles, ...configurableButtonStyles, boxSizing: 'border-box', ...customStyles }}
+			css={defineStyles({ ...buttonStyles, ...configurableButtonStyles, boxSizing: 'border-box', ...customStyles })}
 			id={id}
 			onClick={onClick}
 			disabled={isDisabled}

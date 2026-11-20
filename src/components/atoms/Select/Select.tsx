@@ -2,9 +2,9 @@ import { useFormContext } from 'react-hook-form';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { CSSProperties, ChangeEvent, FocusEvent, KeyboardEvent } from 'react';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import type { CSSObject } from '@emotion/react';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
+import type { SpacingStyles } from '../../../styles/spacing.ts';
 import { InputLabel } from '../InputLabel';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { Icon } from '../Icon';
@@ -13,7 +13,7 @@ import type { SelectOption } from './types.ts';
 import { HelperText } from '../HelperText';
 
 interface SelectProps {
-	customStyles?: CSSObject;
+	customStyles?: SpacingStyles;
 	helperText?: string;
 	id?: string;
 	isDisabled?: boolean;

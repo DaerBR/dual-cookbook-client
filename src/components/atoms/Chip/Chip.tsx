@@ -1,7 +1,7 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import type { CSSObject } from '@emotion/react';
-
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { defineStyles } from '../../../styles/defineStyles.ts';
+import type { SpacingStyles } from '../../../styles/spacing.ts';
 import { Typography } from '../Typography';
 import type { TypographyVariant } from '../Typography/types.ts';
 import { Icon } from '../Icon';
@@ -9,7 +9,7 @@ import { chipHeight, chipIconSize, chipPadding } from './constants.ts';
 
 interface ChipProps {
 	color?: 'primary' | 'neutral' | 'success' | 'error';
-	customStyles?: CSSObject;
+	customStyles?: SpacingStyles;
 	endIcon?: IconDefinition;
 	isOutlined?: boolean;
 	onClick?: () => void;
@@ -83,7 +83,11 @@ export const Chip = ({
 	);
 
 	return onClick ? (
-		<button type="button" onClick={onClick} css={{ ...customStyles, border: 'none', backgroundColor: 'transparent' }}>
+		<button
+			type="button"
+			onClick={onClick}
+			css={defineStyles({ ...customStyles, border: 'none', backgroundColor: 'transparent' })}
+		>
 			{typographyContent}
 		</button>
 	) : (

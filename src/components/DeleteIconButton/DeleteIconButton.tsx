@@ -1,11 +1,12 @@
-import type { CSSObject } from '@emotion/react';
 import { faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { Icon } from '../atoms/Icon';
 import { useAppTheme } from '../../styles/hooks.ts';
+import { defineStyles } from '../../styles/defineStyles.ts';
+import type { SpacingStyles } from '../../styles/spacing.ts';
 
 interface DeleteIconButtonProps {
-	customStyles?: CSSObject;
+	customStyles?: SpacingStyles;
 	iconFontSize?: number;
 	onClick?: () => void;
 }
@@ -16,7 +17,7 @@ export const DeleteIconButton = ({ onClick, iconFontSize, customStyles = {} }: D
 	return (
 		<button
 			type="button"
-			css={{
+			css={defineStyles({
 				padding: '12px',
 				border: 'none',
 				background: 'transparent',
@@ -25,7 +26,7 @@ export const DeleteIconButton = ({ onClick, iconFontSize, customStyles = {} }: D
 					color: `${theme.colors.error.main}!important`,
 				},
 				...customStyles,
-			}}
+			})}
 			onClick={onClick}
 		>
 			<Icon

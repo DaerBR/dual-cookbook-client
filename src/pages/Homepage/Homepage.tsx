@@ -6,6 +6,7 @@ import { fetchRecipes } from '../../store/thunks/recipes.ts';
 import { Typography } from '../../components/atoms/Typography';
 import { RecipeCard } from '../../components/RecipeCard';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
+import { space } from '../../styles/spacing.ts';
 
 export const Homepage = () => {
 	const recipes = useAppSelector((state) => state.recipes.paginatedRecipes.recipesList);
@@ -23,7 +24,7 @@ export const Homepage = () => {
 
 	return (
 		<>
-			<div css={{ marginBottom: '12px' }}>
+			<div css={{ marginBottom: space(3) }}>
 				{totalRecipesNumber && (
 					<Typography
 						variant="paragraphL"
@@ -39,7 +40,7 @@ export const Homepage = () => {
 				{isFetchingRecipes ? (
 					<LoadingIndicator />
 				) : (
-					<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
+					<div css={{ display: 'flex', justifyContent: 'center', marginTop: space(3), flexDirection: 'column' }}>
 						{recipes.map((recipe) => (
 							<RecipeCard key={recipe.id} recipe={recipe} />
 						))}

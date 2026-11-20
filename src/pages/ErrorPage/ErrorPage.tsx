@@ -8,14 +8,14 @@ interface ErrorPageProps {
 
 export const ErrorPage = ({ code }: ErrorPageProps) => (
 	<div css={errorPageContainerStyles}>
-		<Typography variant="h4" color="error" weight={800} customStyles={{ marginBottom: '16px', marginTop: '16px' }}>
+		<Typography variant="h4" color="error" weight={800} customStyles={{ marginBottom: 4, marginTop: 4 }}>
 			Виникла помилка!
 		</Typography>
 		{code && ERROR_TEXT[code] && (
 			<Typography
 				variant="paragraphL"
 				color="error"
-				customStyles={{ marginBottom: '24px', textAlign: 'center' }}
+				customStyles={{ marginBottom: 6, textAlign: 'center' }}
 				weight={700}
 			>
 				{ERROR_TEXT[code]}

@@ -52,7 +52,7 @@ export const useRecipeCardStyles = () => {
 			position: 'relative',
 			backgroundRepeat: 'no-repeat',
 			minWidth: '200px',
-			padding: '4px',
+			padding: 1,
 			borderRadius: '4px',
 			'@media (max-width: 768px)': {
 				minWidth: '33%',
@@ -60,7 +60,7 @@ export const useRecipeCardStyles = () => {
 		}),
 		chipsWrapperStyles: defineStyles({
 			display: 'flex',
-			gap: '8px',
+			gap: 2,
 			flexWrap: 'nowrap',
 			height: '24px',
 			overflowX: 'scroll',
@@ -102,8 +102,8 @@ export const useRecipeCardStyles = () => {
 		infoSectionStyles: defineStyles({
 			display: 'flex',
 			flexDirection: 'column',
-			gap: '8px',
-			padding: '16px',
+			gap: 2,
+			padding: 4,
 			position: 'relative',
 			flexBasis: '100%',
 		}),

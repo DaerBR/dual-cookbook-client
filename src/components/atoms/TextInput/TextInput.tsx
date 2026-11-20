@@ -1,14 +1,14 @@
 import type { ChangeEvent, RefObject } from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { CSSObject } from '@emotion/react';
-
 import { getFieldError, processFieldValidationErrors } from '../../../utils/utils.tsx';
+import { defineStyles } from '../../../styles/defineStyles.ts';
+import type { SpacingStyles } from '../../../styles/spacing.ts';
 import { InputLabel } from '../InputLabel';
 import { useCommonFieldStyles } from './hooks.ts';
 import { HelperText } from '../HelperText';
 
 interface TextInputProps {
-	customStyles?: CSSObject;
+	customStyles?: SpacingStyles;
 	helperText?: string;
 	id?: string;
 	inputRef?: RefObject<HTMLInputElement | null>;
@@ -66,7 +66,7 @@ export const TextInput = ({
 			{multiline ? (
 				<textarea
 					disabled={isDisabled}
-					css={{ ...errorAwareFieldStyles, resize: 'none', ...customStyles }}
+					css={defineStyles({ ...errorAwareFieldStyles, resize: 'none', ...customStyles })}
 					id={id ?? name}
 					name={name}
 					placeholder={placeholder}
@@ -79,7 +79,7 @@ export const TextInput = ({
 				<input
 					ref={inputRef}
 					disabled={isDisabled}
-					css={{ ...errorAwareFieldStyles, ...customStyles }}
+					css={defineStyles({ ...errorAwareFieldStyles, ...customStyles })}
 					type="text"
 					id={id ?? name}
 					name={name}

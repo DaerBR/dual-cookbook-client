@@ -1,9 +1,9 @@
 import type { ActionMeta, MultiValue } from 'react-select';
 import Select from 'react-select';
 import { useFormContext } from 'react-hook-form';
-import type { CSSObject } from '@emotion/react';
-
 import type { SelectOption } from '../Select/types.ts';
+import { defineStyles } from '../../../styles/defineStyles.ts';
+import type { SpacingStyles } from '../../../styles/spacing.ts';
 import { InputLabel } from '../InputLabel';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { HelperText } from '../HelperText';
@@ -12,7 +12,7 @@ import { useMultiSelectComponents, useMultiSelectStyles } from './hooks.tsx';
 export type MultiSelectOption = SelectOption;
 
 export interface MultiSelectProps {
-	customStyles?: CSSObject;
+	customStyles?: SpacingStyles;
 	helperText?: string;
 	id?: string;
 	isDisabled?: boolean;
@@ -53,7 +53,7 @@ export const MultiSelect = ({
 			<Select<MultiSelectOption, true>
 				components={selectComponents}
 				styles={baseSelectStyles}
-				css={customStyles}
+				css={defineStyles(customStyles ?? {})}
 				name={name}
 				isDisabled={isDisabled}
 				placeholder={placeholder}

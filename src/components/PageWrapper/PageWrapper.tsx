@@ -6,14 +6,14 @@ export const PageWrapper = ({ children }: { children: ReactNode }) => {
 	const styles = defineStyles({
 		maxWidth: '1200px',
 		margin: '90px auto 0',
-		padding: '24px 36px',
+		padding: [6, 9],
 		minHeight: '100vh',
 		backgroundColor: '#fff',
 		borderRadius: '4px',
 		boxSizing: 'border-box',
 		position: 'relative',
 		'@media (max-width: 768px)': {
-			padding: '8px 12px',
+			padding: [2, 3],
 			marginTop: '118px',
 		},
 	});

@@ -6,7 +6,7 @@ export const getModalBodyStyles = ({ width }: { width: number }) =>
 		width: `${width}px`,
 		display: 'flex',
 		alignItems: 'center',
-		padding: '32px 0',
+		padding: [8, 0],
 		position: 'relative',
 		borderRadius: '4px',
 	});
@@ -36,13 +36,13 @@ export const iconWrapperStyles = defineStyles({
 	alignItems: 'center',
 });
 
-export const contentWrapperStyles = defineStyles({ padding: '32px 32px 0' });
+export const contentWrapperStyles = defineStyles({ padding: [8, 8, 0] });
 
 export const buttonsContainerStyles = defineStyles({
-	paddingTop: '20px',
-	paddingLeft: '32px',
-	paddingRight: '32px',
+	paddingTop: 5,
+	paddingLeft: 8,
+	paddingRight: 8,
 	display: 'flex',
 	justifyContent: 'center',
-	gap: '20px',
+	gap: 5,
 });

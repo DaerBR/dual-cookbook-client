@@ -75,7 +75,12 @@ if (result.ok) {
 
 **Styling**: Emotion's `css` prop (via `jsxImportSource: '@emotion/react'` in `vite.config.ts`). The design system (colors, typography, breakpoints, spacing, shadows) lives in `src/styles/theme.ts`; access it via `useAppTheme()` from `src/styles/hooks.ts`, not `useTheme()` directly.
 
-**`defineStyles`** (`src/styles/defineStyles.ts`): an identity helper that standalone style objects are wrapped in. A bare object literal gets its string values widened to `string`, so TypeScript rejects it for enum-like CSS properties (`position: 'absolute'`, `boxSizing: 'border-box'`, `flexDirection: 'column'`, …) when it reaches the `css` prop. `defineStyles` checks the object against Emotion's `CSSObject` and keeps the narrow literal types — no `as const` or `: CSSObject` annotation needed. No runtime cost. It's used in four shapes across the codebase:
+**`defineStyles`** (`src/styles/defineStyles.ts`): the helper that standalone style objects are wrapped in. It does two things:
+
+- **Keeps literal types.** A bare object literal gets its string values widened to `string`, so TypeScript rejects it for enum-like CSS properties (`position: 'absolute'`, `boxSizing: 'border-box'`, `flexDirection: 'column'`, …) when it reaches the `css` prop. `defineStyles` checks the object against Emotion's `CSSObject` and keeps the narrow literal types — no `as const` or `: CSSObject` annotation needed.
+- **Resolves spacing steps** (see [Spacing](#spacing) below) — `marginTop: 3` becomes `'12px'`. This is a shallow copy of the object (recursing into nested selectors), so it costs a few microseconds per call; negligible next to Emotion serialising the same object.
+
+It's used in four shapes across the codebase:
 
 ```ts
 // 1. Static styles in a component's styles.ts (Modal, Pagination, PageTitle, Button, AllCategories, ...)
@@ -98,6 +103,30 @@ const mergedTriggerStyles = defineStyles({ ...selectInputStyles, ...(fieldErrors
 ```
 
 Use it for new style objects instead of annotating them as `CSSObject`/`CSSProperties` — an annotation widens the type and loses the specific keys, while `defineStyles` keeps them. (A few older plain objects, e.g. in `Header/styles.ts`, predate it and work only because they contain no enum-like properties.)
+
+### Spacing
+
+Margins, paddings and gaps use the `theme.spacing` scale (`1` → `4px` … `10` → `40px`, plus `0`). Inside `defineStyles()` you write the step number instead of the pixel value — no `useAppTheme()` call needed (`src/styles/spacing.ts`):
+
+```ts
+export const cardStyles = defineStyles({
+	marginTop: 3, // '12px'
+	padding: [2, 3], // '8px 12px' — shorthand as a tuple, in CSS order
+	margin: '12px 0 24px 4px', // strings are left as written
+	gap: '6px', // off-scale edge case — just use a string
+	'@media (min-width: 768px)': { paddingInline: 4 }, // nested selectors / media queries work too
+});
+```
+
+- **Which properties:** `margin`, `padding` (tuple of up to 4 steps); `gap`, `marginBlock`, `marginInline`, `paddingBlock`, `paddingInline` (up to 2); and the single-value longhands — `marginTop`/`Right`/`Bottom`/`Left`, `paddingTop`/…, the `*Block*`/`*Inline*` `Start`/`End` variants, `rowGap`, `columnGap`. Every other property is untouched, so `lineHeight: 1.5` or `zIndex: 10` keep their meaning.
+- **Type-checked:** only real steps are accepted — `marginTop: 13` or `gap: [1, 2, 3]` is a type error. Negative steps aren't supported; write `'-4px'`.
+- **Outside `defineStyles()`** (inline `css={{ … }}` objects), Emotion treats numbers as pixels: `css={{ marginTop: 3 }}` renders `3px`. Use `space()` there instead:
+
+```tsx
+<div css={{ marginTop: space(3), padding: space(2, 3) }} />
+```
+
+- **Custom style props:** components that merge a `customStyles` prop into `defineStyles` type it as `SpacingStyles` (e.g. `Select`), so callers can pass steps too.
 
 **Component structure**:
 - `src/components/atoms/` — primitive UI components (Button, Typography, TextInput, Select, Modal, Pagination, etc.)

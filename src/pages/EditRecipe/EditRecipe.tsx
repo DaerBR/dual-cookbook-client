@@ -17,6 +17,7 @@ import { useThunk } from '../../store/hooks/useThunk.ts';
 import { fetchAllCategories } from '../../store/thunks/categories.ts';
 import { Button } from '../../components/atoms/Button';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
+import { space } from '../../styles/spacing.ts';
 import { Icon } from '../../components/atoms/Icon';
 import { getBase64OfFile, getTransformedImageUrl, pluck } from '../../utils/utils.tsx';
 import { fetchRecipeDetails, updateRecipe } from '../../store/thunks/recipes.ts';
@@ -206,7 +207,7 @@ export const EditRecipe = () => {
 								isEdit
 								initialImageUrl={initialImageUrl}
 							/>
-							<div css={{ display: 'flex', flexDirection: 'column', marginTop: '24px' }}>
+							<div css={{ display: 'flex', flexDirection: 'column', marginTop: space(6) }}>
 								<FieldsGroupTitle title="Інгредієнти" />
 								<DragDropProvider onDragOver={handleDragOver}>
 									<div>
@@ -230,7 +231,7 @@ export const EditRecipe = () => {
 									Додати
 								</Button>
 							</div>
-							<div css={{ marginTop: '24px', marginBottom: '12px' }}>
+							<div css={{ marginTop: space(6), marginBottom: space(3) }}>
 								<Controller
 									control={control}
 									name="sourceUrl"

@@ -2,9 +2,9 @@ import { useFormContext } from 'react-hook-form';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { CSSProperties, ChangeEvent, FocusEvent, KeyboardEvent } from 'react';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import type { CSSObject } from '@emotion/react';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
+import type { SpacingStyles } from '../../../styles/spacing.ts';
 import { InputLabel } from '../InputLabel';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { Icon } from '../Icon';
@@ -13,7 +13,7 @@ import type { SelectOption } from './types.ts';
 import { HelperText } from '../HelperText';
 
 interface SelectProps {
-	customStyles?: CSSObject;
+	customStyles?: SpacingStyles;
 	helperText?: string;
 	id?: string;
 	isDisabled?: boolean;
@@ -146,9 +146,8 @@ export const Select = ({
 		top: '100%',
 		left: 0,
 		right: 0,
-		marginTop: '4px',
 		padding: 0,
-		margin: '4px 0 0',
+		margin: [1, 0, 0],
 		listStyle: 'none',
 		backgroundColor: '#fff',
 		border: `1px solid ${theme.colors.neutral.borderDefault}`,
@@ -163,7 +162,7 @@ export const Select = ({
 	const getOptionStyles = (isHighlighted: boolean, isSelected: boolean) =>
 		defineStyles({
 			minHeight: '20px',
-			padding: '8px 12px',
+			padding: [2, 3],
 			fontSize: '14px',
 			lineHeight: 1.4,
 			color: '#000',

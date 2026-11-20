@@ -33,6 +33,12 @@ There are no tests. The husky pre-commit hook runs a full `tsc -b` type-check, t
 
 **Styling**: Emotion `css` prop (configured via `jsxImportSource: '@emotion/react'` in vite.config.ts). The global design system lives in `src/styles/theme.ts` (colors, typography, breakpoints, spacing, shadows). Access it in components via `useAppTheme()` from `src/styles/hooks.ts`, not via `useTheme()` directly. Wrap standalone style objects in `defineStyles()` (`src/styles/defineStyles.ts`) instead of `as const` / `: CSSObject` — see README for the patterns.
 
+**Spacing**: margin/padding/gap use `theme.spacing` steps (`0`, `1` → `4px` … `10` → `40px`), see README "Spacing":
+- Inside `defineStyles()` write steps, not pixels: `marginTop: 3` (→ `12px`), `padding: [2, 3]` (→ `8px 12px`). Strings pass through for off-scale/edge cases (`'6px'`, `'-4px'`, `'12px 0 24px 4px'`). No `useAppTheme()` needed for spacing. Negative steps are not supported.
+- In raw inline `css={{ … }}` objects Emotion reads numbers as px (`marginTop: 3` → `3px`) — use `space(3)` / `space(2, 3)` from `src/styles/spacing.ts` there, or wrap the object in `defineStyles()`. The same applies to React `style` props and react-select `styles` configs, which never go through `defineStyles()`.
+- Never call `space()` inside `defineStyles()` — it works but is redundant; a `no-restricted-syntax` lint rule makes it an error.
+- Type custom style props as `SpacingStyles` (not `CSSObject`) and merge them through `defineStyles()` inside the component, so callers can pass steps.
+
 **Component structure**:
 - `src/components/atoms/` — primitive UI components (Button, Typography, TextInput, Select, Modal, Pagination, etc.)
 - `src/components/` — composed feature components (Header, RecipeCard, Form, ProtectedRoute, etc.)

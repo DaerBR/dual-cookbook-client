@@ -2,9 +2,9 @@ import type { ChangeEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { faPizzaSlice, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import type { CSSObject } from '@emotion/react';
-
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { defineStyles } from '../../../styles/defineStyles.ts';
+import type { SpacingStyles } from '../../../styles/spacing.ts';
 import { Icon } from '../Icon';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { Button } from '../Button';
@@ -13,7 +13,7 @@ import { imageFieldStaticStyles } from './styles.ts';
 interface ImageInputProps {
 	customHeight?: number;
 	customWidth?: number;
-	customWrapperStyles?: CSSObject;
+	customWrapperStyles?: SpacingStyles;
 	initialImageUrl?: string;
 	isEdit?: boolean;
 	name: string;
@@ -84,7 +84,7 @@ export const ImageInput = ({
 	};
 
 	return (
-		<div css={{ display: 'flex', flexDirection: 'column', width: '100%', ...customWrapperStyles }}>
+		<div css={defineStyles({ display: 'flex', flexDirection: 'column', width: '100%', ...customWrapperStyles })}>
 			<label htmlFor={name}>
 				<div css={imageFieldStyles}>
 					{!imagePreview && (
@@ -96,7 +96,7 @@ export const ImageInput = ({
 					control={control}
 					name={name}
 					render={() => (
-						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+						<div style={defineStyles({ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 })}>
 							<input
 								style={{ display: 'none' }}
 								accept="image/jpeg, image/png"
@@ -107,13 +107,13 @@ export const ImageInput = ({
 								ref={imageInputRef}
 							/>
 							<div
-								css={{
-									marginTop: '16px',
+								css={defineStyles({
+									marginTop: 4,
 									display: 'flex',
 									justifyContent: 'space-between',
 									alignItems: 'center',
-									gap: '24px',
-								}}
+									gap: 6,
+								})}
 							>
 								<Button
 									variant="secondary"

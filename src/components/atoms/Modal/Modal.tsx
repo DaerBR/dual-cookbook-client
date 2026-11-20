@@ -6,6 +6,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ModalPresentation } from './components/ModalPresentation.tsx';
 import { Icon } from '../Icon';
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { space } from '../../../styles/spacing.ts';
 import { Typography } from '../Typography';
 import {
 	buttonsContainerStyles,
@@ -84,7 +85,7 @@ export const Modal = ({
 						</button>
 					)}
 					{titleIcon && (
-						<div css={{ padding: '0 32px' }}>
+						<div css={{ padding: space(0, 8) }}>
 							<div css={{ ...iconWrapperStyles, backgroundColor: theme.colors[titleIconColor].surfaceLighter }}>
 								<Icon icon={titleIcon} fontSize={22} color="white" />
 							</div>
@@ -92,7 +93,7 @@ export const Modal = ({
 					)}
 					<div css={contentWrapperStyles}>
 						{title && (
-							<Typography variant="h6" weight={700} component="div" customStyles={{ marginBottom: '8px' }}>
+							<Typography variant="h6" weight={700} component="div" customStyles={{ marginBottom: 2 }}>
 								{title}
 							</Typography>
 						)}

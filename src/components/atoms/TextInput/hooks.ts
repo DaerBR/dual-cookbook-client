@@ -15,7 +15,7 @@ export const useCommonFieldStyles = ({ isFullWidth }: UseCommonFieldStylesProps)
 			boxShadow: theme.boxShadows.xs,
 			border: `1px solid ${theme.colors.neutral.borderDefault}`,
 			borderRadius: '4px',
-			padding: '8px 16px',
+			padding: [2, 4],
 			fontSize: theme.typography.paragraphS.fontSize,
 			lineHeight: theme.typography.paragraphS.lineHeight,
 			color: theme.colors.text.main,

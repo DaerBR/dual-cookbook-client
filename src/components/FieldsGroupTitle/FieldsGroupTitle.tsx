@@ -1,28 +1,36 @@
-import type { CSSObject } from '@emotion/react';
 import { Typography } from '../atoms/Typography';
+import type { SpacingStyles } from '../../styles/spacing.ts';
+import { defineStyles } from '../../styles/defineStyles.ts';
+import { useAppTheme } from '../../styles/hooks.ts';
 
 interface FieldsGroupTitleProps {
 	captionText?: string;
-	customStyles?: CSSObject;
+	customStyles?: SpacingStyles;
 	isRequired?: boolean;
 	title: string;
 }
 
-export const FieldsGroupTitle = ({ captionText, isRequired, title, customStyles }: FieldsGroupTitleProps) => (
-	<>
-		<Typography
-			variant="paragraphM"
-			color="textTitle"
-			weight={600}
-			customStyles={{ marginBottom: '8px', ...customStyles }}
-		>
-			{title}
-			{isRequired && <span css={{ fontWeight: 600, color: 'error.main', ml: 1 }}>*</span>}
-		</Typography>
-		{captionText && (
-			<Typography variant="paragraphXs" color="textCaption">
-				{captionText}
+export const FieldsGroupTitle = ({ captionText, isRequired, title, customStyles }: FieldsGroupTitleProps) => {
+	const theme = useAppTheme();
+
+	return (
+		<>
+			<Typography
+				variant="paragraphM"
+				color="textTitle"
+				weight={600}
+				customStyles={{ marginBottom: 2, ...customStyles }}
+			>
+				{title}
+				{isRequired && (
+					<span css={defineStyles({ fontWeight: 600, marginLeft: 1, color: theme.colors.error.main })}>*</span>
+				)}
 			</Typography>
-		)}
-	</>
-);
+			{captionText && (
+				<Typography variant="paragraphXs" color="textCaption">
+					{captionText}
+				</Typography>
+			)}
+		</>
+	);
+};

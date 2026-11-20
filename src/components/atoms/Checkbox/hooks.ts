@@ -16,7 +16,7 @@ export const useCheckboxStyles = ({ color, isDisabled }: UseCheckboxStylesProps)
 			position: 'relative',
 			display: 'inline-flex',
 			alignItems: 'flex-start',
-			gap: '8px',
+			gap: 2,
 			cursor: isDisabled ? 'default' : 'pointer',
 			userSelect: 'none',
 		}),

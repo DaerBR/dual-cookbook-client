@@ -14,11 +14,11 @@ export const buttonStyles = defineStyles({
 		'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1), border-color 250ms cubic-bezier(0.4, 0, 0.2, 1)',
 	'&:disabled': { cursor: 'default' },
 	'& .start-icon-container': {
-		marginRight: '8px',
+		marginRight: 2,
 		marginLeft: '-4px',
 	},
 	'& .end-icon-container': {
 		marginRight: '-4px',
-		marginLeft: '8px',
+		marginLeft: 2,
 	},
 });

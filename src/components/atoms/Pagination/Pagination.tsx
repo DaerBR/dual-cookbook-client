@@ -4,6 +4,7 @@ import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { getPageItems } from './utils.ts';
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { space } from '../../../styles/spacing.ts';
 import { Typography } from '../Typography';
 import { ellipsisStyles, paginationButtonStyles, paginationContainerStyles } from './styles.ts';
 
@@ -42,7 +43,7 @@ export const Pagination = ({ currentPage, totalPages, fetchDataMethod, fetchPara
 				css={{
 					display: 'flex',
 					alignItems: 'center',
-					gap: '12px',
+					gap: space(3),
 					'@media (max-width: 768px)': {
 						display: 'none',
 					},

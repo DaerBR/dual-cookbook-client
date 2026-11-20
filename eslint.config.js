@@ -238,6 +238,13 @@ export default [
 			'no-prototype-builtins': 'error',
 			'no-redeclare': 'error',
 			'no-regex-spaces': 'error',
+			'no-restricted-syntax': [
+				'error',
+				{
+					message: 'Inside defineStyles() use spacing steps directly (marginTop: 1), not space().',
+					selector: "CallExpression[callee.name='defineStyles'] CallExpression[callee.name='space']",
+				},
+			],
 			'no-return-assign': ['error', 'always'],
 			'no-self-assign': 'error',
 			'no-self-compare': 'error',

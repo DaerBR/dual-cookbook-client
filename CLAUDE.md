@@ -45,6 +45,11 @@ There are no tests. The husky pre-commit hook runs a full `tsc -b` type-check, t
 - Unknown token-like strings (`'error.mian'`) only warn in dev, they are not type errors.
 - Dynamic palettes (`theme.colors[color].main`) stay on `useAppTheme()`.
 
+**Theme shadows**: `boxShadow` takes `theme.boxShadows` keys, see README "Theme shadows":
+- Inside `defineStyles()` write `boxShadow: 'xs'` instead of `theme.boxShadows.xs`. Raw shadows and `'none'` pass through.
+- Outside `defineStyles()` use `themeShadow('xs')` from `src/styles/shadowTokens.ts`. Never as a direct property value inside `defineStyles()` — lint error; inside a template string it's fine.
+- Unknown bare words (`'mdd'`) only warn in dev.
+
 **Component structure**:
 - `src/components/atoms/` — primitive UI components (Button, Typography, TextInput, Select, Modal, Pagination, etc.)
 - `src/components/` — composed feature components (Header, RecipeCard, Form, ProtectedRoute, etc.)

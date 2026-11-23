@@ -96,21 +96,20 @@ export const stepWrapperStyles = defineStyles({
 
 export const addStepButtonStyles = defineStyles({ maxWidth: '250px', marginTop: 4 });
 
-export const useFormActionButtonsContainerStyles = () =>
-	defineStyles({
-		display: 'flex',
-		gap: 6,
-		justifyContent: 'center',
-		marginTop: 3,
-		'@media (max-width: 768px)': {
-			width: '100%',
-			backgroundColor: '#fff',
-			padding: [3, 0],
-			position: 'fixed',
-			bottom: 0,
-			left: 0,
-			zIndex: 3,
-			borderTop: '1px solid',
-			borderColor: 'neutral.borderDefault',
-		},
-	});
+export const formActionButtonsContainerStyles = defineStyles({
+	display: 'flex',
+	gap: 6,
+	justifyContent: 'center',
+	marginTop: 3,
+	'@media (max-width: 768px)': {
+		width: '100%',
+		backgroundColor: '#fff',
+		padding: [3, 0],
+		position: 'fixed',
+		bottom: 0,
+		left: 0,
+		zIndex: 3,
+		borderTop: '1px solid',
+		borderColor: 'neutral.borderDefault',
+	},
+});

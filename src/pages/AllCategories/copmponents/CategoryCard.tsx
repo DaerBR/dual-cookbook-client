@@ -1,7 +1,6 @@
 import { Link } from 'react-router';
 
 import type { CategoryModel } from '../../../store/slices/categoriesSlice.ts';
-import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
 import { Typography } from '../../../components/atoms/Typography';
 import { categoryImageSectionStyles } from '../styles.ts';
@@ -13,7 +12,6 @@ interface CategoryCardProps {
 
 export const CategoryCard = ({ category }: CategoryCardProps) => {
 	const { id, name, categoryImage } = category;
-	const theme = useAppTheme();
 	const linkStyles = defineStyles({
 		position: 'relative',
 		borderRadius: '8px',
@@ -21,11 +19,12 @@ export const CategoryCard = ({ category }: CategoryCardProps) => {
 		width: '100%',
 		display: 'flex',
 		textDecoration: 'none',
-		border: `1px solid ${theme.colors.primary.borderDefault}`,
+		border: '1px solid',
+		borderColor: 'primary.borderDefault',
 		boxSizing: 'border-box',
-		boxShadow: theme.boxShadows.sm,
+		boxShadow: 'sm',
 		'&:hover': {
-			boxShadow: theme.boxShadows.md,
+			boxShadow: 'md',
 		},
 		'&:hover button': {
 			display: 'block',

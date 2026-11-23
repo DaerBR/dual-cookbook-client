@@ -17,6 +17,9 @@ export const recipeImageStyles = defineStyles({
 	borderRadius: '12px',
 	marginBottom: 3,
 	maxWidth: '500px',
+	boxShadow: 'md',
+	border: '1px solid',
+	borderColor: 'neutral.borderDefault',
 });
 
 export const sourceContainerStyles = defineStyles({

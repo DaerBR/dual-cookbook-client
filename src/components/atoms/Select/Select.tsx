@@ -2,7 +2,6 @@ import { useFormContext } from 'react-hook-form';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { CSSProperties, ChangeEvent, FocusEvent, KeyboardEvent } from 'react';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
 import type { ThemeStyles } from '../../../styles/themeStyles.ts';
 import { InputLabel } from '../InputLabel';
@@ -47,7 +46,6 @@ export const Select = ({
 	isFullWidth,
 	helperText,
 }: SelectProps) => {
-	const theme = useAppTheme();
 	const [isOpen, setIsOpen] = useState(false);
 
 	// Pairs trigger aria-controls with the listbox element id
@@ -150,9 +148,10 @@ export const Select = ({
 		margin: [1, 0, 0],
 		listStyle: 'none',
 		backgroundColor: '#fff',
-		border: `1px solid ${theme.colors.neutral.borderDefault}`,
+		border: '1px solid',
+		borderColor: 'neutral.borderDefault',
 		borderRadius: '4px',
-		boxShadow: theme.boxShadows.xs,
+		boxShadow: 'xs',
 		maxHeight: '240px',
 		minWidth: '300px',
 		overflowY: 'auto',

@@ -249,6 +249,11 @@ export default [
 						"Inside defineStyles() use color tokens directly (color: 'error.main'), not themeColor(). themeColor() is fine inside template strings.",
 					selector: "CallExpression[callee.name='defineStyles'] Property > CallExpression[callee.name='themeColor']",
 				},
+				{
+					message:
+						"Inside defineStyles() use shadow tokens directly (boxShadow: 'xs'), not themeShadow(). themeShadow() is fine inside template strings.",
+					selector: "CallExpression[callee.name='defineStyles'] Property > CallExpression[callee.name='themeShadow']",
+				},
 			],
 			'no-return-assign': ['error', 'always'],
 			'no-self-assign': 'error',

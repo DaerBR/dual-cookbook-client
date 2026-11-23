@@ -74,7 +74,7 @@ export const useMultiSelectComponents = (): any => {
 			backgroundColor: '#fff',
 			border: `1px solid ${theme.colors.neutral.borderDefault}`,
 			borderRadius: '4px',
-			boxShadow: theme.boxShadows.xs,
+			boxShadow: 'xs',
 			overflow: 'hidden',
 			zIndex: 10,
 		});

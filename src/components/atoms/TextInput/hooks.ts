@@ -12,7 +12,7 @@ export const useCommonFieldStyles = ({ isFullWidth }: UseCommonFieldStylesProps)
 		fieldStyles: defineStyles({
 			minHeight: '38px',
 			backgroundColor: '#fff',
-			boxShadow: theme.boxShadows.xs,
+			boxShadow: 'xs',
 			border: `1px solid ${theme.colors.neutral.borderDefault}`,
 			borderRadius: '4px',
 			padding: [2, 4],

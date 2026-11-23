@@ -1,9 +1,11 @@
 import type { CSSObject, SerializedStyles } from '@emotion/react';
 
 import { COLOR_PROPERTIES, resolveColorValue } from './colorTokens.ts';
+import { SHADOW_PROPERTIES, resolveShadowValue } from './shadowTokens.ts';
 import { SPACING_PROPERTIES, resolveSpacingValue } from './spacing.ts';
 
 import type { ColorProperty, ColorToken, ResolvedColorValue } from './colorTokens.ts';
+import type { ResolvedShadowValue, ShadowProperty, ShadowToken } from './shadowTokens.ts';
 import type { ResolvedSpacingValue, SpacingProperty, SpacingValue } from './spacing.ts';
 
 /** `CSSObject` without its `[selector: string]` index signature: the CSS properties and pseudos only. */
@@ -16,15 +18,18 @@ type ThemeAwareProperties = {
 		? Extract<CSSKnownProperties[TKey], string> | readonly string[] | SpacingValue<TKey>
 		: TKey extends ColorProperty
 			? CSSKnownProperties[TKey] | ColorToken
-			: TKey extends `:${string}`
-				? ThemeStyles
-				: CSSKnownProperties[TKey];
+			: TKey extends ShadowProperty
+				? CSSKnownProperties[TKey] | ShadowToken
+				: TKey extends `:${string}`
+					? ThemeStyles
+					: CSSKnownProperties[TKey];
 };
 
 /**
  * `CSSObject` where some properties also take theme tokens:
  * - spacing properties take `theme.spacing` steps instead of raw pixel numbers (`marginTop: 3`, `padding: [2, 3]`);
- * - color properties take `theme.colors` tokens (`color: 'error.main'`).
+ * - color properties take `theme.colors` tokens (`color: 'error.main'`);
+ * - `boxShadow` takes `theme.boxShadows` tokens (`boxShadow: 'xs'`).
  *
  * Other strings pass through untouched (`margin: '12px 0 24px 4px'`, `color: '#fff'`).
  * Nested selectors and media queries follow the same rules.
@@ -45,7 +50,9 @@ export type ResolvedThemeStyles<TStyles> = {
 		? ResolvedSpacingValue<TStyles[TKey]>
 		: TKey extends ColorProperty
 			? ResolvedColorValue<TStyles[TKey]>
-			: ResolvedThemeStylesValue<TStyles[TKey]>;
+			: TKey extends ShadowProperty
+				? ResolvedShadowValue<TStyles[TKey]>
+				: ResolvedThemeStylesValue<TStyles[TKey]>;
 };
 
 type ValueResolver = (value: unknown) => unknown;
@@ -54,6 +61,7 @@ type ValueResolver = (value: unknown) => unknown;
 const PROPERTY_RESOLVERS: ReadonlyMap<string, ValueResolver> = new Map<string, ValueResolver>([
 	...SPACING_PROPERTIES.map((property): [string, ValueResolver] => [property, resolveSpacingValue]),
 	...COLOR_PROPERTIES.map((property): [string, ValueResolver] => [property, resolveColorValue]),
+	...SHADOW_PROPERTIES.map((property): [string, ValueResolver] => [property, resolveShadowValue]),
 ]);
 
 const isPlainObject = (value: unknown): value is Record<string, unknown> =>

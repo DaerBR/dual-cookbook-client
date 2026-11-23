@@ -29,11 +29,11 @@ import {
 	descriptionFieldStyles,
 	fieldBlockStyles,
 	fieldsWrapperStyles,
+	formActionButtonsContainerStyles,
 	leftColumnWrapperStyles,
 	mainWrapperStyles,
 	recipeTitleFieldStyles,
 	sourceUrlFieldStyles,
-	useFormActionButtonsContainerStyles,
 } from './styles.ts';
 import { ImportRecipeModal } from './modals/ImportRecipeModal.tsx';
 import { DEFAULT_RECIPE_FORM_VALUES } from './constant.ts';
@@ -165,8 +165,6 @@ export const CreateRecipe = () => {
 			Імпортувати
 		</Button>,
 	];
-
-	const formActionButtonsContainerStyles = useFormActionButtonsContainerStyles();
 
 	return (
 		<div>

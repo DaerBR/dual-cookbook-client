@@ -10,7 +10,6 @@ import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { Icon } from '../../components/atoms/Icon';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
-import { useAppTheme } from '../../styles/hooks.ts';
 import { space } from '../../styles/spacing.ts';
 import { Typography } from '../../components/atoms/Typography';
 import { Chip } from '../../components/atoms/Chip';
@@ -18,6 +17,7 @@ import { recipeImageStyles, sourceContainerStyles } from './styles.ts';
 import { RecipeStep } from './components/RecipeStep.tsx';
 import { NoImage } from '../../components/NoImage';
 import { getTransformedImageUrl } from '../../utils/utils.tsx';
+import { themeColor } from '../../styles/colorTokens.ts';
 
 export const SingleRecipe = () => {
 	const { id: recipeId } = useParams();
@@ -26,7 +26,6 @@ export const SingleRecipe = () => {
 	const isFetchingRecipeDetails = useAppSelector((state) => state.recipes.recipeDetails.isLoading);
 
 	const navigate = useNavigate();
-	const theme = useAppTheme();
 
 	const [dispatchFetchRecipeDetails] = useThunk(fetchRecipeDetails);
 
@@ -70,11 +69,7 @@ export const SingleRecipe = () => {
 								<img
 									src={getTransformedImageUrl(recipeImage.secureUrl, 'cookbook_full')}
 									alt={recipeDetails?.recipeTitle ?? ''}
-									css={{
-										...recipeImageStyles,
-										boxShadow: theme.boxShadows.md,
-										border: `1px solid ${theme.colors.neutral.borderDefault}`,
-									}}
+									css={recipeImageStyles}
 								/>
 							) : (
 								<NoImage />
@@ -131,7 +126,7 @@ export const SingleRecipe = () => {
 									<span css={{ marginLeft: space(1) }} />
 									<a
 										href={sourceUrl}
-										css={{ textDecoration: 'none', color: theme.colors.primary.main }}
+										css={{ textDecoration: 'none', color: themeColor('primary.main') }}
 										target="_blank"
 										rel="noopener noreferrer"
 									>

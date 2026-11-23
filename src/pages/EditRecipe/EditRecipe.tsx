@@ -30,11 +30,11 @@ import {
 	descriptionFieldStyles,
 	fieldBlockStyles,
 	fieldsWrapperStyles,
+	formActionButtonsContainerStyles,
 	leftColumnWrapperStyles,
 	mainWrapperStyles,
 	recipeTitleFieldStyles,
 	sourceUrlFieldStyles,
-	useFormActionButtonsContainerStyles,
 } from '../CreateRecipe/styles.ts';
 
 export const EditRecipe = () => {
@@ -177,8 +177,6 @@ export const EditRecipe = () => {
 			moveIngredient(activeIndex, overIndex);
 		}
 	};
-
-	const formActionButtonsContainerStyles = useFormActionButtonsContainerStyles();
 
 	return (
 		<div>

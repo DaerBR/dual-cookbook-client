@@ -3,24 +3,21 @@ import { faCheckCircle, faCircleXmark } from '@fortawesome/free-regular-svg-icon
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { Icon } from '../Icon';
-import { useAppTheme } from '../../../styles/hooks.ts';
+import { themeShadow } from '../../../styles/shadowTokens.ts';
 
-export const StyledToaster = () => {
-	const theme = useAppTheme();
-	const toastOptions = {
-		style: {
-			boxShadow: theme.boxShadows.md,
-		},
-	};
-
-	return (
-		<Toaster
-			toastOptions={toastOptions}
-			icons={{
-				success: <Icon icon={faCheckCircle} color="success" />,
-				error: <Icon icon={faCircleXmark} color="error" />,
-				info: <Icon icon={faInfoCircle} color="primary" />,
-			}}
-		/>
-	);
+const toastOptions = {
+	style: {
+		boxShadow: themeShadow('md'),
+	},
 };
+
+export const StyledToaster = () => (
+	<Toaster
+		toastOptions={toastOptions}
+		icons={{
+			success: <Icon icon={faCheckCircle} color="success" />,
+			error: <Icon icon={faCircleXmark} color="error" />,
+			info: <Icon icon={faInfoCircle} color="primary" />,
+		}}
+	/>
+);

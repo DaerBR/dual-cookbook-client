@@ -5,11 +5,12 @@ import { Typography } from '../atoms/Typography';
 import type { RecipeTableModel } from '../../store/types.ts';
 import { Chip } from '../atoms/Chip';
 import { Icon } from '../atoms/Icon';
-import { useAppTheme } from '../../styles/hooks.ts';
 import { space } from '../../styles/spacing.ts';
 import { useAppSelector } from '../../store/hooks/hooks.ts';
-import { useRecipeCardStyles } from './styles.ts';
+import { recipeCardStyles } from './styles.ts';
 import { getTransformedImageUrl } from '../../utils/utils.tsx';
+import { themeColor } from '../../styles/colorTokens.ts';
+import { themeShadow } from '../../styles/shadowTokens.ts';
 
 interface RecipeCardProps {
 	recipe: RecipeTableModel;
@@ -17,7 +18,6 @@ interface RecipeCardProps {
 
 export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 	const { id } = recipe;
-	const theme = useAppTheme();
 
 	const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
@@ -30,7 +30,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 		titleCustomStyles,
 		wrapperStyles,
 		infoSectionStyles,
-	} = useRecipeCardStyles();
+	} = recipeCardStyles;
 
 	const navigate = useNavigate();
 
@@ -51,7 +51,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 									width: '100%',
 									borderRadius: '8px',
 									minWidth: '100%',
-									boxShadow: theme.boxShadows.xs,
+									boxShadow: themeShadow('xs'),
 								}}
 							/>
 						) : (
@@ -86,7 +86,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 						navigate(`/edit-recipe/${id}`);
 					}}
 				>
-					<Icon icon={faPencilAlt} color="primary" customStyles={{ color: theme.colors.primary.main }} fontSize={12} />
+					<Icon icon={faPencilAlt} color="primary" customStyles={{ color: themeColor('primary.main') }} fontSize={12} />
 				</button>
 			)}
 		</span>

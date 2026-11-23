@@ -76,7 +76,7 @@ export const useSearchAsyncSelectComponents = (): Config => {
 			border: `1px solid`,
 			borderColor: 'neutral.borderDefault',
 			borderRadius: '4px',
-			boxShadow: theme.boxShadows.xs,
+			boxShadow: 'xs',
 			overflow: 'hidden',
 			zIndex: 10,
 		});

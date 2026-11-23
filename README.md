@@ -78,7 +78,7 @@ if (result.ok) {
 **`defineStyles`** (`src/styles/defineStyles.ts`): the helper that standalone style objects are wrapped in. It does two things:
 
 - **Keeps literal types.** A bare object literal gets its string values widened to `string`, so TypeScript rejects it for enum-like CSS properties (`position: 'absolute'`, `boxSizing: 'border-box'`, `flexDirection: 'column'`, …) when it reaches the `css` prop. `defineStyles` checks the object against Emotion's `CSSObject` and keeps the narrow literal types — no `as const` or `: CSSObject` annotation needed.
-- **Resolves theme tokens** — spacing steps (see [Spacing](#spacing) below: `marginTop: 3` becomes `'12px'`) and color tokens (see [Theme colors](#theme-colors): `color: 'error.main'` becomes `theme.colors.error.main`). The resolver lives in `src/styles/themeStyles.ts`. Resolving is a shallow copy of the object (recursing into nested selectors), so it costs a few microseconds per call; negligible next to Emotion serialising the same object.
+- **Resolves theme tokens** — spacing steps (see [Spacing](#spacing) below: `marginTop: 3` becomes `'12px'`) color tokens (see [Theme colors](#theme-colors): `color: 'error.main'` becomes `theme.colors.error.main`) and shadow tokens (see [Theme shadows](#theme-shadows): `boxShadow: 'xs'` becomes `theme.boxShadows.xs`). The resolver lives in `src/styles/themeStyles.ts`. Resolving is a shallow copy of the object (recursing into nested selectors), so it costs a few microseconds per call; negligible next to Emotion serialising the same object.
 
 It's used in four shapes across the codebase:
 
@@ -153,6 +153,23 @@ export const labelStyles = defineStyles({
 
 - **Lint:** `themeColor()` as a direct property value inside `defineStyles()` is an error (`no-restricted-syntax`) — write the token instead. Inside a template string it's allowed.
 - **Dynamic palettes** (`theme.colors[color].main`, where `color` is a prop) still go through `useAppTheme()`.
+
+### Theme shadows
+
+`boxShadow` takes `theme.boxShadows` keys as tokens inside `defineStyles()` (`src/styles/shadowTokens.ts`):
+
+```ts
+export const cardStyles = defineStyles({
+	boxShadow: 'xs', // theme.boxShadows.xs
+	'&:hover': { boxShadow: isActive ? 'md' : 'sm' }, // conditions and nested selectors work
+	'&:focus': { boxShadow: '0 0 0 3px rgba(254, 186, 152, 0.20)' }, // raw shadows and 'none' are left as written
+});
+```
+
+- **Tokens:** `'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`, `'xxl'`, straight from `theme.boxShadows` (a new key there becomes a token automatically). Only `boxShadow` is resolved.
+- **Typos:** in dev, a bare lowercase word that isn't a token or a CSS keyword (`'mdd'`, but not `'none'`/`'inherit'`) logs a `console.warn` once and is passed through as written.
+- **Outside `defineStyles()`** use `themeShadow('md')` — e.g. `css={{ boxShadow: themeShadow('sm') }}` or a third-party `style` prop.
+- **Lint:** `themeShadow()` as a direct property value inside `defineStyles()` is an error; inside a template string it's allowed.
 
 **Component structure**:
 - `src/components/atoms/` — primitive UI components (Button, Typography, TextInput, Select, Modal, Pagination, etc.)

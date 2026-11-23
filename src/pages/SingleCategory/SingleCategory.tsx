@@ -18,7 +18,6 @@ import { Select } from '../../components/atoms/Select';
 import { Chip } from '../../components/atoms/Chip';
 import { recipeAuthorOptions } from '../../constants/recipeAuthors.ts';
 import { NoImage } from '../../components/NoImage';
-import { useAppTheme } from '../../styles/hooks.ts';
 import { space } from '../../styles/spacing.ts';
 import { getTransformedImageUrl } from '../../utils/utils.tsx';
 
@@ -36,8 +35,6 @@ export const SingleCategory = () => {
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 	const [dispatchFetchRecipes] = useThunk(fetchRecipes);
-
-	const theme = useAppTheme();
 
 	useEffect(() => {
 		if (categoryId) {
@@ -87,11 +84,7 @@ export const SingleCategory = () => {
 					<img
 						src={getTransformedImageUrl(selectedCategoryData.categoryImage.secureUrl, 'cookbook_card')}
 						alt={selectedCategoryData?.name ?? ''}
-						css={{
-							...categoryImageStyles,
-							boxShadow: theme.boxShadows.md,
-							border: `1px solid ${theme.colors.neutral.borderDefault}`,
-						}}
+						css={categoryImageStyles}
 					/>
 				) : (
 					<NoImage />

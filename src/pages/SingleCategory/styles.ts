@@ -5,6 +5,9 @@ export const categoryImageStyles = defineStyles({
 	height: 'auto',
 	borderRadius: '12px',
 	marginBottom: 3,
+	boxShadow: 'md',
+	border: `1px solid`,
+	borderColor: 'neutral.borderDefault',
 	'@media (max-width: 768px)': {
 		width: '100%',
 	},

@@ -86,8 +86,8 @@ export const useMultiSelectComponents = (): any => {
 				fontSize: theme.typography.paragraphS.fontSize,
 				lineHeight: theme.typography.paragraphS.lineHeight,
 				cursor: 'pointer',
-				color: theme.colors.text.main,
-				backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
+				color: 'text.main',
+				backgroundColor: isHighlighted || isSelected ? 'neutral.surfaceSubtle' : '#fff',
 			});
 
 		const chevronColor = theme.colors.text.subtitle;

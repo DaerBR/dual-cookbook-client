@@ -3,7 +3,7 @@ import type { ReactNode, SyntheticEvent } from 'react';
 import type { Colors, Variants } from './types';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
-import type { SpacingStyles } from '../../../styles/spacing.ts';
+import type { ThemeStyles } from '../../../styles/themeStyles.ts';
 import { useButtonColors } from './hooks.ts';
 import { buttonStyles } from './styles.ts';
 import { CircularProgress } from '../CircularProgress';
@@ -11,7 +11,7 @@ import { CircularProgress } from '../CircularProgress';
 interface ButtonProps {
 	children: string | ReactNode;
 	color?: Colors;
-	customStyles?: SpacingStyles;
+	customStyles?: ThemeStyles;
 	endIcon?: ReactNode;
 	fullWidth?: boolean;
 	id?: string;

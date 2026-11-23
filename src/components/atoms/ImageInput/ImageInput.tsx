@@ -4,7 +4,7 @@ import { faPizzaSlice, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
-import type { SpacingStyles } from '../../../styles/spacing.ts';
+import type { ThemeStyles } from '../../../styles/themeStyles.ts';
 import { Icon } from '../Icon';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { Button } from '../Button';
@@ -13,7 +13,7 @@ import { imageFieldStaticStyles } from './styles.ts';
 interface ImageInputProps {
 	customHeight?: number;
 	customWidth?: number;
-	customWrapperStyles?: SpacingStyles;
+	customWrapperStyles?: ThemeStyles;
 	initialImageUrl?: string;
 	isEdit?: boolean;
 	name: string;

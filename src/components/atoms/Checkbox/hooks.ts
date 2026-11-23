@@ -36,7 +36,7 @@ export const useCheckboxStyles = ({ color, isDisabled }: UseCheckboxStylesProps)
 			boxSizing: 'border-box',
 			borderRadius: '4px',
 			border: `1px solid ${isDisabled ? theme.colors.neutral.borderDefault : theme.colors.neutral.borderDarker}`,
-			backgroundColor: isDisabled ? theme.colors.neutral.surfaceSubtle : '#fff',
+			backgroundColor: isDisabled ? 'neutral.surfaceSubtle' : '#fff',
 			boxShadow: theme.boxShadows.xs,
 			transition: 'background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease',
 			'&::after': {

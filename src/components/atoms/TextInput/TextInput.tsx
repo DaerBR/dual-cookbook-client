@@ -2,13 +2,13 @@ import type { ChangeEvent, RefObject } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { getFieldError, processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { defineStyles } from '../../../styles/defineStyles.ts';
-import type { SpacingStyles } from '../../../styles/spacing.ts';
+import type { ThemeStyles } from '../../../styles/themeStyles.ts';
 import { InputLabel } from '../InputLabel';
 import { useCommonFieldStyles } from './hooks.ts';
 import { HelperText } from '../HelperText';
 
 interface TextInputProps {
-	customStyles?: SpacingStyles;
+	customStyles?: ThemeStyles;
 	helperText?: string;
 	id?: string;
 	inputRef?: RefObject<HTMLInputElement | null>;

@@ -244,6 +244,11 @@ export default [
 					message: 'Inside defineStyles() use spacing steps directly (marginTop: 1), not space().',
 					selector: "CallExpression[callee.name='defineStyles'] CallExpression[callee.name='space']",
 				},
+				{
+					message:
+						"Inside defineStyles() use color tokens directly (color: 'error.main'), not themeColor(). themeColor() is fine inside template strings.",
+					selector: "CallExpression[callee.name='defineStyles'] Property > CallExpression[callee.name='themeColor']",
+				},
 			],
 			'no-return-assign': ['error', 'always'],
 			'no-self-assign': 'error',

@@ -27,6 +27,7 @@ import { space } from '../../../styles/spacing.ts';
 import { useCommonFieldStyles } from '../TextInput/hooks.ts';
 import { Icon } from '../Icon';
 import type { RecipeOption } from './types.ts';
+import { themeColor } from '../../../styles/colorTokens.ts';
 
 const spin = keyframes`
 	from {
@@ -40,7 +41,6 @@ const spin = keyframes`
 type Config = SelectComponentsConfig<RecipeOption, false, GroupBase<RecipeOption>>;
 
 export const useSearchAsyncSelectStyles = (): StylesConfig<RecipeOption, false, GroupBase<RecipeOption>> => {
-	const theme = useAppTheme();
 	const { fieldStyles } = useCommonFieldStyles({ isFullWidth: true });
 
 	return useMemo(() => {
@@ -56,12 +56,13 @@ export const useSearchAsyncSelectStyles = (): StylesConfig<RecipeOption, false, 
 				border: 'none',
 				boxShadow: 'none',
 				borderRadius: 0,
-				borderBottom: `1px solid ${theme.colors.primary.borderDarker}`,
+				borderBottom: `1px solid`,
+				borderColor: themeColor('primary.borderDarker'),
 				cursor: state.isDisabled ? 'not-allowed' : 'pointer',
 				paddingLeft: 0,
 			}),
 		};
-	}, [fieldStyles, theme]);
+	}, [fieldStyles]);
 };
 
 export const useSearchAsyncSelectComponents = (): Config => {
@@ -72,7 +73,8 @@ export const useSearchAsyncSelectComponents = (): Config => {
 			marginTop: 1,
 			padding: 0,
 			backgroundColor: '#fff',
-			border: `1px solid ${theme.colors.neutral.borderDefault}`,
+			border: `1px solid`,
+			borderColor: 'neutral.borderDefault',
 			borderRadius: '4px',
 			boxShadow: theme.boxShadows.xs,
 			overflow: 'hidden',
@@ -86,8 +88,8 @@ export const useSearchAsyncSelectComponents = (): Config => {
 				fontSize: theme.typography.paragraphS.fontSize,
 				lineHeight: theme.typography.paragraphS.lineHeight,
 				cursor: 'pointer',
-				color: theme.colors.text.main,
-				backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
+				color: 'text.main',
+				backgroundColor: isHighlighted || isSelected ? 'neutral.surfaceSubtle' : '#fff',
 			});
 
 		const Placeholder = (props: PlaceholderProps<RecipeOption, false, GroupBase<RecipeOption>>) => (

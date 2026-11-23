@@ -13,7 +13,7 @@ export const InputLabel = ({ isRequired, label, id }: InputLabelProps) => {
 	const labelStyles = defineStyles({
 		fontSize: theme.typography.paragraphXs.fontSize,
 		lineHeight: theme.typography.paragraphXs.lineHeight,
-		color: theme.colors.text.main,
+		color: 'text.main',
 		fontWeight: 600,
 		marginBottom: 1,
 		display: 'block',

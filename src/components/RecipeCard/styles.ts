@@ -20,11 +20,11 @@ export const useRecipeCardStyles = () => {
 			'&:hover': {
 				border: '1px solid',
 				opacity: 1,
-				borderColor: theme.colors.primary.main,
+				borderColor: 'primary.main',
 			},
 			'&:hover svg': {
 				boxShadow: theme.boxShadows.lg,
-				color: theme.colors.primary.surfaceDarker,
+				color: 'primary.surfaceDarker',
 			},
 			'@media (max-width: 768px)': {
 				display: 'none',
@@ -32,7 +32,7 @@ export const useRecipeCardStyles = () => {
 		}),
 		wrapperStyles: defineStyles({
 			border: '1px solid',
-			borderColor: theme.colors.neutral.borderLighter,
+			borderColor: 'neutral.borderLighter',
 			borderRadius: '8px',
 			display: 'flex',
 			position: 'relative',

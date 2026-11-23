@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { useFormContext } from 'react-hook-form';
 import type { SelectOption } from '../Select/types.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
-import type { SpacingStyles } from '../../../styles/spacing.ts';
+import type { ThemeStyles } from '../../../styles/themeStyles.ts';
 import { InputLabel } from '../InputLabel';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { HelperText } from '../HelperText';
@@ -12,7 +12,7 @@ import { useMultiSelectComponents, useMultiSelectStyles } from './hooks.tsx';
 export type MultiSelectOption = SelectOption;
 
 export interface MultiSelectProps {
-	customStyles?: SpacingStyles;
+	customStyles?: ThemeStyles;
 	helperText?: string;
 	id?: string;
 	isDisabled?: boolean;

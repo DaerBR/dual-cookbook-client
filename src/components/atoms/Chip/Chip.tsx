@@ -2,7 +2,7 @@ import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
 import { space } from '../../../styles/spacing.ts';
-import type { SpacingStyles } from '../../../styles/spacing.ts';
+import type { ThemeStyles } from '../../../styles/themeStyles.ts';
 import { Typography } from '../Typography';
 import type { TypographyVariant } from '../Typography/types.ts';
 import { Icon } from '../Icon';
@@ -10,7 +10,7 @@ import { chipHeight, chipIconSize, chipPadding } from './constants.ts';
 
 interface ChipProps {
 	color?: 'primary' | 'neutral' | 'success' | 'error';
-	customStyles?: SpacingStyles;
+	customStyles?: ThemeStyles;
 	endIcon?: IconDefinition;
 	isOutlined?: boolean;
 	onClick?: () => void;

@@ -37,7 +37,13 @@ There are no tests. The husky pre-commit hook runs a full `tsc -b` type-check, t
 - Inside `defineStyles()` write steps, not pixels: `marginTop: 3` (→ `12px`), `padding: [2, 3]` (→ `8px 12px`). Strings pass through for off-scale/edge cases (`'6px'`, `'-4px'`, `'12px 0 24px 4px'`). No `useAppTheme()` needed for spacing. Negative steps are not supported.
 - In raw inline `css={{ … }}` objects Emotion reads numbers as px (`marginTop: 3` → `3px`) — use `space(3)` / `space(2, 3)` from `src/styles/spacing.ts` there, or wrap the object in `defineStyles()`. The same applies to React `style` props and react-select `styles` configs, which never go through `defineStyles()`.
 - Never call `space()` inside `defineStyles()` — it works but is redundant; a `no-restricted-syntax` lint rule makes it an error.
-- Type custom style props as `SpacingStyles` (not `CSSObject`) and merge them through `defineStyles()` inside the component, so callers can pass steps.
+- Type custom style props as `ThemeStyles` from `src/styles/themeStyles.ts` (not `CSSObject`) and merge them through `defineStyles()` inside the component, so callers can pass steps and color tokens.
+
+**Theme colors**: simple color properties (`color`, `backgroundColor`, `borderColor` + sides, `outlineColor`, `fill`, `stroke`, `textDecorationColor`, `caretColor`) take `theme.colors` tokens, see README "Theme colors":
+- Inside `defineStyles()` write the token: `color: 'error.main'` instead of `color: theme.colors.error.main`. No `useAppTheme()` needed for it. Other strings (`'#fff'`, `'inherit'`) pass through; composite values (`border: '1px solid …'`) are not resolved.
+- Outside `defineStyles()` (inline `css`, React `style`, react-select configs, template strings) use `themeColor('error.main')` from `src/styles/colorTokens.ts`. Never use it as a direct property value inside `defineStyles()` — lint error; inside a template string it's fine.
+- Unknown token-like strings (`'error.mian'`) only warn in dev, they are not type errors.
+- Dynamic palettes (`theme.colors[color].main`) stay on `useAppTheme()`.
 
 **Component structure**:
 - `src/components/atoms/` — primitive UI components (Button, Typography, TextInput, Select, Modal, Pagination, etc.)

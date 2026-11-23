@@ -64,8 +64,7 @@ export const Pagination = ({ currentPage, totalPages, fetchDataMethod, fetchPara
 						<Button
 							customStyles={{
 								...paginationButtonStyles,
-								borderColor:
-									currentPage === item ? theme.colors.neutral.borderDarker : theme.colors.neutral.borderDefault,
+								borderColor: currentPage === item ? 'neutral.borderDarker' : 'neutral.borderDefault',
 								boxShadow: currentPage === item ? theme.boxShadows.sm : theme.boxShadows.xs,
 								color: currentPage === item ? theme.colors.text.title : `${theme.colors.text.caption}!important`,
 								fontWeight: currentPage === item ? 600 : 400,

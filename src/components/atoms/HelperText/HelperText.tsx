@@ -1,5 +1,4 @@
 import { Typography } from '../Typography';
-import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
 
 interface HelperTextProps {
@@ -7,9 +6,8 @@ interface HelperTextProps {
 }
 
 export const HelperText = ({ text }: HelperTextProps) => {
-	const theme = useAppTheme();
 	const helperTextStyles = defineStyles({
-		color: theme.colors.text.caption,
+		color: 'text.caption',
 		marginTop: 1,
 	});
 

@@ -1,6 +1,6 @@
-import { resolveSpacing } from './spacing.ts';
+import { resolveThemeStyles } from './themeStyles.ts';
 
-import type { ResolvedSpacing, SpacingStyles } from './spacing.ts';
+import type { ResolvedThemeStyles, ThemeStyles } from './themeStyles.ts';
 
 /**
  * Wrap a style object literal in this so its properties are checked against `CSSObject`
@@ -8,8 +8,11 @@ import type { ResolvedSpacing, SpacingStyles } from './spacing.ts';
  * `position`/`display`/`flexDirection`) without widening to plain `CSSObject` or needing
  * per-property `as const`.
  *
- * Spacing properties (margin, padding, gap and their longhands) also accept `theme.spacing` steps:
- * `marginTop: 3` → `'12px'`, `padding: [2, 3]` → `'8px 12px'`. Strings are left as written.
+ * It also resolves theme tokens (strings that aren't tokens are left as written):
+ * - spacing properties (margin, padding, gap and their longhands) take `theme.spacing` steps:
+ *   `marginTop: 3` → `'12px'`, `padding: [2, 3]` → `'8px 12px'`;
+ * - color properties (color, backgroundColor, borderColor, …) take `theme.colors` tokens:
+ *   `color: 'error.main'` → `theme.colors.error.main`.
  */
-export const defineStyles = <TStyles extends SpacingStyles>(styles: TStyles): ResolvedSpacing<TStyles> =>
-	resolveSpacing(styles);
+export const defineStyles = <TStyles extends ThemeStyles>(styles: TStyles): ResolvedThemeStyles<TStyles> =>
+	resolveThemeStyles(styles);

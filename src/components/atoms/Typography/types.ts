@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { SpacingStyles } from '../../../styles/spacing.ts';
+import type { ThemeStyles } from '../../../styles/themeStyles.ts';
 
 export type TypographyVariant =
 	'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'paragraphL' | 'paragraphM' | 'paragraphS' | 'paragraphXs';
@@ -22,7 +22,7 @@ export interface TypographyProps {
 	children: ReactNode | string;
 	color?: TypographyColor;
 	component?: 'span' | 'div' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-	customStyles?: SpacingStyles;
+	customStyles?: ThemeStyles;
 	variant?: TypographyVariant;
 	weight?: TypographyWeight;
 }

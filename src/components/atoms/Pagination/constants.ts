@@ -1,1 +1,1 @@
-export const EDGE_SIZE = 5
+export const EDGE_SIZE = 5;

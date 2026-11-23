@@ -1,5 +1,4 @@
 import { defineStyles } from '../../styles/defineStyles.ts';
-import { useAppTheme } from '../../styles/hooks.ts';
 
 export const mainWrapperStyles = defineStyles({
 	display: 'flex',
@@ -97,10 +96,8 @@ export const stepWrapperStyles = defineStyles({
 
 export const addStepButtonStyles = defineStyles({ maxWidth: '250px', marginTop: 4 });
 
-export const useFormActionButtonsContainerStyles = () => {
-	const theme = useAppTheme();
-
-	return defineStyles({
+export const useFormActionButtonsContainerStyles = () =>
+	defineStyles({
 		display: 'flex',
 		gap: 6,
 		justifyContent: 'center',
@@ -113,7 +110,7 @@ export const useFormActionButtonsContainerStyles = () => {
 			bottom: 0,
 			left: 0,
 			zIndex: 3,
-			borderTop: `1px solid ${theme.colors.neutral.borderDefault}`,
+			borderTop: '1px solid',
+			borderColor: 'neutral.borderDefault',
 		},
 	});
-};

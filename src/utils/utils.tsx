@@ -30,7 +30,7 @@ export const processFieldValidationErrors = (errors: ValidationError | undefined
 
 	if (errors.message) {
 		return (
-			<Typography variant="paragraphXs" customStyles={{ color: '#ea3b28', marginTop: 1 }} component="div">
+			<Typography variant="paragraphXs" customStyles={{ color: 'error.main', marginTop: 1 }} component="div">
 				{errors.message}
 			</Typography>
 		);
@@ -46,7 +46,7 @@ export const processFieldValidationErrors = (errors: ValidationError | undefined
 						return (
 							<Typography
 								variant="paragraphXs"
-								customStyles={{ color: '#ea3b28', marginTop: 1 }}
+								customStyles={{ color: 'error.main', marginTop: 1 }}
 								component="div"
 								key={`error-${index}`}
 							>
@@ -58,7 +58,7 @@ export const processFieldValidationErrors = (errors: ValidationError | undefined
 					return Object.values(validationError).map((fieldError, deepIndex) => (
 						<Typography
 							variant="paragraphXs"
-							customStyles={{ color: '#ea3b28', marginTop: 1 }}
+							customStyles={{ color: 'error.main', marginTop: 1 }}
 							component="div"
 							key={`error-${deepIndex}`}
 						>

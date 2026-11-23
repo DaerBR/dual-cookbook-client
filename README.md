@@ -78,7 +78,7 @@ if (result.ok) {
 **`defineStyles`** (`src/styles/defineStyles.ts`): the helper that standalone style objects are wrapped in. It does two things:
 
 - **Keeps literal types.** A bare object literal gets its string values widened to `string`, so TypeScript rejects it for enum-like CSS properties (`position: 'absolute'`, `boxSizing: 'border-box'`, `flexDirection: 'column'`, …) when it reaches the `css` prop. `defineStyles` checks the object against Emotion's `CSSObject` and keeps the narrow literal types — no `as const` or `: CSSObject` annotation needed.
-- **Resolves spacing steps** (see [Spacing](#spacing) below) — `marginTop: 3` becomes `'12px'`. This is a shallow copy of the object (recursing into nested selectors), so it costs a few microseconds per call; negligible next to Emotion serialising the same object.
+- **Resolves theme tokens** — spacing steps (see [Spacing](#spacing) below: `marginTop: 3` becomes `'12px'`) and color tokens (see [Theme colors](#theme-colors): `color: 'error.main'` becomes `theme.colors.error.main`). The resolver lives in `src/styles/themeStyles.ts`. Resolving is a shallow copy of the object (recursing into nested selectors), so it costs a few microseconds per call; negligible next to Emotion serialising the same object.
 
 It's used in four shapes across the codebase:
 
@@ -126,7 +126,33 @@ export const cardStyles = defineStyles({
 <div css={{ marginTop: space(3), padding: space(2, 3) }} />
 ```
 
-- **Custom style props:** components that merge a `customStyles` prop into `defineStyles` type it as `SpacingStyles` (e.g. `Select`), so callers can pass steps too.
+- **Custom style props:** components that merge a `customStyles` prop into `defineStyles` type it as `ThemeStyles` (e.g. `Select`), so callers can pass steps and color tokens too.
+- **Lint:** calling `space()` inside `defineStyles()` is an error (`no-restricted-syntax`) — write the step instead.
+
+### Theme colors
+
+Simple color properties take `theme.colors` tokens — `'<palette>.<shade>'` — inside `defineStyles()`, so you don't need `useAppTheme()` just to read a color (`src/styles/colorTokens.ts`):
+
+```ts
+export const labelStyles = defineStyles({
+	color: 'text.caption', // theme.colors.text.caption
+	borderColor: isDisabled ? 'neutral.borderLighter' : 'neutral.borderDefault', // conditions work
+	backgroundColor: '#fff', // any other string is left as written
+	'&:hover': { color: 'primary.dark' }, // nested selectors / media queries work too
+});
+```
+
+- **Which properties:** `color`, `backgroundColor`, `borderColor`, `borderTopColor`/`Right`/`Bottom`/`Left`, `outlineColor`, `fill`, `stroke`, `textDecorationColor`, `caretColor`. Composite properties (`border: '1px solid …'`, `background`, `boxShadow`) are left as written.
+- **Tokens come from the theme:** every `theme.colors` palette/shade pair is a token (`'error.main'`, `'text.title'`, `'neutral.borderDefault'`, …) and is offered by autocomplete; a new color in `theme.ts` becomes a token automatically.
+- **Typos:** any string is still a valid CSS value, so a typo like `'error.mian'` isn't a type error. In dev, a string shaped like `<palette>.<name>` that isn't a token logs a `console.warn` (once per value) and is passed through as written.
+- **Outside `defineStyles()`** — inline `css` objects, React `style` props, react-select configs and template strings — use `themeColor()`:
+
+```tsx
+<div css={{ color: themeColor('text.caption'), border: `1px solid ${themeColor('neutral.borderDefault')}` }} />
+```
+
+- **Lint:** `themeColor()` as a direct property value inside `defineStyles()` is an error (`no-restricted-syntax`) — write the token instead. Inside a template string it's allowed.
+- **Dynamic palettes** (`theme.colors[color].main`, where `color` is a prop) still go through `useAppTheme()`.
 
 **Component structure**:
 - `src/components/atoms/` — primitive UI components (Button, Typography, TextInput, Select, Modal, Pagination, etc.)

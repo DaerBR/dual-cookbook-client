@@ -34,7 +34,7 @@ export const CategoryCard = ({ category }: CategoryCardProps) => {
 
 	const titleStyles = defineStyles({
 		fontSize: '36px',
-		color: categoryImage ? '#fff' : theme.colors.primary.main,
+		color: categoryImage ? '#fff' : 'primary.main',
 		zIndex: 2,
 		textAlign: 'center',
 		textShadow: categoryImage ? '1px 1px 4px #df8150' : 'none',

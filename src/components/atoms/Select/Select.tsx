@@ -4,7 +4,7 @@ import type { CSSProperties, ChangeEvent, FocusEvent, KeyboardEvent } from 'reac
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
-import type { SpacingStyles } from '../../../styles/spacing.ts';
+import type { ThemeStyles } from '../../../styles/themeStyles.ts';
 import { InputLabel } from '../InputLabel';
 import { processFieldValidationErrors } from '../../../utils/utils.tsx';
 import { Icon } from '../Icon';
@@ -13,7 +13,7 @@ import type { SelectOption } from './types.ts';
 import { HelperText } from '../HelperText';
 
 interface SelectProps {
-	customStyles?: SpacingStyles;
+	customStyles?: ThemeStyles;
 	helperText?: string;
 	id?: string;
 	isDisabled?: boolean;
@@ -131,13 +131,13 @@ export const Select = ({
 		textAlign: 'left',
 		'&:focus': {
 			outline: 'none',
-			borderColor: theme.colors.primary.borderLighter,
+			borderColor: 'primary.borderLighter',
 			boxShadow: '0 0 0 3px rgba(254, 186, 152, 0.20)',
 		},
 		'&:disabled': {
-			borderColor: theme.colors.neutral.borderLighter,
-			backgroundColor: theme.colors.neutral.surfaceSubtle,
-			color: theme.colors.text.disabled,
+			borderColor: 'neutral.borderLighter',
+			backgroundColor: 'neutral.surfaceSubtle',
+			color: 'text.disabled',
 		},
 	});
 
@@ -167,17 +167,17 @@ export const Select = ({
 			lineHeight: 1.4,
 			color: '#000',
 			cursor: 'pointer',
-			backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
+			backgroundColor: isHighlighted || isSelected ? 'neutral.surfaceSubtle' : '#fff',
 		});
 
-	const chevronStyles: CSSProperties = {
+	const chevronStyles: CSSProperties = defineStyles({
 		position: 'absolute',
 		top: '50%',
 		right: '10px',
 		transform: 'translateY(-50%)',
 		pointerEvents: 'none',
-		color: isDisabled ? theme.colors.text.disabled : theme.colors.text.subtitle,
-	};
+		color: isDisabled ? 'text.disabled' : 'text.subtitle',
+	});
 
 	const chevronUpIcon = <Icon icon={faChevronUp} customStyles={chevronStyles} />;
 	const chevronDownIcon = <Icon icon={faChevronDown} customStyles={chevronStyles} />;
@@ -192,7 +192,7 @@ export const Select = ({
 	const mergedTriggerStyles = defineStyles({
 		...selectInputStyles,
 		...(fieldErrors ? errorStyles : {}),
-		color: placeholder && value === '' ? theme.colors.text.disabled : '#000',
+		color: placeholder && value === '' ? 'text.disabled' : '#000',
 		...customStyles,
 	});
 

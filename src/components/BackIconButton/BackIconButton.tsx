@@ -2,11 +2,11 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { Icon } from '../atoms/Icon';
 import { defineStyles } from '../../styles/defineStyles.ts';
-import type { SpacingStyles } from '../../styles/spacing.ts';
+import type { ThemeStyles } from '../../styles/themeStyles.ts';
 
 interface BackIconButtonProps {
 	color?: 'primary' | 'success' | 'error' | 'white' | 'neutral';
-	customStyles?: SpacingStyles;
+	customStyles?: ThemeStyles;
 	iconFontSize?: number;
 	onClick?: () => void;
 }

@@ -1,14 +1,14 @@
 import type { ChangeEvent } from 'react';
 import { Typography } from '../Typography';
 import { defineStyles } from '../../../styles/defineStyles.ts';
-import type { SpacingStyles } from '../../../styles/spacing.ts';
+import type { ThemeStyles } from '../../../styles/themeStyles.ts';
 import type { Colors } from './types.ts';
 import { useCheckboxStyles } from './hooks.ts';
 
 interface CheckboxProps {
 	color?: Colors;
-	customLabelStyles?: SpacingStyles;
-	customWrapperStyles?: SpacingStyles;
+	customLabelStyles?: ThemeStyles;
+	customWrapperStyles?: ThemeStyles;
 	id?: string;
 	isChecked?: boolean;
 	isDisabled?: boolean;

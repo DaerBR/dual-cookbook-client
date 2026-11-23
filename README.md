@@ -78,7 +78,7 @@ if (result.ok) {
 **`defineStyles`** (`src/styles/defineStyles.ts`): the helper that standalone style objects are wrapped in. It does two things:
 
 - **Keeps literal types.** A bare object literal gets its string values widened to `string`, so TypeScript rejects it for enum-like CSS properties (`position: 'absolute'`, `boxSizing: 'border-box'`, `flexDirection: 'column'`, …) when it reaches the `css` prop. `defineStyles` checks the object against Emotion's `CSSObject` and keeps the narrow literal types — no `as const` or `: CSSObject` annotation needed.
-- **Resolves theme tokens** — spacing steps (see [Spacing](#spacing) below: `marginTop: 3` becomes `'12px'`) color tokens (see [Theme colors](#theme-colors): `color: 'error.main'` becomes `theme.colors.error.main`) and shadow tokens (see [Theme shadows](#theme-shadows): `boxShadow: 'xs'` becomes `theme.boxShadows.xs`). The resolver lives in `src/styles/themeStyles.ts`. Resolving is a shallow copy of the object (recursing into nested selectors), so it costs a few microseconds per call; negligible next to Emotion serialising the same object.
+- **Resolves theme tokens** — spacing steps (see [Spacing](#spacing) below: `marginTop: 3` becomes `'12px'`) color tokens (see [Theme colors](#theme-colors): `color: 'error.main'` becomes `theme.colors.error.main`) and shadow tokens (see [Theme shadows](#theme-shadows): `boxShadow: 'xs'` becomes `theme.boxShadows.xs`). The resolver lives in `src/styles/themeStyles.ts`. Resolving walks the object (recursing into nested selectors) and returns a new object only when something was resolved — an object without tokens comes back as is. It costs a few microseconds per call; negligible next to Emotion serialising the same object.
 
 It's used in four shapes across the codebase:
 
@@ -86,17 +86,18 @@ It's used in four shapes across the codebase:
 // 1. Static styles in a component's styles.ts (Modal, Pagination, PageTitle, Button, AllCategories, ...)
 export const modalWrapperStyles = defineStyles({ display: 'flex', flexDirection: 'column', position: 'relative', width: '100%' });
 
-// 2. Theme-dependent styles in a use*Styles hook (RecipeCard/styles.ts, TextInput/hooks.ts, Checkbox/hooks.ts)
-export const useRecipeCardStyles = () => {
+// 2. Styles that still need the theme object (typography, dynamic palettes) in a use*Styles hook
+//    (TextInput/hooks.ts, Checkbox/hooks.ts). Spacing, colors and shadows don't need it — use tokens.
+export const useCommonFieldStyles = () => {
 	const theme = useAppTheme();
 	return {
-		wrapperStyles: defineStyles({ position: 'relative', boxShadow: theme.boxShadows.xs }),
+		fieldStyles: defineStyles({ fontSize: theme.typography.paragraphS.fontSize, color: 'text.main', boxShadow: 'xs' }),
 	};
 };
 
 // 3. Inline in a component when styles depend on props/state (Button, Select, CircularProgress, PageWrapper)
 const getOptionStyles = (isHighlighted: boolean) =>
-	defineStyles({ cursor: 'pointer', backgroundColor: isHighlighted ? theme.colors.neutral.surfaceSubtle : '#fff' });
+	defineStyles({ cursor: 'pointer', backgroundColor: isHighlighted ? 'neutral.surfaceSubtle' : '#fff' });
 
 // 4. Merging several style objects (Select's mergedTriggerStyles)
 const mergedTriggerStyles = defineStyles({ ...selectInputStyles, ...(fieldErrors ? errorStyles : {}), ...customStyles });

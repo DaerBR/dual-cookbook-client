@@ -4,7 +4,10 @@ export const categoryImageStyles = defineStyles({
 	width: '450px',
 	height: 'auto',
 	borderRadius: '12px',
-	marginBottom: '12px',
+	marginBottom: 3,
+	boxShadow: 'md',
+	border: `1px solid`,
+	borderColor: 'neutral.borderDefault',
 	'@media (max-width: 768px)': {
 		width: '100%',
 	},
@@ -13,19 +16,19 @@ export const categoryImageStyles = defineStyles({
 export const filterRowStyles = defineStyles({
 	display: 'flex',
 	width: '100%',
-	paddingTop: '12px',
+	paddingTop: 3,
 	alignItems: 'center',
 });
 
 export const recipesListStyles = defineStyles({
 	display: 'flex',
 	justifyContent: 'center',
-	marginTop: '12px',
+	marginTop: 3,
 	flexDirection: 'column',
 });
 
 export const emptyStateStyles = defineStyles({
-	padding: '20px',
+	padding: 5,
 	display: 'flex',
 	justifyContent: 'center',
 	alignItems: 'center',

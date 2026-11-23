@@ -79,16 +79,10 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 
 	const modalContent = (
 		<div>
-			<Typography variant="paragraphS" customStyles={{ marginBottom: '8px' }} component="div">
+			<Typography variant="paragraphS" customStyles={{ marginBottom: 2 }} component="div">
 				{MODAL_DESCRIPTION_TEXT}
 			</Typography>
-			<Typography
-				weight={600}
-				color="error"
-				variant="paragraphS"
-				customStyles={{ marginBottom: '12px' }}
-				component="div"
-			>
+			<Typography weight={600} color="error" variant="paragraphS" customStyles={{ marginBottom: 3 }} component="div">
 				{MODAL_WARNING_TEXT}
 			</Typography>
 
@@ -98,7 +92,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 					name="sourceUrl"
 					render={({ field }) => (
 						<TextInput
-							customStyles={{ marginBottom: '8px' }}
+							customStyles={{ marginBottom: 2 }}
 							isFullWidth
 							id="sourceUrl"
 							name="sourceUrl"
@@ -115,7 +109,7 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 					name="formatTitle"
 					render={({ field }) => (
 						<Checkbox
-							customWrapperStyles={{ marginTop: '12px' }}
+							customWrapperStyles={{ marginTop: 3 }}
 							color="primary"
 							label='Форматувати назву ("СОКОВИТІ КОТЛЕТКИ" → "Соковиті котлетки")'
 							name="formatTitle"

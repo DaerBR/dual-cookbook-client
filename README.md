@@ -75,29 +75,102 @@ if (result.ok) {
 
 **Styling**: Emotion's `css` prop (via `jsxImportSource: '@emotion/react'` in `vite.config.ts`). The design system (colors, typography, breakpoints, spacing, shadows) lives in `src/styles/theme.ts`; access it via `useAppTheme()` from `src/styles/hooks.ts`, not `useTheme()` directly.
 
-**`defineStyles`** (`src/styles/defineStyles.ts`): an identity helper that standalone style objects are wrapped in. A bare object literal gets its string values widened to `string`, so TypeScript rejects it for enum-like CSS properties (`position: 'absolute'`, `boxSizing: 'border-box'`, `flexDirection: 'column'`, …) when it reaches the `css` prop. `defineStyles` checks the object against Emotion's `CSSObject` and keeps the narrow literal types — no `as const` or `: CSSObject` annotation needed. No runtime cost. It's used in four shapes across the codebase:
+**`defineStyles`** (`src/styles/defineStyles.ts`): the helper that standalone style objects are wrapped in. It does two things:
+
+- **Keeps literal types.** A bare object literal gets its string values widened to `string`, so TypeScript rejects it for enum-like CSS properties (`position: 'absolute'`, `boxSizing: 'border-box'`, `flexDirection: 'column'`, …) when it reaches the `css` prop. `defineStyles` checks the object against Emotion's `CSSObject` and keeps the narrow literal types — no `as const` or `: CSSObject` annotation needed.
+- **Resolves theme tokens** — spacing steps (see [Spacing](#spacing) below: `marginTop: 3` becomes `'12px'`) color tokens (see [Theme colors](#theme-colors): `color: 'error.main'` becomes `theme.colors.error.main`) and shadow tokens (see [Theme shadows](#theme-shadows): `boxShadow: 'xs'` becomes `theme.boxShadows.xs`). The resolver lives in `src/styles/themeStyles.ts`. Resolving walks the object (recursing into nested selectors) and returns a new object only when something was resolved — an object without tokens comes back as is. It costs a few microseconds per call; negligible next to Emotion serialising the same object.
+
+It's used in four shapes across the codebase:
 
 ```ts
 // 1. Static styles in a component's styles.ts (Modal, Pagination, PageTitle, Button, AllCategories, ...)
 export const modalWrapperStyles = defineStyles({ display: 'flex', flexDirection: 'column', position: 'relative', width: '100%' });
 
-// 2. Theme-dependent styles in a use*Styles hook (RecipeCard/styles.ts, TextInput/hooks.ts, Checkbox/hooks.ts)
-export const useRecipeCardStyles = () => {
+// 2. Styles that still need the theme object (typography, dynamic palettes) in a use*Styles hook
+//    (TextInput/hooks.ts, Checkbox/hooks.ts). Spacing, colors and shadows don't need it — use tokens.
+export const useCommonFieldStyles = () => {
 	const theme = useAppTheme();
 	return {
-		wrapperStyles: defineStyles({ position: 'relative', boxShadow: theme.boxShadows.xs }),
+		fieldStyles: defineStyles({ fontSize: theme.typography.paragraphS.fontSize, color: 'text.main', boxShadow: 'xs' }),
 	};
 };
 
 // 3. Inline in a component when styles depend on props/state (Button, Select, CircularProgress, PageWrapper)
 const getOptionStyles = (isHighlighted: boolean) =>
-	defineStyles({ cursor: 'pointer', backgroundColor: isHighlighted ? theme.colors.neutral.surfaceSubtle : '#fff' });
+	defineStyles({ cursor: 'pointer', backgroundColor: isHighlighted ? 'neutral.surfaceSubtle' : '#fff' });
 
 // 4. Merging several style objects (Select's mergedTriggerStyles)
 const mergedTriggerStyles = defineStyles({ ...selectInputStyles, ...(fieldErrors ? errorStyles : {}), ...customStyles });
 ```
 
 Use it for new style objects instead of annotating them as `CSSObject`/`CSSProperties` — an annotation widens the type and loses the specific keys, while `defineStyles` keeps them. (A few older plain objects, e.g. in `Header/styles.ts`, predate it and work only because they contain no enum-like properties.)
+
+### Spacing
+
+Margins, paddings and gaps use the `theme.spacing` scale (`1` → `4px` … `10` → `40px`, plus `0`). Inside `defineStyles()` you write the step number instead of the pixel value — no `useAppTheme()` call needed (`src/styles/spacing.ts`):
+
+```ts
+export const cardStyles = defineStyles({
+	marginTop: 3, // '12px'
+	padding: [2, 3], // '8px 12px' — shorthand as a tuple, in CSS order
+	margin: '12px 0 24px 4px', // strings are left as written
+	gap: '6px', // off-scale edge case — just use a string
+	'@media (min-width: 768px)': { paddingInline: 4 }, // nested selectors / media queries work too
+});
+```
+
+- **Which properties:** `margin`, `padding` (tuple of up to 4 steps); `gap`, `marginBlock`, `marginInline`, `paddingBlock`, `paddingInline` (up to 2); and the single-value longhands — `marginTop`/`Right`/`Bottom`/`Left`, `paddingTop`/…, the `*Block*`/`*Inline*` `Start`/`End` variants, `rowGap`, `columnGap`. Every other property is untouched, so `lineHeight: 1.5` or `zIndex: 10` keep their meaning.
+- **Type-checked:** only real steps are accepted — `marginTop: 13` or `gap: [1, 2, 3]` is a type error. Negative steps aren't supported; write `'-4px'`.
+- **Outside `defineStyles()`** (inline `css={{ … }}` objects), Emotion treats numbers as pixels: `css={{ marginTop: 3 }}` renders `3px`. Use `space()` there instead:
+
+```tsx
+<div css={{ marginTop: space(3), padding: space(2, 3) }} />
+```
+
+- **Custom style props:** components that merge a `customStyles` prop into `defineStyles` type it as `ThemeStyles` (e.g. `Select`), so callers can pass steps and color tokens too.
+- **Lint:** calling `space()` inside `defineStyles()` is an error (`no-restricted-syntax`) — write the step instead.
+
+### Theme colors
+
+Simple color properties take `theme.colors` tokens — `'<palette>.<shade>'` — inside `defineStyles()`, so you don't need `useAppTheme()` just to read a color (`src/styles/colorTokens.ts`):
+
+```ts
+export const labelStyles = defineStyles({
+	color: 'text.caption', // theme.colors.text.caption
+	borderColor: isDisabled ? 'neutral.borderLighter' : 'neutral.borderDefault', // conditions work
+	backgroundColor: '#fff', // any other string is left as written
+	'&:hover': { color: 'primary.dark' }, // nested selectors / media queries work too
+});
+```
+
+- **Which properties:** `color`, `backgroundColor`, `borderColor`, `borderTopColor`/`Right`/`Bottom`/`Left`, `outlineColor`, `fill`, `stroke`, `textDecorationColor`, `caretColor`. Composite properties (`border: '1px solid …'`, `background`, `boxShadow`) are left as written.
+- **Tokens come from the theme:** every `theme.colors` palette/shade pair is a token (`'error.main'`, `'text.title'`, `'neutral.borderDefault'`, …) and is offered by autocomplete; a new color in `theme.ts` becomes a token automatically.
+- **Typos:** any string is still a valid CSS value, so a typo like `'error.mian'` isn't a type error. In dev, a string shaped like `<palette>.<name>` that isn't a token logs a `console.warn` (once per value) and is passed through as written.
+- **Outside `defineStyles()`** — inline `css` objects, React `style` props, react-select configs and template strings — use `themeColor()`:
+
+```tsx
+<div css={{ color: themeColor('text.caption'), border: `1px solid ${themeColor('neutral.borderDefault')}` }} />
+```
+
+- **Lint:** `themeColor()` as a direct property value inside `defineStyles()` is an error (`no-restricted-syntax`) — write the token instead. Inside a template string it's allowed.
+- **Dynamic palettes** (`theme.colors[color].main`, where `color` is a prop) still go through `useAppTheme()`.
+
+### Theme shadows
+
+`boxShadow` takes `theme.boxShadows` keys as tokens inside `defineStyles()` (`src/styles/shadowTokens.ts`):
+
+```ts
+export const cardStyles = defineStyles({
+	boxShadow: 'xs', // theme.boxShadows.xs
+	'&:hover': { boxShadow: isActive ? 'md' : 'sm' }, // conditions and nested selectors work
+	'&:focus': { boxShadow: '0 0 0 3px rgba(254, 186, 152, 0.20)' }, // raw shadows and 'none' are left as written
+});
+```
+
+- **Tokens:** `'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`, `'xxl'`, straight from `theme.boxShadows` (a new key there becomes a token automatically). Only `boxShadow` is resolved.
+- **Typos:** in dev, a bare lowercase word that isn't a token or a CSS keyword (`'mdd'`, but not `'none'`/`'inherit'`) logs a `console.warn` once and is passed through as written.
+- **Outside `defineStyles()`** use `themeShadow('md')` — e.g. `css={{ boxShadow: themeShadow('sm') }}` or a third-party `style` prop.
+- **Lint:** `themeShadow()` as a direct property value inside `defineStyles()` is an error; inside a template string it's allowed.
 
 **Component structure**:
 - `src/components/atoms/` — primitive UI components (Button, Typography, TextInput, Select, Modal, Pagination, etc.)

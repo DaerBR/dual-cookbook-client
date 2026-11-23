@@ -5,7 +5,7 @@ export const mobileEditRecipeButtonStyles = defineStyles({
 	border: 'none',
 	boxShadow: 'none',
 	minWidth: '40px',
-	padding: '4px',
+	padding: 1,
 	'@media (max-width: 768px)': {
 		display: 'block',
 	},
@@ -15,8 +15,11 @@ export const recipeImageStyles = defineStyles({
 	width: '100%',
 	height: 'auto',
 	borderRadius: '12px',
-	marginBottom: '12px',
+	marginBottom: 3,
 	maxWidth: '500px',
+	boxShadow: 'md',
+	border: '1px solid',
+	borderColor: 'neutral.borderDefault',
 });
 
 export const sourceContainerStyles = defineStyles({
@@ -28,7 +31,7 @@ export const sourceContainerStyles = defineStyles({
 });
 
 export const stepItemStyles = defineStyles({
-	marginBottom: '12px',
+	marginBottom: 3,
 	textAlign: 'justify',
 	transition: 'color 0.2s ease',
 	'@media (max-width: 768px)': {

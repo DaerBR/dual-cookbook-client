@@ -1,4 +1,5 @@
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { defineStyles } from '../../../styles/defineStyles.ts';
 import type { TypographyProps } from './types.ts';
 
 export const Typography = ({
@@ -25,7 +26,12 @@ export const Typography = ({
 		textContrast: theme.colors.text.contrast,
 	};
 
-	const typographyStyles = { ...fontStyles, color: typographyColors[color], fontWeight: weight, ...customStyles };
+	const typographyStyles = defineStyles({
+		...fontStyles,
+		color: typographyColors[color],
+		fontWeight: weight,
+		...customStyles,
+	});
 
 	const Tag = component;
 

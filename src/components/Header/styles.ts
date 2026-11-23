@@ -1,15 +1,15 @@
 import { defineStyles } from '../../styles/defineStyles.ts';
 
-export const buttonsContainerStyles = {
+export const buttonsContainerStyles = defineStyles({
 	display: 'flex',
 	alignItems: 'center',
-	gap: '8px',
-};
+	gap: 2,
+});
 
 export const headerStyles = () =>
 	defineStyles({
 		boxSizing: 'border-box',
-		padding: '12px 36px',
+		padding: [3, 9],
 		height: '80px',
 		position: 'fixed',
 		left: '50%',
@@ -29,7 +29,7 @@ export const headerStyles = () =>
 		},
 	});
 
-export const homepageLinkStyles = {
+export const homepageLinkStyles = defineStyles({
 	backgroundImage: 'url("/logo-images/squirrel.png")',
 	height: '64px',
 	width: '64px',
@@ -38,21 +38,21 @@ export const homepageLinkStyles = {
 	backgroundPosition: 'center',
 	borderRadius: '50%',
 	border: '2px solid #fda477',
-	marginRight: '16px',
+	marginRight: 4,
 	'@media (max-width: 768px)': {
 		height: '48px',
 		width: '48px',
 	},
-};
+});
 
-export const linkStyles = {
+export const linkStyles = defineStyles({
 	fontWeight: 700,
-	marginRight: '24px',
+	marginRight: 6,
 	textDecoration: 'none',
 	'&:hover': {
 		textDecoration: 'underline',
 	},
-};
+});
 
 export const searchWrapperStyles = {
 	width: '300px',
@@ -79,7 +79,7 @@ export const navigationContainerStyles = defineStyles({
 	transform: 'translateY(-50%)',
 	width: '100%',
 	justifyContent: 'space-around',
-	padding: '8px 0',
+	padding: [2, 0],
 	zIndex: 3,
 	'@media (max-width: 768px)': { display: 'flex' },
 });

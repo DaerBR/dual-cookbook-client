@@ -22,6 +22,7 @@ import { searchValidationSchema } from './validations.ts';
 import { fetchAllCategories } from '../../store/thunks/categories.ts';
 import { MultiSelect } from '../../components/atoms/MultiSelect';
 import { mobileSearchButtonStyles } from './styles.ts';
+import { space } from '../../styles/spacing.ts';
 import { recipeAuthorOptions } from '../../constants/recipeAuthors.ts';
 import { toSearchRequestParams } from './utils.ts';
 import { emptySearchFormValues } from './constants.ts';
@@ -77,9 +78,9 @@ export const Search = () => {
 				Пошук рецептів
 			</Typography>
 
-			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
+			<div css={{ display: 'flex', justifyContent: 'center', marginTop: space(3), flexDirection: 'column' }}>
 				<Form form={form} onSubmit={handleSearchFormSubmit}>
-					<div css={{ marginBottom: '24px', maxWidth: '450px' }}>
+					<div css={{ marginBottom: space(6), maxWidth: '450px' }}>
 						<div css={{ display: 'flex' }}>
 							<Controller
 								control={control}
@@ -88,7 +89,7 @@ export const Search = () => {
 									<TextInput
 										isFullWidth
 										name="searchInput"
-										placeholder="Ведіть назву страви"
+										placeholder="Введіть назву страви"
 										value={field.value}
 										onChange={field.onChange}
 									/>
@@ -101,7 +102,7 @@ export const Search = () => {
 						<Typography
 							variant="paragraphM"
 							weight={600}
-							customStyles={{ marginTop: '24px', marginBottom: '16px' }}
+							customStyles={{ marginTop: 6, marginBottom: 4 }}
 							component="div"
 						>
 							Фільтри
@@ -118,7 +119,7 @@ export const Search = () => {
 									onChange={(newValue) => field.onChange([...newValue])}
 									options={categoriesOptions}
 									value={field.value}
-									customStyles={{ marginBottom: '16px' }}
+									customStyles={{ marginBottom: 4 }}
 								/>
 							)}
 						/>
@@ -138,7 +139,15 @@ export const Search = () => {
 							)}
 						/>
 					</div>
-					<div css={{ display: 'flex', gap: '24px', margin: '36px 0', alignItems: 'center', justifyContent: 'center' }}>
+					<div
+						css={{
+							display: 'flex',
+							gap: space(6),
+							margin: space(9, 0),
+							alignItems: 'center',
+							justifyContent: 'center',
+						}}
+					>
 						<Button
 							isBusy={isSearching}
 							onClick={handleSearchFormSubmit}
@@ -155,14 +164,14 @@ export const Search = () => {
 				{isSearching ? (
 					<LoadingIndicator />
 				) : searchResults?.length > 0 ? (
-					<div css={{ display: 'flex', marginTop: '12px', flexDirection: 'column' }}>
+					<div css={{ display: 'flex', marginTop: space(3), flexDirection: 'column' }}>
 						<FieldsGroupTitle title="Результати:" />
 						{searchResults.map((recipe) => (
 							<RecipeCard key={recipe.id} recipe={recipe} />
 						))}
 					</div>
 				) : wasSearchInitiated ? (
-					<div css={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+					<div css={{ padding: space(5), display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 						<Typography variant="paragraphL" color="primary" weight={500}>
 							Нічого не знайдено...
 						</Typography>

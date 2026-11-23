@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { useAppTheme } from '../../../styles/hooks.ts';
 import { stepItemStyles } from '../styles.ts';
+import { themeColor } from '../../../styles/colorTokens.ts';
 
 const MOBILE_MEDIA_QUERY = '(max-width: 768px)';
 
@@ -10,7 +10,6 @@ interface RecipeStepProps {
 }
 
 export const RecipeStep = ({ description }: RecipeStepProps) => {
-	const theme = useAppTheme();
 	const [isCompleted, setIsCompleted] = useState(false);
 
 	const toggleCompleted = () => {
@@ -25,7 +24,7 @@ export const RecipeStep = ({ description }: RecipeStepProps) => {
 		<li
 			css={[
 				stepItemStyles,
-				isCompleted && { [`@media ${MOBILE_MEDIA_QUERY}`]: { color: theme.colors.neutral.disabled } },
+				isCompleted && { [`@media ${MOBILE_MEDIA_QUERY}`]: { color: themeColor('neutral.disabled') } },
 			]}
 			onClick={toggleCompleted}
 		>

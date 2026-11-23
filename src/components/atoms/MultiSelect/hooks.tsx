@@ -19,47 +19,10 @@ import type {
 } from 'react-select';
 import { useAppTheme } from '../../../styles/hooks.ts';
 import { defineStyles } from '../../../styles/defineStyles.ts';
+import { space } from '../../../styles/spacing.ts';
 import { Icon } from '../Icon';
 import type { SelectOption } from '../Select/types.ts';
-
-interface UseCommonFieldStylesProps {
-	isFullWidth?: boolean;
-}
-
-export const useCommonFieldStyles = ({ isFullWidth }: UseCommonFieldStylesProps) => {
-	const theme = useAppTheme();
-
-	return {
-		fieldStyles: defineStyles({
-			minHeight: '38px',
-			backgroundColor: '#fff',
-			boxShadow: theme.boxShadows.xs,
-			border: `1px solid ${theme.colors.neutral.borderDefault}`,
-			borderRadius: '4px',
-			padding: '8px 16px',
-			fontSize: theme.typography.paragraphS.fontSize,
-			lineHeight: theme.typography.paragraphS.lineHeight,
-			color: theme.colors.text.main,
-			boxSizing: 'border-box',
-			width: isFullWidth ? '100%' : '300px',
-			maxWidth: isFullWidth ? '100%' : '300px',
-			'&:focus': {
-				outline: 'none',
-				borderColor: theme.colors.primary.borderLighter,
-				boxShadow: '0 0 0 3px rgba(254, 186, 152, 0.20)',
-			},
-			'&:disabled': {
-				borderColor: theme.colors.neutral.borderLighter,
-				backgroundColor: theme.colors.neutral.surfaceSubtle,
-				color: theme.colors.text.disabled,
-			},
-		}),
-		errorStyles: defineStyles({
-			borderColor: theme.colors.error.borderDarker,
-			boxShadow: '0 0 0 3px rgba(236, 95, 81, 0.20)',
-		}),
-	};
-};
+import { useCommonFieldStyles } from '../TextInput/hooks.ts';
 
 interface UseMultiSelectStylesProps {
 	hasError?: boolean;
@@ -77,7 +40,7 @@ export const useMultiSelectStyles = ({ hasError }: UseMultiSelectStylesProps = {
 			control: (base, state) => ({
 				...base,
 				...fieldBase,
-				padding: '4px 8px 4px 16px',
+				padding: space(1, 2, 1, 4),
 				outline: 'none',
 				cursor: state.isDisabled ? 'not-allowed' : 'pointer',
 				...(hasError ? errorStyles : {}),
@@ -105,26 +68,27 @@ export const useMultiSelectComponents = (): any => {
 	const theme = useAppTheme();
 
 	return useMemo(() => {
-		const listPanel = {
-			marginTop: '4px',
+		const listPanel = defineStyles({
+			marginTop: 1,
 			padding: 0,
 			backgroundColor: '#fff',
 			border: `1px solid ${theme.colors.neutral.borderDefault}`,
 			borderRadius: '4px',
-			boxShadow: theme.boxShadows.xs,
+			boxShadow: 'xs',
 			overflow: 'hidden',
 			zIndex: 10,
-		};
-
-		const getOptionStyles = (isHighlighted: boolean, isSelected: boolean) => ({
-			minHeight: '20px',
-			padding: '8px 12px',
-			fontSize: theme.typography.paragraphS.fontSize,
-			lineHeight: theme.typography.paragraphS.lineHeight,
-			cursor: 'pointer',
-			color: theme.colors.text.main,
-			backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
 		});
+
+		const getOptionStyles = (isHighlighted: boolean, isSelected: boolean) =>
+			defineStyles({
+				minHeight: '20px',
+				padding: [2, 3],
+				fontSize: theme.typography.paragraphS.fontSize,
+				lineHeight: theme.typography.paragraphS.lineHeight,
+				cursor: 'pointer',
+				color: 'text.main',
+				backgroundColor: isHighlighted || isSelected ? 'neutral.surfaceSubtle' : '#fff',
+			});
 
 		const chevronColor = theme.colors.text.subtitle;
 
@@ -173,7 +137,7 @@ export const useMultiSelectComponents = (): any => {
 					color: '#fff',
 					borderRadius: '16px',
 					paddingLeft: '6px',
-					paddingRight: '4px',
+					paddingRight: space(1),
 					'&:hover': {
 						backgroundColor: theme.colors.primary.surfaceDefault,
 						color: '#fff!important',
@@ -228,7 +192,7 @@ export const useMultiSelectComponents = (): any => {
 			<components.NoOptionsMessage
 				{...props}
 				css={{
-					padding: '8px 12px',
+					padding: space(2, 3),
 					fontSize: theme.typography.paragraphS.fontSize,
 					color: theme.colors.text.caption,
 				}}

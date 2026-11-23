@@ -1,11 +1,12 @@
-import type { CSSObject } from '@emotion/react';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { Icon } from '../atoms/Icon';
+import { defineStyles } from '../../styles/defineStyles.ts';
+import type { ThemeStyles } from '../../styles/themeStyles.ts';
 
 interface BackIconButtonProps {
 	color?: 'primary' | 'success' | 'error' | 'white' | 'neutral';
-	customStyles?: CSSObject;
+	customStyles?: ThemeStyles;
 	iconFontSize?: number;
 	onClick?: () => void;
 }
@@ -17,7 +18,13 @@ export const BackIconButton = ({
 	customStyles = {},
 }: BackIconButtonProps) => (
 	<button
-		css={{ padding: '12px', border: 'none', background: 'transparent', cursor: 'pointer', ...customStyles }}
+		css={defineStyles({
+			padding: 3,
+			border: 'none',
+			background: 'transparent',
+			cursor: 'pointer',
+			...customStyles,
+		})}
 		onClick={onClick}
 	>
 		<Icon icon={faArrowLeft} fontSize={iconFontSize ?? 18} color={color} />

@@ -3,9 +3,10 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { getPageItems } from './utils.ts';
-import { useAppTheme } from '../../../styles/hooks.ts';
+import { space } from '../../../styles/spacing.ts';
 import { Typography } from '../Typography';
 import { ellipsisStyles, paginationButtonStyles, paginationContainerStyles } from './styles.ts';
+import { themeColor } from '../../../styles/colorTokens.ts';
 
 interface PaginationProps {
 	currentPage: number;
@@ -15,8 +16,6 @@ interface PaginationProps {
 }
 
 export const Pagination = ({ currentPage, totalPages, fetchDataMethod, fetchParams }: PaginationProps) => {
-	const theme = useAppTheme();
-
 	const handleChangePage = (page: number) => {
 		fetchDataMethod({ ...fetchParams, page });
 	};
@@ -42,7 +41,7 @@ export const Pagination = ({ currentPage, totalPages, fetchDataMethod, fetchPara
 				css={{
 					display: 'flex',
 					alignItems: 'center',
-					gap: '12px',
+					gap: space(3),
 					'@media (max-width: 768px)': {
 						display: 'none',
 					},
@@ -63,10 +62,9 @@ export const Pagination = ({ currentPage, totalPages, fetchDataMethod, fetchPara
 						<Button
 							customStyles={{
 								...paginationButtonStyles,
-								borderColor:
-									currentPage === item ? theme.colors.neutral.borderDarker : theme.colors.neutral.borderDefault,
-								boxShadow: currentPage === item ? theme.boxShadows.sm : theme.boxShadows.xs,
-								color: currentPage === item ? theme.colors.text.title : `${theme.colors.text.caption}!important`,
+								borderColor: currentPage === item ? 'neutral.borderDarker' : 'neutral.borderDefault',
+								boxShadow: currentPage === item ? 'sm' : 'xs',
+								color: currentPage === item ? 'text.title' : `${themeColor('text.caption')} !important`,
 								fontWeight: currentPage === item ? 600 : 400,
 							}}
 							variant="outlined-neutral"

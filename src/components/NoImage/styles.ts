@@ -8,4 +8,5 @@ export const noImageContainerStyles = defineStyles({
 	display: 'flex',
 	justifyContent: 'center',
 	alignItems: 'center',
+	borderColor: 'primary.borderDarker',
 });

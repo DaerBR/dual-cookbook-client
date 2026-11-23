@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 
 import { Typography } from '../atoms/Typography';
 import { BackIconButton } from '../BackIconButton/BackIconButton.tsx';
+import { space } from '../../styles/spacing.ts';
 import { controlElementsContainerStyles, pageTitleWrapperStyles } from './styles.ts';
 
 interface PageTitleProps {
@@ -19,11 +20,11 @@ export const PageTitle = ({ controlElements, title, returnUrl, withReturnButton 
 
 	return (
 		<div css={pageTitleWrapperStyles}>
-			<div css={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+			<div css={{ display: 'flex', alignItems: 'center', gap: space(1) }}>
 				{withReturnButton && (
 					<BackIconButton
 						onClick={() => (returnUrl ? navigate(returnUrl) : navigate(-1))}
-						customStyles={{ marginRight: '4px' }}
+						customStyles={{ marginRight: 1 }}
 					/>
 				)}
 				<Typography variant="h5" weight={700} component="div" customStyles={titleStyles}>

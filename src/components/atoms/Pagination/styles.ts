@@ -4,7 +4,7 @@ export const paginationButtonStyles = defineStyles({
 	minWidth: '40px',
 	height: '40px',
 	width: '40px',
-	padding: '4px',
+	padding: 1,
 	fontWeight: 400,
 });
 
@@ -23,5 +23,5 @@ export const paginationContainerStyles = defineStyles({
 	display: 'flex',
 	justifyContent: 'center',
 	alignItems: 'center',
-	gap: '8px',
+	gap: 2,
 });

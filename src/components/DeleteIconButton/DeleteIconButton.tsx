@@ -1,38 +1,35 @@
-import type { CSSObject } from '@emotion/react';
 import { faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { Icon } from '../atoms/Icon';
-import { useAppTheme } from '../../styles/hooks.ts';
+import { defineStyles } from '../../styles/defineStyles.ts';
+import type { ThemeStyles } from '../../styles/themeStyles.ts';
+import { themeColor } from '../../styles/colorTokens.ts';
 
 interface DeleteIconButtonProps {
-	customStyles?: CSSObject;
+	customStyles?: ThemeStyles;
 	iconFontSize?: number;
 	onClick?: () => void;
 }
 
-export const DeleteIconButton = ({ onClick, iconFontSize, customStyles = {} }: DeleteIconButtonProps) => {
-	const theme = useAppTheme();
-
-	return (
-		<button
-			type="button"
-			css={{
-				padding: '12px',
-				border: 'none',
-				background: 'transparent',
-				cursor: 'pointer',
-				'&:hover svg': {
-					color: `${theme.colors.error.main}!important`,
-				},
-				...customStyles,
-			}}
-			onClick={onClick}
-		>
-			<Icon
-				icon={faXmarkCircle}
-				fontSize={iconFontSize ?? 14}
-				customStyles={{ color: theme.colors.error.surfaceLighter }}
-			/>
-		</button>
-	);
-};
+export const DeleteIconButton = ({ onClick, iconFontSize, customStyles = {} }: DeleteIconButtonProps) => (
+	<button
+		type="button"
+		css={defineStyles({
+			padding: 3,
+			border: 'none',
+			background: 'transparent',
+			cursor: 'pointer',
+			'&:hover svg': {
+				color: `${themeColor('error.main')}!important`,
+			},
+			...customStyles,
+		})}
+		onClick={onClick}
+	>
+		<Icon
+			icon={faXmarkCircle}
+			fontSize={iconFontSize ?? 14}
+			customStyles={{ color: themeColor('error.surfaceLighter') }}
+		/>
+	</button>
+);

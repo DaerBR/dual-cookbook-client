@@ -18,7 +18,7 @@ import { Select } from '../../components/atoms/Select';
 import { Chip } from '../../components/atoms/Chip';
 import { recipeAuthorOptions } from '../../constants/recipeAuthors.ts';
 import { NoImage } from '../../components/NoImage';
-import { useAppTheme } from '../../styles/hooks.ts';
+import { space } from '../../styles/spacing.ts';
 import { getTransformedImageUrl } from '../../utils/utils.tsx';
 
 export const SingleCategory = () => {
@@ -35,8 +35,6 @@ export const SingleCategory = () => {
 
 	const [dispatchFetchCategories] = useThunk(fetchAllCategories);
 	const [dispatchFetchRecipes] = useThunk(fetchRecipes);
-
-	const theme = useAppTheme();
 
 	useEffect(() => {
 		if (categoryId) {
@@ -86,11 +84,7 @@ export const SingleCategory = () => {
 					<img
 						src={getTransformedImageUrl(selectedCategoryData.categoryImage.secureUrl, 'cookbook_card')}
 						alt={selectedCategoryData?.name ?? ''}
-						css={{
-							...categoryImageStyles,
-							boxShadow: theme.boxShadows.md,
-							border: `1px solid ${theme.colors.neutral.borderDefault}`,
-						}}
+						css={categoryImageStyles}
 					/>
 				) : (
 					<NoImage />
@@ -101,9 +95,9 @@ export const SingleCategory = () => {
 				weight={500}
 				color="textSubtitle"
 				component="div"
-				customStyles={{ textAlign: 'center', marginTop: '4px', marginBottom: '12px' }}
+				customStyles={{ textAlign: 'center', marginTop: 1, marginBottom: 3 }}
 			>{`Всього рецептів в категорії: ${categoryRecipesPagination?.total ?? 0}`}</Typography>
-			<div css={{ paddingTop: '12px', paddingBottom: '12px' }}>
+			<div css={{ paddingTop: space(3), paddingBottom: space(3) }}>
 				<Typography variant="paragraphS" weight={500}>
 					Фільтрувати по:
 				</Typography>
@@ -128,7 +122,7 @@ export const SingleCategory = () => {
 							color="neutral"
 							text="Скинути"
 							onClick={() => setRecipeAuthorFilterValue('')}
-							customStyles={{ marginLeft: '12px' }}
+							customStyles={{ marginLeft: 3 }}
 							isOutlined
 						/>
 					) : null}

@@ -22,9 +22,12 @@ import type {
 } from 'react-select';
 
 import { useAppTheme } from '../../../styles/hooks.ts';
+import { defineStyles } from '../../../styles/defineStyles.ts';
+import { space } from '../../../styles/spacing.ts';
 import { useCommonFieldStyles } from '../TextInput/hooks.ts';
 import { Icon } from '../Icon';
 import type { RecipeOption } from './types.ts';
+import { themeColor } from '../../../styles/colorTokens.ts';
 
 const spin = keyframes`
 	from {
@@ -38,7 +41,6 @@ const spin = keyframes`
 type Config = SelectComponentsConfig<RecipeOption, false, GroupBase<RecipeOption>>;
 
 export const useSearchAsyncSelectStyles = (): StylesConfig<RecipeOption, false, GroupBase<RecipeOption>> => {
-	const theme = useAppTheme();
 	const { fieldStyles } = useCommonFieldStyles({ isFullWidth: true });
 
 	return useMemo(() => {
@@ -54,38 +56,41 @@ export const useSearchAsyncSelectStyles = (): StylesConfig<RecipeOption, false, 
 				border: 'none',
 				boxShadow: 'none',
 				borderRadius: 0,
-				borderBottom: `1px solid ${theme.colors.primary.borderDarker}`,
+				borderBottom: `1px solid`,
+				borderColor: themeColor('primary.borderDarker'),
 				cursor: state.isDisabled ? 'not-allowed' : 'pointer',
 				paddingLeft: 0,
 			}),
 		};
-	}, [fieldStyles, theme]);
+	}, [fieldStyles]);
 };
 
 export const useSearchAsyncSelectComponents = (): Config => {
 	const theme = useAppTheme();
 
 	return useMemo(() => {
-		const listPanel = {
-			marginTop: '4px',
+		const listPanel = defineStyles({
+			marginTop: 1,
 			padding: 0,
 			backgroundColor: '#fff',
-			border: `1px solid ${theme.colors.neutral.borderDefault}`,
+			border: `1px solid`,
+			borderColor: 'neutral.borderDefault',
 			borderRadius: '4px',
-			boxShadow: theme.boxShadows.xs,
+			boxShadow: 'xs',
 			overflow: 'hidden',
 			zIndex: 10,
-		};
-
-		const getOptionStyles = (isHighlighted: boolean, isSelected: boolean) => ({
-			minHeight: '20px',
-			padding: '8px 12px',
-			fontSize: theme.typography.paragraphS.fontSize,
-			lineHeight: theme.typography.paragraphS.lineHeight,
-			cursor: 'pointer',
-			color: theme.colors.text.main,
-			backgroundColor: isHighlighted || isSelected ? theme.colors.neutral.surfaceSubtle : '#fff',
 		});
+
+		const getOptionStyles = (isHighlighted: boolean, isSelected: boolean) =>
+			defineStyles({
+				minHeight: '20px',
+				padding: [2, 3],
+				fontSize: theme.typography.paragraphS.fontSize,
+				lineHeight: theme.typography.paragraphS.lineHeight,
+				cursor: 'pointer',
+				color: 'text.main',
+				backgroundColor: isHighlighted || isSelected ? 'neutral.surfaceSubtle' : '#fff',
+			});
 
 		const Placeholder = (props: PlaceholderProps<RecipeOption, false, GroupBase<RecipeOption>>) => (
 			<components.Placeholder {...props} css={{ color: theme.colors.primary.disabled }} />
@@ -181,7 +186,7 @@ export const useSearchAsyncSelectComponents = (): Config => {
 			<components.LoadingMessage
 				{...props}
 				css={{
-					padding: '8px 12px',
+					padding: space(2, 3),
 					fontSize: theme.typography.paragraphS.fontSize,
 					color: theme.colors.text.caption,
 				}}
@@ -192,7 +197,7 @@ export const useSearchAsyncSelectComponents = (): Config => {
 			<components.NoOptionsMessage
 				{...props}
 				css={{
-					padding: '8px 12px',
+					padding: space(2, 3),
 					fontSize: theme.typography.paragraphS.fontSize,
 					color: theme.colors.text.caption,
 				}}

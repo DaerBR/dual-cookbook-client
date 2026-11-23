@@ -2,7 +2,7 @@ import { defineStyles } from '../../styles/defineStyles.ts';
 
 export const categoryFormRowStyles = defineStyles({
 	display: 'flex',
-	gap: '12px',
+	gap: 3,
 	flexBasis: '100%',
 	flexWrap: 'nowrap',
 	'@media (max-width: 768px)': { flexDirection: 'column' },
@@ -12,7 +12,7 @@ export const categoryImageWrapperStyles = defineStyles({ display: 'flex', flexBa
 
 export const categoryNameWrapperStyles = defineStyles({
 	display: 'flex',
-	marginLeft: '36px',
+	marginLeft: 9,
 	'@media (max-width: 768px)': { marginLeft: 0 },
 });
 
@@ -23,7 +23,7 @@ export const categoryNameInputStyles = defineStyles({
 
 export const categoryFormActionsStyles = defineStyles({
 	display: 'flex',
-	gap: '24px',
+	gap: 6,
 	justifyContent: 'center',
-	marginTop: '12px',
+	marginTop: 3,
 });

@@ -10,13 +10,14 @@ import { PageTitle } from '../../components/PageTitle/PageTitle.tsx';
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { Icon } from '../../components/atoms/Icon';
 import { FieldsGroupTitle } from '../../components/FieldsGroupTitle';
-import { useAppTheme } from '../../styles/hooks.ts';
+import { space } from '../../styles/spacing.ts';
 import { Typography } from '../../components/atoms/Typography';
 import { Chip } from '../../components/atoms/Chip';
 import { recipeImageStyles, sourceContainerStyles } from './styles.ts';
 import { RecipeStep } from './components/RecipeStep.tsx';
 import { NoImage } from '../../components/NoImage';
 import { getTransformedImageUrl } from '../../utils/utils.tsx';
+import { themeColor } from '../../styles/colorTokens.ts';
 
 export const SingleRecipe = () => {
 	const { id: recipeId } = useParams();
@@ -25,7 +26,6 @@ export const SingleRecipe = () => {
 	const isFetchingRecipeDetails = useAppSelector((state) => state.recipes.recipeDetails.isLoading);
 
 	const navigate = useNavigate();
-	const theme = useAppTheme();
 
 	const [dispatchFetchRecipeDetails] = useThunk(fetchRecipeDetails);
 
@@ -59,28 +59,24 @@ export const SingleRecipe = () => {
 				controlElements={recipeControlButtons}
 				withReturnButton
 			/>
-			<div css={{ display: 'flex', justifyContent: 'center', marginTop: '12px', flexDirection: 'column' }}>
+			<div css={{ display: 'flex', justifyContent: 'center', marginTop: space(3), flexDirection: 'column' }}>
 				{isFetchingRecipeDetails ? (
 					<LoadingIndicator />
 				) : (
 					<>
-						<div css={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+						<div css={{ display: 'flex', justifyContent: 'center', marginBottom: space(5) }}>
 							{recipeImage?.secureUrl ? (
 								<img
 									src={getTransformedImageUrl(recipeImage.secureUrl, 'cookbook_full')}
 									alt={recipeDetails?.recipeTitle ?? ''}
-									css={{
-										...recipeImageStyles,
-										boxShadow: theme.boxShadows.md,
-										border: `1px solid ${theme.colors.neutral.borderDefault}`,
-									}}
+									css={recipeImageStyles}
 								/>
 							) : (
 								<NoImage />
 							)}
 						</div>
 						{categories && (
-							<div css={{ margin: '12px 0', display: 'flex', gap: '8px', alignItems: 'center' }}>
+							<div css={{ margin: space(3, 0), display: 'flex', gap: space(2), alignItems: 'center' }}>
 								<Typography variant="paragraphM" weight={600}>
 									Категорії:{' '}
 								</Typography>
@@ -96,17 +92,17 @@ export const SingleRecipe = () => {
 							</div>
 						)}
 						{description && description !== '' && (
-							<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
+							<div css={{ display: 'flex', flexDirection: 'column', gap: space(3), marginBottom: space(5) }}>
 								<FieldsGroupTitle title="Опис" />
 								<div>{description}</div>
 							</div>
 						)}
 						{ingredients && ingredients.length > 0 && (
-							<div css={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
+							<div css={{ display: 'flex', flexDirection: 'column', marginBottom: space(5) }}>
 								<FieldsGroupTitle title="Інгредієнти" />
-								<ul css={{ listStyleType: 'circle', paddingLeft: '24px', listStylePosition: 'outside' }}>
+								<ul css={{ listStyleType: 'circle', paddingLeft: space(6), listStylePosition: 'outside' }}>
 									{ingredients.map((ingredient) => (
-										<li css={{ marginBottom: '12px' }} key={ingredient.id}>
+										<li css={{ marginBottom: space(3) }} key={ingredient.id}>
 											{ingredient.text}
 										</li>
 									))}
@@ -114,9 +110,9 @@ export const SingleRecipe = () => {
 							</div>
 						)}
 						{steps && (
-							<div css={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
+							<div css={{ display: 'flex', flexDirection: 'column', gap: space(3), marginBottom: space(5) }}>
 								<FieldsGroupTitle title="Інструкція" />
-								<ol css={{ paddingLeft: '12px' }}>
+								<ol css={{ paddingLeft: space(3) }}>
 									{recipeDetails?.steps.map((step) => (
 										<RecipeStep key={step.id} description={step.stepDescription} />
 									))}
@@ -127,10 +123,10 @@ export const SingleRecipe = () => {
 							<div css={sourceContainerStyles}>
 								<Typography variant="paragraphS" weight={600} component="div">
 									Посилання:
-									<span css={{ marginLeft: '4px' }} />
+									<span css={{ marginLeft: space(1) }} />
 									<a
 										href={sourceUrl}
-										css={{ textDecoration: 'none', color: theme.colors.primary.main }}
+										css={{ textDecoration: 'none', color: themeColor('primary.main') }}
 										target="_blank"
 										rel="noopener noreferrer"
 									>

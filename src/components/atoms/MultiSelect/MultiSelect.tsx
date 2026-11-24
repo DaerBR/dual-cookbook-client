@@ -19,6 +19,7 @@ export interface MultiSelectProps {
 	isFullWidth?: boolean;
 	isRequired?: boolean;
 	label?: string;
+	maxWidth?: number;
 	name: string;
 	onBlur?: () => void;
 	onChange: (newValue: MultiValue<MultiSelectOption>, actionMeta: ActionMeta<MultiSelectOption>) => void;
@@ -40,6 +41,7 @@ export const MultiSelect = ({
 	isRequired,
 	isFullWidth,
 	helperText,
+	maxWidth = 350,
 }: MultiSelectProps) => {
 	const { formState } = useFormContext() ?? {};
 	const { errors } = formState ?? {};
@@ -48,7 +50,7 @@ export const MultiSelect = ({
 	const selectComponents = useMultiSelectComponents();
 
 	return (
-		<div css={{ width: isFullWidth ? '100%' : 'auto' }}>
+		<div css={{ width: isFullWidth ? '100%' : `${maxWidth}px`, maxWidth: isFullWidth ? '100%' : `${maxWidth}px` }}>
 			{label && <InputLabel id={id ?? name} label={label} isRequired={isRequired} />}
 			<Select<MultiSelectOption, true>
 				components={selectComponents}

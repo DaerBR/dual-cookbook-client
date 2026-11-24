@@ -48,7 +48,7 @@ export const MultiSelect = ({
 	const selectComponents = useMultiSelectComponents();
 
 	return (
-		<div css={{ width: isFullWidth ? '100%' : 'auto' }}>
+		<div css={{ width: isFullWidth ? '100%' : '300px', maxWidth: isFullWidth ? '100%' : '300px' }}>
 			{label && <InputLabel id={id ?? name} label={label} isRequired={isRequired} />}
 			<Select<MultiSelectOption, true>
 				components={selectComponents}

@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky && (chmod +x .husky/_/* 2>/dev/null || true)",
-    "updates": "npm-check-updates  --interactive --format group"
+    "updates": "npm-check-updates  --interactive --format group",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
@@ -46,6 +48,9 @@
   "devDependencies": {
     "@eslint/js": "^9.39.4",
     "@fortawesome/fontawesome-common-types": "^7.3.1",
+    "@storybook/addon-a11y": "^10.6.8",
+    "@storybook/addon-docs": "^10.6.8",
+    "@storybook/react-vite": "^10.6.8",
     "@types/node": "^26.5.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
@@ -57,9 +62,11 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
+    "eslint-plugin-storybook": "^10.6.8",
     "globals": "^17.12.0",
     "npm-check-updates": "^23.1.0",
     "prettier": "^3.9.6",
+    "storybook": "^10.6.8",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.70.0",
     "vite": "^8.3.0"

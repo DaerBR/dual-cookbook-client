@@ -8,6 +8,7 @@ import importPlugin from 'eslint-plugin-import';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import prettierConfig from 'eslint-config-prettier';
 import globals from 'globals';
+import storybookPlugin from 'eslint-plugin-storybook';
 
 const extensions = ['.ts', '.tsx', '.d.ts', '.js', '.jsx', '.config.ts'];
 
@@ -27,6 +28,7 @@ export default [
 			'vite.config.d.ts',
 			'vite-env.d.ts',
 			'src/vite-env.d.ts',
+			'storybook-static/**',
 		],
 	},
 
@@ -422,4 +424,7 @@ export default [
 			},
 		},
 	},
+
+	// Storybook stories (*.stories.tsx) and .storybook/main.ts
+	...storybookPlugin.configs['flat/recommended'],
 ];

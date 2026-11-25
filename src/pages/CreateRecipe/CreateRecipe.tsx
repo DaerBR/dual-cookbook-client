@@ -37,6 +37,7 @@ import {
 } from './styles.ts';
 import { ImportRecipeModal } from './modals/ImportRecipeModal.tsx';
 import { DEFAULT_RECIPE_FORM_VALUES } from './constant.ts';
+import { UnsavedChangesGuard } from '../../components/UnsavedChangesGuard';
 
 export const CreateRecipe = () => {
 	const categoriesList = useAppSelector((state) => state.categories.categories);
@@ -73,7 +74,7 @@ export const CreateRecipe = () => {
 	const {
 		handleSubmit,
 		control,
-		formState: { isValid },
+		formState: { isValid, isDirty, isSubmitting },
 		reset,
 		resetField,
 	} = form;
@@ -179,7 +180,7 @@ export const CreateRecipe = () => {
 						<div css={leftColumnWrapperStyles}>
 							<ImageInput name="recipeImage" customHeight={350} customWidth={450} />
 							<div css={{ display: 'flex', flexDirection: 'column', marginTop: space(6) }}>
-								<FieldsGroupTitle title="Інгредієнти" />
+								<FieldsGroupTitle title="Інгредієнти" isRequired />
 								<DragDropProvider onDragOver={handleDragOver}>
 									<div>
 										{ingredientsFields.map((ingredientField, index) => (
@@ -318,6 +319,7 @@ export const CreateRecipe = () => {
 				closeModalHandler={setIsImportRecipeModalOpen}
 				recipeFormReset={reset}
 			/>
+			<UnsavedChangesGuard isActive={isDirty && !isSubmitting} />
 		</div>
 	);
 };

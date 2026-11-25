@@ -36,11 +36,13 @@ import {
 	recipeTitleFieldStyles,
 	sourceUrlFieldStyles,
 } from '../CreateRecipe/styles.ts';
+import { UnsavedChangesGuard } from '../../components/UnsavedChangesGuard';
 
 export const EditRecipe = () => {
 	const { id: recipeId } = useParams();
 	const recipeDetails = useAppSelector((state) => state.recipes.recipeDetails.recipeData);
 	const isFetchingDetails = useAppSelector((state) => state.recipes.recipeDetails.isLoading);
+	const deletedRecipeId = useAppSelector((state) => state.recipes.deletedRecipeId);
 	const [initialImageUrl, setInitialImageUrl] = useState<string | undefined>(undefined);
 	const [isDeleteRecipeModalOpen, setIsDeleteRecipeModalOpen] = useState(false);
 
@@ -89,7 +91,7 @@ export const EditRecipe = () => {
 		handleSubmit,
 		control,
 		reset,
-		formState: { isValid },
+		formState: { isValid, isDirty, isSubmitting },
 	} = form;
 
 	useEffect(() => {
@@ -345,6 +347,7 @@ export const EditRecipe = () => {
 					closeModalHandler={setIsDeleteRecipeModalOpen}
 					isModalOpen={isDeleteRecipeModalOpen}
 				/>
+				<UnsavedChangesGuard isActive={isDirty && !isSubmitting && deletedRecipeId !== recipeId} />
 			</div>
 		</div>
 	);

@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import type { NavigateFunction } from 'react-router';
 import { useNavigate } from 'react-router';
 import { API_URL } from './constants';
+import { FORBIDDEN_ROUTE, NOT_FOUND_ROUTE } from '../constants/routes.ts';
 
 export const apiRequest = create({
 	baseURL: API_URL,
@@ -23,11 +24,11 @@ apiRequest.interceptors.response.use(
 
 		if (status === 401 || status === 403) {
 			console.info('Unauthorized access, please sign in!');
-			currentNavigate?.('/forbidden');
+			currentNavigate?.(FORBIDDEN_ROUTE);
 		}
 
 		if (status === 404) {
-			currentNavigate?.('/not-found');
+			currentNavigate?.(NOT_FOUND_ROUTE);
 		}
 
 		return Promise.reject(error);

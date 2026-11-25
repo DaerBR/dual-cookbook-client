@@ -2,6 +2,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import {
 	createRecipe,
+	deleteRecipe,
 	fetchRecipeDetails,
 	fetchRecipes,
 	importRecipeDraft,
@@ -17,6 +18,7 @@ export interface SearchQuery {
 }
 
 interface RecipesState {
+	deletedRecipeId: string | null;
 	isCreating: boolean;
 	isFetchingDraft: boolean;
 	isLoading: boolean;
@@ -39,6 +41,7 @@ interface RecipesState {
 }
 
 const initialState: RecipesState = {
+	deletedRecipeId: null,
 	isCreating: false,
 	isFetchingDraft: false,
 	isLoading: false,
@@ -136,6 +139,15 @@ const recipesSlice = createSlice({
 		});
 		builder.addCase(updateRecipe.rejected, (state) => {
 			state.isUpdating = false;
+		});
+		// Delete a Recipe. Set on pending and intentionally kept on fulfilled (no case): useThunk's success redirect
+		// runs right after fulfilled, and EditRecipe's unsaved-form blocker must still see the ID to let it through.
+		// An ID, not a boolean, so it never needs a reset — a deleted recipe can't be edited again.
+		builder.addCase(deleteRecipe.pending, (state, action) => {
+			state.deletedRecipeId = action.meta.arg.recipeId;
+		});
+		builder.addCase(deleteRecipe.rejected, (state) => {
+			state.deletedRecipeId = null;
 		});
 		// Import Recipe
 		builder.addCase(importRecipeDraft.pending, (state) => {

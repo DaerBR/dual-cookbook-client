@@ -65,15 +65,19 @@ export const ImportRecipeModal = ({ isModalOpen, closeModalHandler, recipeFormRe
 
 		const { formatTitle } = formValues;
 
-		recipeFormReset((currentValues) => ({
-			...DEFAULT_RECIPE_FORM_VALUES,
-			sourceUrl: draft.sourceUrl,
-			categories: currentValues.categories,
-			recipeTitle: formatTitle ? normalizeTitle(draft.recipeTitle ?? '') : (draft.recipeTitle ?? ''),
-			description: draft.description ?? '',
-			ingredients: draft.ingredients?.map((text) => ({ text })) ?? DEFAULT_RECIPE_FORM_VALUES.ingredients,
-			steps: draft.steps?.map((step) => ({ stepDescription: step })) ?? [],
-		}));
+		// keepDefaultValues: the imported draft is unsaved, so the form must stay dirty for UnsavedChangesGuard
+		recipeFormReset(
+			(currentValues) => ({
+				...DEFAULT_RECIPE_FORM_VALUES,
+				sourceUrl: draft.sourceUrl,
+				categories: currentValues.categories,
+				recipeTitle: formatTitle ? normalizeTitle(draft.recipeTitle ?? '') : (draft.recipeTitle ?? ''),
+				description: draft.description ?? '',
+				ingredients: draft.ingredients?.map((text) => ({ text })) ?? DEFAULT_RECIPE_FORM_VALUES.ingredients,
+				steps: draft.steps?.map((step) => ({ stepDescription: step })) ?? [],
+			}),
+			{ keepDefaultValues: true },
+		);
 		handleCloseModal();
 	});
 

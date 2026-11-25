@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { Outlet, Route, createBrowserRouter, createRoutesFromElements } from 'react-router';
+import { RouterProvider } from 'react-router/dom';
 import { ThemeProvider } from '@emotion/react';
 
 import {
@@ -21,8 +22,9 @@ import { MainWrapper } from './components/MainWrapper';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { StyledToaster } from './components/atoms/StyledToaster';
 import { useApiNavigate } from './api/apiRequest.ts';
+import { FORBIDDEN_ROUTE, NOT_FOUND_ROUTE } from './constants/routes.ts';
 
-const AppRoutes = () => {
+const RootLayout = () => {
 	useApiNavigate();
 
 	return (
@@ -31,58 +33,62 @@ const AppRoutes = () => {
 			<MainWrapper>
 				<StyledToaster />
 				<PageWrapper>
-					<Routes>
-						<Route path="/" element={<Homepage />} />
-						<Route
-							path="/create-new-category"
-							element={
-								<ProtectedRoute>
-									<CreateCategory />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path="/edit-category/:id"
-							element={
-								<ProtectedRoute>
-									<EditCategory />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path="/create-new-recipe"
-							element={
-								<ProtectedRoute>
-									<CreateRecipe />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path="/edit-recipe/:id"
-							element={
-								<ProtectedRoute>
-									<EditRecipe />
-								</ProtectedRoute>
-							}
-						/>
-						<Route path="/categories" element={<AllCategories />} />
-						<Route path="/search" element={<Search />} />
-						<Route path="/category/:id" element={<SingleCategory />} />
-						<Route path="/recipe/:id" element={<SingleRecipe />} />
-						<Route path="/not-found" element={<ErrorPage code={404} />} />
-						<Route path="/forbidden" element={<ErrorPage code={403} />} />
-						<Route path="*" element={<ErrorPage code={404} />} />
-					</Routes>
+					<Outlet />
 				</PageWrapper>
 			</MainWrapper>
 		</>
 	);
 };
 
+const router = createBrowserRouter(
+	createRoutesFromElements(
+		<Route element={<RootLayout />}>
+			<Route path="/" element={<Homepage />} />
+			<Route
+				path="/create-new-category"
+				element={
+					<ProtectedRoute>
+						<CreateCategory />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/edit-category/:id"
+				element={
+					<ProtectedRoute>
+						<EditCategory />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/create-new-recipe"
+				element={
+					<ProtectedRoute>
+						<CreateRecipe />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/edit-recipe/:id"
+				element={
+					<ProtectedRoute>
+						<EditRecipe />
+					</ProtectedRoute>
+				}
+			/>
+			<Route path="/categories" element={<AllCategories />} />
+			<Route path="/search" element={<Search />} />
+			<Route path="/category/:id" element={<SingleCategory />} />
+			<Route path="/recipe/:id" element={<SingleRecipe />} />
+			<Route path={NOT_FOUND_ROUTE} element={<ErrorPage code={404} />} />
+			<Route path={FORBIDDEN_ROUTE} element={<ErrorPage code={403} />} />
+			<Route path="*" element={<ErrorPage code={404} />} />
+		</Route>,
+	),
+);
+
 export const App = () => (
-	<BrowserRouter>
-		<ThemeProvider theme={theme}>
-			<AppRoutes />
-		</ThemeProvider>
-	</BrowserRouter>
+	<ThemeProvider theme={theme}>
+		<RouterProvider router={router} />
+	</ThemeProvider>
 );

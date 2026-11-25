@@ -180,7 +180,7 @@ export const CreateRecipe = () => {
 						<div css={leftColumnWrapperStyles}>
 							<ImageInput name="recipeImage" customHeight={350} customWidth={450} />
 							<div css={{ display: 'flex', flexDirection: 'column', marginTop: space(6) }}>
-								<FieldsGroupTitle title="Інгредієнти" />
+								<FieldsGroupTitle title="Інгредієнти" isRequired />
 								<DragDropProvider onDragOver={handleDragOver}>
 									<div>
 										{ingredientsFields.map((ingredientField, index) => (

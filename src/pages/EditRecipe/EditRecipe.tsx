@@ -276,6 +276,7 @@ export const EditRecipe = () => {
 									control={control}
 									render={({ field }) => (
 										<MultiSelect
+											isFullWidth
 											isRequired
 											label="Категорії"
 											placeholder="Оберіть категорії"

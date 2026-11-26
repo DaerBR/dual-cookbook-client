@@ -43,46 +43,48 @@ const RootLayout = () => {
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route element={<RootLayout />}>
-			<Route path="/" element={<Homepage />} />
-			<Route
-				path="/create-new-category"
-				element={
-					<ProtectedRoute>
-						<CreateCategory />
-					</ProtectedRoute>
-				}
-			/>
-			<Route
-				path="/edit-category/:id"
-				element={
-					<ProtectedRoute>
-						<EditCategory />
-					</ProtectedRoute>
-				}
-			/>
-			<Route
-				path="/create-new-recipe"
-				element={
-					<ProtectedRoute>
-						<CreateRecipe />
-					</ProtectedRoute>
-				}
-			/>
-			<Route
-				path="/edit-recipe/:id"
-				element={
-					<ProtectedRoute>
-						<EditRecipe />
-					</ProtectedRoute>
-				}
-			/>
-			<Route path="/categories" element={<AllCategories />} />
-			<Route path="/search" element={<Search />} />
-			<Route path="/category/:id" element={<SingleCategory />} />
-			<Route path="/recipe/:id" element={<SingleRecipe />} />
-			<Route path={NOT_FOUND_ROUTE} element={<ErrorPage code={404} />} />
-			<Route path={FORBIDDEN_ROUTE} element={<ErrorPage code={403} />} />
-			<Route path="*" element={<ErrorPage code={404} />} />
+			<Route errorElement={<ErrorPage />}>
+				<Route path="/" element={<Homepage />} />
+				<Route
+					path="/create-new-category"
+					element={
+						<ProtectedRoute>
+							<CreateCategory />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/edit-category/:id"
+					element={
+						<ProtectedRoute>
+							<EditCategory />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/create-new-recipe"
+					element={
+						<ProtectedRoute>
+							<CreateRecipe />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/edit-recipe/:id"
+					element={
+						<ProtectedRoute>
+							<EditRecipe />
+						</ProtectedRoute>
+					}
+				/>
+				<Route path="/categories" element={<AllCategories />} />
+				<Route path="/search" element={<Search />} />
+				<Route path="/category/:id" element={<SingleCategory />} />
+				<Route path="/recipe/:id" element={<SingleRecipe />} />
+				<Route path={NOT_FOUND_ROUTE} element={<ErrorPage code={404} />} />
+				<Route path={FORBIDDEN_ROUTE} element={<ErrorPage code={403} />} />
+				<Route path="*" element={<ErrorPage code={404} />} />
+			</Route>
 		</Route>,
 	),
 );
